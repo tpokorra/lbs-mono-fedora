@@ -1,0 +1,6 @@
+lbs:
+  centos:
+    '6':
+      repos: ['epel-release']
+    '7':
+      repos: ['epel-release']
