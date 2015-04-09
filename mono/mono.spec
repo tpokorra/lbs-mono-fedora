@@ -3,6 +3,9 @@ Version:        4.0.0
 Release:        1%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
+# see https://lists.fedoraproject.org/pipermail/packaging/2011-May/007762.html
+%global _missing_build_ids_terminate_build 0
+
 Group:          Development/Languages
 License:        MIT
 URL:            http://www.mono-project.com
