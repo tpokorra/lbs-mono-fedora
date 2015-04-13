@@ -21,7 +21,7 @@ Patch1:         keepass-fix-XSL-search-path.patch
 Patch2:         keepass-enable-local-help.patch
 
 ExcludeArch:    armv7hl
-BuildRequires:  mono-devel archmage desktop-file-utils python-devel
+BuildRequires:  mono-devel mono-winforms archmage desktop-file-utils python-devel
 Requires:       xdotool xsel hicolor-icon-theme
 
 
@@ -43,6 +43,8 @@ to unlock the whole database.
 
 %build
 ( cd Build && sh PrepMonoDev.sh )
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's/ToolsVersion="3.5"/ToolsVersion="4.0"/g' {} \;
 xbuild /target:KeePass /property:Configuration=Release
 %{__python2} -c 'import archmod.CHM; archmod.CHM.CHMDir("Docs").process_templates("Docs/Chm")'
 
@@ -108,6 +110,9 @@ Documentation for KeePass, a free open source password manager.
 
 
 %changelog
+* Mon Apr 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.27-1
+- Build with Mono 4
+
 * Fri Jul 18 2014 Peter Oliver <rpm@mavit.org.uk> - 2.27-1
 - Update to version 2.27.
 
