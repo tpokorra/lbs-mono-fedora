@@ -771,7 +771,6 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %defattr(-, root, root)
 %{_monogacdir}/monodoc
 %{_monodir}/monodoc/*
-%{_monodir}/4.0/monodoc.dll
 %ifnarch  ppc
 %{_prefix}/lib/monodoc
 %endif
