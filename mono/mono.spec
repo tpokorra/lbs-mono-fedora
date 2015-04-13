@@ -302,6 +302,9 @@ usually need to write
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
 
 # Remove prebuilt binaries
+find . -name "*.dll" -not -path "mcs/class/lib/monolite/*" -print -delete
+find . -name "*.exe" -not -path "mcs/class/lib/monolite/*" -print -delete
+# for the moment, keep monolite. Mono 2.10 is too old
 #rm -rf mcs/class/lib/monolite/*
 
 %build
@@ -416,7 +419,6 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_monogacdir}/Mono.Cecil
 %gac_dll cscompmgd
 %gac_dll Microsoft.VisualC
-%{_monodir}/4.0/Microsoft.VisualBasic.dll
 %gac_dll Mono.C5
 %gac_dll Mono.Cairo
 %gac_dll Mono.CompilerServices.SymbolWriter
