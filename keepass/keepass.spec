@@ -21,7 +21,8 @@ Patch1:         keepass-fix-XSL-search-path.patch
 Patch2:         keepass-enable-local-help.patch
 
 ExcludeArch:    armv7hl
-BuildRequires:  mono-devel mono-winforms archmage desktop-file-utils python-devel
+# need mono-web for System.Runtime.Serialization.Formatters.Soap
+BuildRequires:  mono-devel mono-winforms mono-web archmage desktop-file-utils python-devel
 Requires:       xdotool xsel hicolor-icon-theme
 
 
