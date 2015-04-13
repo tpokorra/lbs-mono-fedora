@@ -240,15 +240,6 @@ Requires:       mono-core = %{version}-%{release}
 This package contains the ADO.NET Data provider for the Oracle
 database.
 
-%package data-postgresql
-Summary:        Postgresql database connectivity for Mono
-Group:          Development/Languages
-Requires:       mono-core = %{version}-%{release}
-
-%description data-postgresql
-This package contains the ADO.NET Data provider for the PostgreSQL
-database.
-
 %package -n ibm-data-db2
 Summary:        IBM DB2 database connectivity for Mono
 Group:          Development/Languages
@@ -456,7 +447,6 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %dir %{_sysconfdir}/mono/4.0
 %{_bindir}/dmcs
 %mono_bin ccrewrite
-%{_monodir}/4.0/mscorlib.dll
 %{_monodir}/4.5/mscorlib.dll
 %{_monodir}/4.5/mscorlib.dll.mdb
 %gac_dll Microsoft.CSharp
@@ -772,10 +762,6 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %files data-oracle
 %defattr(-,root,root,-)
 %gac_dll System.Data.OracleClient
-
-%files data-postgresql
-%defattr(-,root,root,-)
-%{_monodir}/4.0/Npgsql.dll
 
 %files -n ibm-data-db2
 %defattr(-,root,root,-)
