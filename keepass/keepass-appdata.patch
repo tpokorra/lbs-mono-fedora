@@ -1,0 +1,25 @@
+--- keepass-2.26/dist/keepass.appdata.xml	1970-01-01 01:00:00.000000000 +0100
++++ keepass/dist/keepass.appdata.xml	2014-04-20 15:24:36.025952830 +0100
+@@ -0,0 +1,22 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!-- Copyright 2014 Peter Oliver <appdata@mavit.org.uk> -->
++<application>
++ <id type="desktop">keepass.desktop</id>
++ <metadata_license>CC0</metadata_license>
++ <name>KeePass</name>
++ <summary>Password manager</summary>
++ <description>
++  <p>
++    KeePass is a free open source password manager, which helps you to
++    remember your passwords securely.  You can put all your
++    passwords in one database, which is locked with one master key or a
++    key file.  You only have to remember one single master password or
++    select the key file to unlock the whole database.
++  </p>
++ </description>
++ <screenshots>
++  <screenshot type="default" width="624" height="351">http://mavit.fedorapeople.org/appdata/keepass-main-window.png</screenshot>
++ </screenshots>
++ <url type="homepage">http://keepass.info/</url>
++ <updatecontact>appdata@mavit.org.uk</updatecontact>
++</application>

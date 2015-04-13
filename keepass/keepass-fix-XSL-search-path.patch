@@ -1,0 +1,35 @@
+From: Debian CLI Applications Team <pkg-cli-apps-team@lists.alioth.debian.org>
+Date: Tue, 21 Jun 2011 19:43:31 +0200
+Subject: fix XSL search path
+
+search for XSL files in /usr/share/keepass2
+
+Forwarded: not-needed
+---
+ KeePass/App/AppDefs.cs     | 2 ++
+ KeePass/Forms/AboutForm.cs | 3 +--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+--- a/KeePass/App/AppDefs.cs
++++ b/KeePass/App/AppDefs.cs
+@@ -36,6 +36,8 @@ namespace KeePass.App
+ 		public static readonly Color ColorControlDisabled = SystemColors.Control;
+ 		public static readonly Color ColorEditError = Color.FromArgb(255, 192, 192);
+ 
++                public const string DebianDataDir = "/usr/share/keepass/";
++
+ 		public const string XslFilesDir = "XSL";
+ 		public const string XslFileHtmlLite = "KDBX_DetailsLite.xsl";
+ 		public const string XslFileHtmlFull = "KDBX_DetailsFull.xsl";
+--- a/KeePass/Forms/AboutForm.cs
++++ b/KeePass/Forms/AboutForm.cs
+@@ -89,8 +89,7 @@ namespace KeePass.Forms
+ 			m_lvComponents.Items.Add(lvi);
+ 
+ 			lvi = new ListViewItem(KPRes.XslStylesheetsKdbx);
+-			string strPath = WinUtil.GetExecutable();
+-			strPath = UrlUtil.GetFileDirectory(strPath, true, false);
++			string strPath = AppDefs.DebianDataDir;
+ 			strPath += AppDefs.XslFilesDir;
+ 			strPath = UrlUtil.EnsureTerminatingSeparator(strPath, false);
+ 			bool bInstalled = File.Exists(strPath + AppDefs.XslFileHtmlLite);

@@ -1,0 +1,57 @@
+From: Julian Taylor <jtaylor.debian@googlemail.com>
+Date: Tue, 12 Jul 2011 21:51:43 +0200
+Subject: enable local help
+
+disable windows chm viewer and use x-www-browser to view docs
+located as html files in "/usr/share/doc/keepass2/Chm/help/"
+Forwarded: not-needed
+---
+ KeePass/App/AppHelp.cs | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
+
+--- a/KeePass/App/AppHelp.cs
++++ b/KeePass/App/AppHelp.cs
+@@ -58,7 +58,7 @@ namespace KeePass.App
+ 			{
+ 				if(m_strLocalHelpFile == null) return false;
+ 
+-				try { return File.Exists(m_strLocalHelpFile); }
++				try { return Directory.Exists(@"/usr/share/doc/keepass/Chm/help/"); }
+ 				catch(Exception) { }
+ 				return false;
+ 			}
+@@ -114,14 +114,13 @@ namespace KeePass.App
+ 		private static void ShowHelpLocal(string strTopic, string strSection)
+ 		{
+ 			Debug.Assert(m_strLocalHelpFile != null);
+-
+-			// Unblock CHM file for proper display of help contents
+-			WinUtil.RemoveZoneIdentifier(m_strLocalHelpFile);
+-
+-			string strCmd = "\"ms-its:" + m_strLocalHelpFile;
++
++			string strCmd = @"/usr/share/doc/keepass/Chm/help/";
+ 
+ 			if(strTopic != null)
+-				strCmd += @"::/help/" + strTopic + ".html";
++				strCmd += strTopic + ".html";
++			else
++				strCmd += @"../index.html";
+ 
+ 			if(strSection != null)
+ 			{
+@@ -129,12 +128,10 @@ namespace KeePass.App
+ 				strCmd += @"#" + strSection;
+ 			}
+ 
+-			strCmd += "\"";
+-
+-			try { Process.Start(WinUtil.LocateSystemApp("hh.exe"), strCmd); }
++			try { Process.Start("x-www-browser", strCmd); }
+ 			catch(Exception exStart)
+ 			{
+-				MessageService.ShowWarning(@"hh.exe " + strCmd, exStart);
++				MessageService.ShowWarning(@"x-www-browser " + strCmd, exStart);
+ 			}
+ 		}
+ 
