@@ -1,0 +1,10 @@
+--- a/mcs/class/reference-assemblies/Makefile	2015-04-13 09:00:46.717596021 +0200
++++ b/mcs/class/reference-assemblies/Makefile	2015-04-13 09:01:00.793595364 +0200
+@@ -6,7 +6,6 @@
+ 
+ install-local:
+ 	$(MKINSTALLDIRS) $(DESTDIR)$(LIBRARY_INSTALL_DIR)
+-	$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.0/* $(DESTDIR)$(LIBRARY_INSTALL_DIR)
+ 
+ DISTFILES = $(wildcard ../../../external/binary-reference-assemblies/v4.0/*) Makefile
+ 

@@ -15,6 +15,7 @@ Source0:        http://download.mono-project.com/sources/mono/mono-%{version}~al
 # sn -k mono.snk
 # You should not regenerate this unless you have a really, really, really good reason.
 Source1:        mono.snk
+Patch1:         IgnoreReferenceAssemblies.patch
 
 BuildRequires:  bison
 BuildRequires:  gcc-c++
@@ -297,6 +298,7 @@ usually need to write
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch1 -p1
 
 # Add undeclared Arg
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
