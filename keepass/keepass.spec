@@ -1,6 +1,6 @@
 Name:           keepass
 Version:        2.27
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Password manager
 
 License:        GPLv2+
@@ -114,8 +114,8 @@ Documentation for KeePass, a free open source password manager.
 
 
 %changelog
-* Mon Apr 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.27-1
-- Build with Mono 4
+* Mon Apr 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.27-2
+- Build with and for Mono 4
 
 * Fri Jul 18 2014 Peter Oliver <rpm@mavit.org.uk> - 2.27-1
 - Update to version 2.27.
