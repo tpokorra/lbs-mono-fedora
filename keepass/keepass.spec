@@ -22,7 +22,7 @@ Patch2:         keepass-enable-local-help.patch
 
 ExcludeArch:    armv7hl
 # need mono-web for System.Runtime.Serialization.Formatters.Soap
-BuildRequires:  mono-devel mono-winforms mono-web archmage desktop-file-utils python-devel
+BuildRequires:  mono-devel mono-winforms mono-web libgdiplus-devel archmage desktop-file-utils python-devel
 Requires:       xdotool xsel hicolor-icon-theme
 
 
