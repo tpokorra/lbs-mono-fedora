@@ -1,0 +1,23 @@
+diff -up libgdiplus-2.10.9/tests/Makefile.am.tests libgdiplus-2.10.9/tests/Makefile.am
+--- libgdiplus-2.10.9/tests/Makefile.am.tests	2011-12-02 18:23:12.000000000 +0100
++++ libgdiplus-2.10.9/tests/Makefile.am	2014-04-25 10:21:47.615549531 +0200
+@@ -1,5 +1,7 @@
+ ## Makefile.am for libgdiplus/tests
+ 
++LIBS = $(GDIPLUS_LIBS)
++
+ INCLUDES =					\
+ 	-I$(top_srcdir)				\
+ 	-I$(top_builddir)/src			\
+diff -up libgdiplus-2.10.9/tests/Makefile.in.tests libgdiplus-2.10.9/tests/Makefile.in
+--- libgdiplus-2.10.9/tests/Makefile.in.tests	2014-04-25 10:15:23.083033896 +0200
++++ libgdiplus-2.10.9/tests/Makefile.in	2014-04-25 10:26:27.089551635 +0200
+@@ -127,7 +127,7 @@ LDFLAGS = @LDFLAGS@
+ LIBEXIF_CFLAGS = @LIBEXIF_CFLAGS@
+ LIBEXIF_LIBS = @LIBEXIF_LIBS@
+ LIBOBJS = @LIBOBJS@
+-LIBS = @LIBS@
++LIBS = @GDIPLUS_LIBS@
+ LIBTOOL = @LIBTOOL@
+ LIPO = @LIPO@
+ LN_S = @LN_S@
