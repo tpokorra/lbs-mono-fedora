@@ -6,7 +6,7 @@ Summary:        An Open Source implementation of the GDI+ API
 Group:          System Environment/Libraries
 License:        MIT
 URL:            http://www.mono-project.com/Main_Page
-Source0:        http://download.mono-project.com/sources/%{name}/%{name}-%{version}.tar.bz2
+Source0:        http://download.mono-project.com/sources/%{name}/%{name}-%{version}.tar.gz
 # Patch for linking against libpng 1.5 (BZ #843330)
 # https://github.com/mono/libgdiplus/commit/506df13e6e1c9915c248305e47f0b67549732566
 Patch0:         libgdiplus-2.10.9-libpng15.patch
@@ -36,10 +36,10 @@ Development files for libgdiplus
 
 %prep
 %setup -q 
-%patch0 -p1 -b .libpng15
-%patch1 -p1 -b .freetype25
+#%patch0 -p1 -b .libpng15
+#%patch1 -p1 -b .freetype25
 %patch2 -p1 -b .format
-%patch3 -p1 -b .tests
+#%patch3 -p1 -b .tests
 
 %build
 %configure --disable-static 
@@ -62,7 +62,7 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/lib*.so
 
 %changelog
-* Tue Apr 14 2014 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.12-1
+* Tue Apr 14 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.12-1
 - updated to 3.12
 
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.10.9-3
