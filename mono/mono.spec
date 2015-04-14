@@ -3,7 +3,7 @@
 
 Name:           mono
 Version:        4.0.0
-Release:        1%{?dist}
+Release:        22%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -793,7 +793,10 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %gac_dll System.Data.Entity
 
 %changelog
-* Wed Apr 08 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0~alpha1
+* Tue Apr 14 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-2
+* exclude external binaries
+
+* Wed Apr 08 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-1
 * Mono 4 Alpha1
 
 * Fri Mar 13 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 3.12.1-1
