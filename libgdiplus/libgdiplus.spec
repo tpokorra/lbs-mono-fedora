@@ -47,6 +47,7 @@ make %{?_smp_mflags}
 
 %install
 make install DESTDIR=%{buildroot} INSTALL="install -p"
+cd %{buildroot}/%{_libdir}; ln -s libgdiplus.so.0 libgdiplus.so; cd -
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %post -p /sbin/ldconfig
@@ -62,6 +63,9 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/lib*.so
 
 %changelog
+* Tue Apr 14 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com>
+- create symbolic link /usr/lib(64)/libgdiplus.so
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.10.9-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
