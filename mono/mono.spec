@@ -3,7 +3,7 @@
 
 Name:           mono
 Version:        4.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -27,14 +27,19 @@ BuildRequires:  zlib-devel
 BuildRequires:  libunwind
 BuildRequires:  libunwind-devel
 %endif
-BuildRequires: gettext-devel
+BuildRequires:  gettext-devel
+
+# http://www.mono-project.com/docs/about-mono/releases/4.0.0/#npgsql
+Obsoletes:      mono-data-postgresql
+# http://www.mono-project.com/docs/about-mono/releases/4.0.0/#entityframework
+Obsoletes:      entityframework
 
 # Yes, mono actually depends on itself, because
 # we deleted the bootstrapping binaries. If you
 # need to bootstrap mono, comment out this BuildRequires
 # and don't delete the binaries in %%prep.
 
-#BuildRequires: mono-core
+#BuildRequires: mono-core >= 3.4
 
 # JIT only available on these:
 ExclusiveArch: %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
@@ -107,11 +112,11 @@ take advantage of many .NET language features, for example
 custom attributes and other reflection related capabilities. NUnit
 brings xUnit to all .NET languages.
 
-%package nunit-devel
-Summary: pkgconfig for nunit
-Group: Development/Libraries
-Requires: mono-core = %{version}-%{release}, pkgconfig
-Requires: mono-nunit = %{version}-%{release}
+%package        nunit-devel
+Summary:        pkgconfig for nunit
+Group:          Development/Libraries
+Requires:       mono-core = %{version}-%{release}, pkgconfig
+Requires:       mono-nunit = %{version}-%{release}
 
 %description nunit-devel
 Development files for nunit
@@ -141,7 +146,6 @@ License:        MIT License (or similar) ; Apache License 2.0
 Summary:        Reactive Extensions for Mono core libraries
 Group:          Development/Languages
 Requires:       mono-core = %{version}-%{release}
-Obsoletes:      mono-rx < %{version}-2
 
 %description reactive
 Reactive Extensions for Mono, this packages don't depend on
@@ -153,7 +157,6 @@ Summary:        Reactive Extensions for Mono desktop-specific libraries
 Group:          Development/Languages
 Requires:       mono-core = %{version}-%{release}
 Requires:       mono-reactive = %{version}-%{release}
-Obsoletes:      mono-rx-desktop < %{version}-2
 
 %description reactive-winforms
 Reactive Extensions for Mono, desktop-specific packages (winforms,
@@ -164,7 +167,6 @@ Summary:        Development files for system.web
 Group:          Development/Languages
 Requires:       mono-core = %{version}-%{release}
 Requires:       mono-reactive = %{version}-%{release} pkgconfig
-Obsoletes:      mono-rx-devel < %{version}-2
 
 %description reactive-devel
 This package provides the .pc file for mono-rx
@@ -192,8 +194,6 @@ Foundation.
 Summary:        ASP.NET, Remoting, and Web Services for Mono
 Group:          Development/Languages
 Requires:       mono-core = %{version}-%{release}
-Provides:       mono(System.Web.WebPages.Deployment) = 2.1.0.0
-Provides:       mono(System.Web.DataVisualization) = 4.0.0.0
 
 %description web
 This package provides the ASP.NET libraries and runtime for
@@ -249,7 +249,6 @@ Requires:       mono-core = %{version}-%{release}
 This package contains the ADO.NET Data provider for the IBM DB2
 Universal database.
 
-
 %package -n monodoc
 Summary:        The mono documentation system
 Group:          Documentation
@@ -259,32 +258,20 @@ Requires:       mono-core = %{version}-%{release}
 monodoc is the documentation package for the mono .NET environment
 
 %package -n monodoc-devel
-Summary: .pc file for monodoc
-Group: Documentation
-Requires: monodoc = %{version}-%{release} pkgconfig
-Requires: mono-core = %{version}-%{release}
+Summary:        .pc file for monodoc
+Group:          Documentation
+Requires:       monodoc = %{version}-%{release} pkgconfig
+Requires:       mono-core = %{version}-%{release}
 
 %description -n monodoc-devel
 Development file for monodoc
 
-%package entityframework
-Summary: Entity Framework (EF) is an object-relational mapper
-Group: Development/Languages
-Requires: mono-core = %{version}-%{release}
-Provides:       mono(System.Data.Entity) = 4.0.0.0
-
-%description entityframework
-Entity Framework (EF) is an object-relational mapper that enables .NET
-developers to work with relational data using domain-specific objects.
-It eliminates the need for most of the data-access code that developers
-usually need to write
-
 %define gac_dll(dll)  %{_monogacdir}/%{1} \
-  %{_monodir}/?.?/%{1}.dll \
+  %{_monodir}/4.5/%{1}.dll \
   %{nil}
 %define mono_bin(bin) %{_bindir}/%{1} \
-  %{_monodir}/?.?/%{1}.exe \
-  %{_monodir}/?.?/%{1}.exe.* \
+  %{_monodir}/4.5/%{1}.exe \
+  %{_monodir}/4.5/%{1}.exe.* \
   %{nil}
 
 %prep
@@ -443,7 +430,6 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %config (noreplace) %{_sysconfdir}/mono/4.5/machine.config
 %config (noreplace) %{_sysconfdir}/mono/4.5/settings.map
 %config (noreplace) %{_sysconfdir}/mono/4.5/web.config
-%dir %{_monodir}/4.0
 %dir %{_sysconfdir}/mono/4.0
 %{_bindir}/dmcs
 %mono_bin ccrewrite
@@ -561,8 +547,8 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %gac_dll Mono.XBuild.Tasks
 %gac_dll System.Windows
 %gac_dll System.Xml.Serialization
-%{_monodir}/?.?/Microsoft.Common.tasks
-%{_monodir}/?.5/MSBuild/Microsoft.Build*
+%{_monodir}/4.5/Microsoft.Common.tasks
+%{_monodir}/4.5/MSBuild/Microsoft.Build*
 %{_monodir}/4.5/Microsoft.Build.xsd
 %{_monodir}/4.5/Microsoft.CSharp.targets
 %{_monodir}/4.5/Microsoft.Common.targets
@@ -626,7 +612,7 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %gac_dll Mono.Messaging.RabbitMQ
 %gac_dll Mono.Messaging
 %gac_dll RabbitMQ.Client
-%{_monodir}/?.?/RabbitMQ.Client.Apigen*
+%{_monodir}/4.5/RabbitMQ.Client.Apigen*
 %{_mandir}/man1/mono-service.1.gz
 
 %files reactive
@@ -742,6 +728,7 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %mono_bin sqlmetal
 %gac_dll System.Data
 %gac_dll System.Data.DataSetExtensions
+%gac_dll System.Data.Entity
 %gac_dll System.Data.Linq
 %gac_dll System.Data.Services
 %gac_dll System.Data.Services.Client
@@ -788,11 +775,13 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %defattr (-, root, root)
 %{_libdir}/pkgconfig/monodoc.pc
 
-%files entityframework
-%defattr(-,root,root,-)
-%gac_dll System.Data.Entity
-
 %changelog
+* Tue Apr 14 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.0.0-3
+- Obsolete mono-data-postgresql subpackage
+- Obsolete mono-entityframework subpackage
+- Clean explicit Provides
+- Fix macros to 4.5 profile
+
 * Tue Apr 14 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-2
 * exclude external binaries
 
