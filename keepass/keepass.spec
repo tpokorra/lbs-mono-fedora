@@ -45,9 +45,10 @@ to unlock the whole database.
 %build
 ( cd Build && sh PrepMonoDev.sh )
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
-find . -name "*.csproj" -print -exec sed -i 's/ToolsVersion="3.5"/ToolsVersion="4.0"/g' {} \;
-find . -name "*.csproj" -print -exec sed -i 's/<TargetFrameworkVersion>.*</TargetFrameworkVersion>//g' {} \;
-find . -name "*.csproj" -print -exec sed -i 's/<PropertyGroup>/<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>/g' {} \;
+find . -name "*.csproj" -print -exec sed -i '' \
+   -e 's/ToolsVersion="3.5"/ToolsVersion="4.0"/g'  \
+   -e 's#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g' \
+   -e 's#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 xbuild /target:KeePass /property:Configuration=Release
 %{__python2} -c 'import archmod.CHM; archmod.CHM.CHMDir("Docs").process_templates("Docs/Chm")'
 
