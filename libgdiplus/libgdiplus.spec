@@ -1,6 +1,6 @@
 Name:           libgdiplus
-Version:        2.10.9
-Release:        3%{?dist}
+Version:        3.12
+Release:        1%{?dist}
 Summary:        An Open Source implementation of the GDI+ API
 
 Group:          System Environment/Libraries
@@ -62,6 +62,9 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/lib*.so
 
 %changelog
+* Tue Apr 14 2014 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.12-1
+- updated to 3.12
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.10.9-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
