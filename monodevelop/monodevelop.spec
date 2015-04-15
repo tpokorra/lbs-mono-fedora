@@ -46,7 +46,7 @@ Development files for %{name}.
 
 
 %prep
-%setup -qn %{name}-git-latest
+%setup -qn %{name}-5.7
 
 mozroots --import --sync 
 
