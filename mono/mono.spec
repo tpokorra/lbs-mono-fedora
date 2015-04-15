@@ -3,7 +3,7 @@
 
 Name:           mono
 Version:        4.0.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -15,6 +15,7 @@ Source0:        http://download.mono-project.com/sources/mono/mono-%{version}~al
 # sn -k mono.snk
 # You should not regenerate this unless you have a really, really, really good reason.
 Source1:        mono.snk
+Patch0:		fix-rpm-helpers.patch
 Patch1:         IgnoreReferenceAssemblies.patch
 
 BuildRequires:  bison
@@ -43,6 +44,10 @@ Obsoletes:      entityframework
 
 # JIT only available on these:
 ExclusiveArch: %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+
+%define _use_internal_dependency_generator 0
+%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/redhat/find-provides && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}%{_prefix} %{buildroot}%{_bindir}/mono-find-provides; } | sort | uniq'
+%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/redhat/find-requires && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}%{_prefix} %{buildroot}%{_bindir}/mono-find-requires; } | sort | uniq | grep ^...'
 
 %description
 The Mono runtime implements a JIT engine for the ECMA CLI
@@ -276,6 +281,7 @@ Development file for monodoc
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch0 -p1
 %patch1 -p1
 
 # Add undeclared Arg
@@ -776,6 +782,11 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
+* Wed Apr 15 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-4
+- fix for rpm helpers, from Xamarin spec
+- use find-provides and find-requires the same way as in Xamarin spec
+- see https://github.com/directhex/xamarin-mono/blob/centos
+
 * Tue Apr 14 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.0.0-3
 - Obsolete mono-data-postgresql subpackage
 - Obsolete mono-entityframework subpackage
