@@ -1,6 +1,6 @@
 Name:           gnome-sharp
 Version:        2.24.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        GTK+ and GNOME bindings for Mono
 
 Group:          System Environment/Libraries
@@ -52,6 +52,8 @@ aclocal
 #sed -i -e 's!-r:Mono.GetOptions.dll! !' sample/gnomevfs/Makefile.in
 export MONO_SHARED_DIR=%{_builddir}/%{?buildsubdir}
 %configure
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 make
 
 %install
@@ -78,6 +80,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/gconf-sharp-peditors-2.0.pc
 
 %changelog
+* Wed Apr 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> 2.24.2-8
+* build for Mono 4
+
 * Mon Sep 15 2014 Karsten Hopp <karsten@redhat.com> 2.24.2-7
 - drop ppc64le
 
