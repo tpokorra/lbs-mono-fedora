@@ -2,7 +2,7 @@
 
 Name:		mono-addins
 Version:	0.6.2
-Release:	11%{?dist}
+Release:	12%{?dist}
 Summary:	Addins for mono
 Group:		Development/Languages
 License:	MIT
@@ -59,6 +59,8 @@ using add-in references directly in a build file (still experimental).
 %build
 autoreconf -f -i
 %configure --enable-gui
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 make %{?_smp_mflags}
 
 %install
@@ -108,6 +110,9 @@ make DESTDIR=%{buildroot} install
 %{_libdir}/pkgconfig/mono-addins*
 
 %changelog
+* Wed Apr 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 0.6.2-12
+- build for Mono 4
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.6.2-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
