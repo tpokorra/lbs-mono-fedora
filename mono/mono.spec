@@ -3,7 +3,7 @@
 
 Name:           mono
 Version:        4.0.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -15,8 +15,8 @@ Source0:        http://download.mono-project.com/sources/mono/mono-%{version}~al
 # sn -k mono.snk
 # You should not regenerate this unless you have a really, really, really good reason.
 Source1:        mono.snk
-Patch0:		fix-rpm-helpers.patch
-Patch1:         IgnoreReferenceAssemblies.patch
+Patch0:		mono-4.0.0-fix-rpm-helpers.patch
+Patch1:         mono-4.0.0-ignore-reference-assemblies.patch
 
 BuildRequires:  bison
 BuildRequires:  gcc-c++
@@ -780,7 +780,7 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
-* Wed Apr 15 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-5
+* Wed Apr 15 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-6
 - fix for rpm helpers, from Xamarin spec
 - use find-provides and find-requires the same way as in Xamarin spec
 - see https://github.com/directhex/xamarin-mono/blob/centos
