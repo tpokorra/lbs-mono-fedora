@@ -1,0 +1,13 @@
+--- mono-addins-0.6.2/mautil/Makefile.am.orig	2012-04-30 21:19:16.662933710 +0100
++++ mono-addins-0.6.2/mautil/Makefile.am	2012-04-30 21:19:51.487818453 +0100
+@@ -36,8 +36,8 @@
+ 
+ include $(top_srcdir)/Makefile.include
+ 
+-pkglibdir = $(prefix)/lib/mono/mono-addins
+-pkglib_SCRIPTS = $(ASSEMBLY) $(build_datafiles)
++programfilesdir = $(prefix)/lib/mono/mono-addins
++programfiles_SCRIPTS = $(ASSEMBLY) $(build_datafiles)
+ 
+ man_MANS = mautil.1
+ EXTRA_DIST += $(man_MANS)
