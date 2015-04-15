@@ -1,0 +1,33 @@
+--- gnome-sharp-2.24.1/sample/gnomevfs/Makefile.in	2009-03-03 16:09:52.000000000 +0000
++++ gnome-sharp-2.24.1/sample/gnomevfs/Makefile-new.in	2010-10-09 13:45:34.566816490 +0100
+@@ -446,8 +446,6 @@
+ TestVolumes.exe: $(srcdir)/TestVolumes.cs $(assemblies)
+ 	$(CSC) /out:TestVolumes.exe $(references) $(srcdir)/TestVolumes.cs
+ 
+-TestXfer.exe: $(srcdir)/TestXfer.cs $(assemblies)
+-	$(CSC) /out:TestXfer.exe $(references) -r:Mono.GetOptions.dll $(srcdir)/TestXfer.cs
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.
+ .NOEXPORT:
+--- gnome-sharp-2.24.1/sample/gnomevfs/Makefile.am	2008-03-07 02:32:14.000000000 +0000
++++ gnome-sharp-2.24.1/sample/gnomevfs/Makefile-new.am	2010-10-09 13:48:30.040219839 +0100
+@@ -13,13 +13,6 @@
+ 	TestSyncWrite.exe	\
+ 	TestUnlink.exe		\
+ 	TestVolumes.exe
+-
+-if ENABLE_MONOGETOPTIONS
+-EXTRA_TARGETS = TestXfer.exe
+-else
+-EXTRA_TARGETS =
+-endif
+-
+ else
+ TARGETS =
+ EXTRA_TARGETS =
+@@ -86,5 +79,3 @@
+ TestVolumes.exe: $(srcdir)/TestVolumes.cs $(assemblies)
+ 	$(CSC) /out:TestVolumes.exe $(references) $(srcdir)/TestVolumes.cs
+ 
+-TestXfer.exe: $(srcdir)/TestXfer.cs $(assemblies)
+-	$(CSC) /out:TestXfer.exe $(references) -r:Mono.GetOptions.dll $(srcdir)/TestXfer.cs

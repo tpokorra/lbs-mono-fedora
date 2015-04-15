@@ -1,0 +1,18 @@
+diff -up gnome-sharp-2.24.0/gconf/GConf/ClientBase.cs.gconf-init gnome-sharp-2.24.0/gconf/GConf/ClientBase.cs
+--- gnome-sharp-2.24.0/gconf/GConf/ClientBase.cs.gconf-init	2008-08-06 18:00:49.000000000 -0400
++++ gnome-sharp-2.24.0/gconf/GConf/ClientBase.cs	2009-04-04 21:26:40.419750583 -0400
+@@ -40,13 +40,13 @@ namespace GConf
+ 
+ 		internal void Initialize ()
+ 		{
++			GLib.GType.Init ();
+ 			if (!gconf_is_initialized ())
+ 			{
+ 				IntPtr err;
+ 				gconf_init (0, IntPtr.Zero, out err);
+ 				if (err != IntPtr.Zero)
+ 					throw new GLib.GException (err);
+-				GLib.GType.Init ();
+ 			}
+ 		}
+ 	}

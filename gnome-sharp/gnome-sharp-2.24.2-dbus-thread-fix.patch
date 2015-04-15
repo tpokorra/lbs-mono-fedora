@@ -1,0 +1,29 @@
+diff -up gnome-sharp-2.24.2/gconf/GConf/Client.cs.threadfix gnome-sharp-2.24.2/gconf/GConf/Client.cs
+--- gnome-sharp-2.24.2/gconf/GConf/Client.cs.threadfix	2013-03-27 15:22:31.786599211 -0400
++++ gnome-sharp-2.24.2/gconf/GConf/Client.cs	2013-03-27 15:23:45.081596591 -0400
+@@ -31,6 +31,17 @@ namespace GConf
+ 		[DllImport("gconf-2")]
+ 		static extern IntPtr gconf_client_get_default ();
+ 
++		[DllImport("dbus-glib-1")] 
++		static extern void dbus_g_thread_init (); 
++
++		static Client ()
++		{
++			// HACK: we have to initialize dbus' threading else GConf with its 
++			// dbus backend will not be thread safe and SEGVs in our face, see: 
++			// https://bugzilla.gnome.org/show_bug.cgi?id=683830
++			dbus_g_thread_init(); 
++		}
++
+ 		public Client ()
+ 		{
+ 			Initialize ();
+diff -up gnome-sharp-2.24.2/gconf/GConf/gconf-sharp.dll.config.in.threadfix gnome-sharp-2.24.2/gconf/GConf/gconf-sharp.dll.config.in
+--- gnome-sharp-2.24.2/gconf/GConf/gconf-sharp.dll.config.in.threadfix	2013-03-27 15:23:56.970596166 -0400
++++ gnome-sharp-2.24.2/gconf/GConf/gconf-sharp.dll.config.in	2013-03-27 15:24:28.152595051 -0400
+@@ -1,3 +1,4 @@
+ <configuration>
+   <dllmap dll="gconf-2" target="libgconf-2@LIB_PREFIX@.4@LIB_SUFFIX@"/>
++  <dllmap dll="dbus-glib-1" target="libdbus-glib-1@LIB_PREFIX@.2@LIB_SUFFIX@"/>
+ </configuration>
