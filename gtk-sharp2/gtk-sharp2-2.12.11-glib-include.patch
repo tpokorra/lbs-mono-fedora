@@ -1,0 +1,12 @@
+diff -uNr gtk-sharp-2.12.11.old/glib/glue/thread.c gtk-sharp-2.12.11/glib/glue/thread.c
+--- gtk-sharp-2.12.11.old/glib/glue/thread.c	2011-07-27 15:18:59.000000000 -0400
++++ gtk-sharp-2.12.11/glib/glue/thread.c	2011-10-23 19:03:37.427051642 -0400
+@@ -20,7 +20,7 @@
+  */
+ 
+ 
+-#include <glib/gthread.h>
++#include <glib.h>
+ 
+ gboolean glibsharp_g_thread_supported (void);
+ 
