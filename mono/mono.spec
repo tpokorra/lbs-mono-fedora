@@ -3,7 +3,7 @@
 
 Name:           mono
 Version:        4.0.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -318,10 +318,6 @@ make install DESTDIR=%{buildroot}
 mkdir -p %{buildroot}%{_sysconfdir}/pki/mono
 install -p -m0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pki/mono/
 
-# We put these inside rpm
-rm %{buildroot}%{_bindir}/mono-find-provides
-rm %{buildroot}%{_bindir}/mono-find-requires
-
 # This was removed upstream:
 # remove .la files (they are generally bad news)
 rm -f %{buildroot}%{_libdir}/*.la
@@ -496,6 +492,8 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %mono_bin mkbundle
 %mono_bin makecert
 %mono_bin mono-cil-strip
+%{_bindir}/mono-find-provides
+%{_bindir}/mono-find-requires
 %{_bindir}/monodis
 %mono_bin monolinker
 %mono_bin mono-shlib-cop
@@ -782,7 +780,7 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
-* Wed Apr 15 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-4
+* Wed Apr 15 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-5
 - fix for rpm helpers, from Xamarin spec
 - use find-provides and find-requires the same way as in Xamarin spec
 - see https://github.com/directhex/xamarin-mono/blob/centos
