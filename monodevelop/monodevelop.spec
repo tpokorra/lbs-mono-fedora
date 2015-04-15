@@ -1,7 +1,9 @@
 %global debug_package %{nil}
+%define version 5.7.0.660
+%define tarballversion 5.7
 
 Name:           monodevelop
-Version:        5.7.0.660
+Version:        %{version}
 Release:        1%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
@@ -46,9 +48,9 @@ Development files for %{name}.
 
 
 %prep
-%setup -qn %{name}-5.7
+%setup -qn %{name}-%{tarballversion}
 
-mozroots --import --sync 
+#mozroots --import --sync 
 
 #dos2unix external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
 #%patch0 -p0
@@ -57,6 +59,10 @@ mozroots --import --sync
 #find -name '*.dll' -exec rm -f {} \;
 
 %build
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.in
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 %configure --enable-git --disable-update-mimedb --disable-update-desktopdb
 
 make
