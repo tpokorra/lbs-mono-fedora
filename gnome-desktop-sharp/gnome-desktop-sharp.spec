@@ -1,6 +1,6 @@
 Name:           gnome-desktop-sharp
 Version:        2.26.0
-Release:        23%{?dist}
+Release:        24%{?dist}
 Summary:        .NET language binding for mono
 
 Group:          System Environment/Libraries
@@ -55,6 +55,8 @@ chmod 0644 HACKING
 
 %build
 %configure
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 make %{?_smp_mflags}
 
 
@@ -107,6 +109,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Wed Apr 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.26.0-24
+- Build for Mono 4
+
 * Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.26.0-23
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
