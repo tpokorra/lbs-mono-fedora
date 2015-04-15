@@ -1,6 +1,6 @@
 Name:           gtk-sharp2
 Version:        2.12.11
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        GTK+ and GNOME bindings for Mono
 
 Group:          System Environment/Libraries
@@ -62,6 +62,8 @@ find -name '*.c' -exec chmod a-x {} \;
 %build
 export MONO_SHARED_DIR=%{_builddir}/%{?buildsubdir}
 %configure
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 make
 
 %install
@@ -105,6 +107,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_prefix}/lib/monodoc/sources/*
 
 %changelog
+* Wed Apr 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.12.11-13
+- Build for Mono 4
+
 * Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.12.11-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
