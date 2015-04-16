@@ -2,7 +2,7 @@
 Summary: gtk sharp for Mono
 Name: gtk-sharp3
 Version: 2.99.3
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL
 Group: Development/Languages
 Requires: mono-core
@@ -45,10 +45,8 @@ make
 
 %install
 make install DESTDIR=%{buildroot}
-#for f in %{buildroot}%{MonoPath}/bin/gapi*
-#do
-#  dos2unix $f
-#done
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 find %{buildroot} -iname "*.dll.so" -exec rm '{}' ';'
 find %{buildroot} -iname "*.exe.so" -exec rm '{}' ';'
 
@@ -71,8 +69,11 @@ find %{buildroot} -iname "*.exe.so" -exec rm '{}' ';'
 %{_libdir}/*.a
 
 %changelog
+* Thu Apr 16 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-3
+- Build for Mono 4
+
 * Fri Feb 13 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-2
-- Remove version requiered of mono-core 
+- Remove version requiered of mono-core
 
 * Fri Oct 17 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-1
 - initial version
