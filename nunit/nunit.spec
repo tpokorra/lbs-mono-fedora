@@ -14,7 +14,7 @@
 
 Name:           NUnit
 Version:        2.6.3
-Release:        0
+Release:        1
 Summary:        Unit test framework for CLI
 License:        MIT
 Group:          Development/Libraries/Other
@@ -40,6 +40,11 @@ the Microsoft .NET Framework.
 %setup
 
 %build
+
+# fix compile with Mono4
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
+
 %{?exp_env}
 %{?env_options}
 xbuild /property:Configuration=Debug ./src/NUnitCore/core/nunit.core.dll.csproj
@@ -79,3 +84,10 @@ done
 %_prefix/lib/nunit
 %_datadir/pkgconfig/nunit.pc
 %_bindir/*
+
+%changelog
+* Thu Apr 16 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.3-1
+- build with Mono4
+
+* Thu Apr 16 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.3-0
+- copy from Xamarin NUnit spec
