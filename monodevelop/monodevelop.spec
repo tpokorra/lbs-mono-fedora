@@ -17,6 +17,7 @@ BuildRequires:  pkgconfig(nunit) >= 2.6.3
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
+BuildRequires:  nuget
 #BuildRequires:  nuget dos2unix
 Requires:       mono-core >= 3.0.4
 Requires:       mono-addins >= 0.6
