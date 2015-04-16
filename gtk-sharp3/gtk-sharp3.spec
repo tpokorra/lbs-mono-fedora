@@ -2,7 +2,7 @@
 Summary: gtk sharp for Mono
 Name: gtk-sharp3
 Version: 2.99.3
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPL
 Group: Development/Languages
 Requires: mono-core
@@ -40,9 +40,11 @@ Development files for GTK 3 Sharp for Mono
 %setup -q -n gtk-sharp-%{version}
 
 %build
-%configure
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
+%configure
 make
 
 %install
@@ -70,6 +72,9 @@ find %{buildroot} -iname "*.exe.so" -exec rm '{}' ';'
 %{_libdir}/*.a
 
 %changelog
+* Thu Apr 16 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-4
+- Use mcs insted gmcs
+
 * Thu Apr 16 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-3
 - Build for Mono 4
 
