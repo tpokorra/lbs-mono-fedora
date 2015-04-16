@@ -12,20 +12,22 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
+%define tarballversion 2.8.3+md58+dhx1
+
 Name:           nuget
-Version:        2.8.3+md58+dhx1
-Release:        0
+Version:        2.8.3
+Release:        1
 Summary:        Package manager for NuGet repositories
 License:        MIT
 Group:          Development/Libraries/Other
 Url:            http://nuget.org/
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Source0:        nuget_%{version}.orig.tar.bz2
+Source0:        nuget_%{tarballversion}.orig.tar.bz2
 Source1:	nuget-core.pc
 Source2:	nuget.sh
 Source3:	build-minimal.sh
 Patch0:		fix_xdt_hintpath
-BuildRequires:  mono-devel
+BuildRequires:  mono-devel mono-winfx
 BuildArch:      noarch
 
 %description
@@ -38,6 +40,10 @@ repository used by all package authors and consumers.
 %prep
 %setup -n nuget-git
 %patch0 -p1
+
+# fix compile with Mono4
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 
 %build
 %{?exp_env}
@@ -61,3 +67,10 @@ sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
 %_prefix/lib/nuget
 %_datadir/pkgconfig/nuget-core.pc
 %_bindir/*
+
+%changelog
+* Thu Apr 16 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.8.3-1
+- build with Mono4
+
+* Thu Apr 16 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.8.3-0
+- copy from Xamarin nuget spec
