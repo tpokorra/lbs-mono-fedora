@@ -12,6 +12,8 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
+%define tarballname NUnit
+
 Name:           nunit
 Version:        2.6.3
 Release:        1
@@ -37,7 +39,7 @@ NUnit targets the CLI (Common Language Infrastructure) and supports Mono and
 the Microsoft .NET Framework.
 
 %prep
-%setup
+%setup -qn %{tarballname}-%{version}
 
 %build
 
