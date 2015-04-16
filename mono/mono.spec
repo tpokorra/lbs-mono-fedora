@@ -1,9 +1,12 @@
+%if 0%{?rhel}
 # see https://lists.fedoraproject.org/pipermail/packaging/2011-May/007762.html
 %global _missing_build_ids_terminate_build 0
+%global debug_package %{nil}
+%endif
 
 Name:           mono
 Version:        4.0.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -780,6 +783,9 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
+* Thu Apr 16 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-7
+- no debuginfo package for Epel
+
 * Wed Apr 15 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-6
 - fix for rpm helpers, from Xamarin spec
 - use find-provides and find-requires the same way as in Xamarin spec
