@@ -1,0 +1,10 @@
+--- a/src/core/MonoDevelop.Core/MonoDevelop.Core.csproj	2015-04-16 08:57:37.476669869 +0200
++++ b/src/core/MonoDevelop.Core/MonoDevelop.Core.csproj	2015-04-16 08:58:09.168668388 +0200
+@@ -572,7 +572,5 @@
+     <Exec Command="$(MonoLauncher)$(MSBuildProjectDirectory)\BuildVariables.gen.exe ." WorkingDirectory="$(MSBuildProjectDirectory)" />
+     <Delete Files="BuildVariables.gen.exe" />
+     <MakeDir Directories="$(OutputPath)" />
+-    <Exec Command="&quot;$(Git)&quot; rev-parse HEAD &gt; $(BuildInfo)" WorkingDirectory="$(MSBuildProjectDirectory)" IgnoreExitCode="True" />
+-    <Exec Command="&quot;$(Git)&quot; rev-parse HEAD &gt; $(VcRevision)" WorkingDirectory="$(MSBuildProjectDirectory)" IgnoreExitCode="True" />
+   </Target>
+ </Project>

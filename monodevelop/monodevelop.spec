@@ -12,6 +12,7 @@ License:        GPLv2+
 URL:            http://monodevelop.com/
 Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-5.7.0.660.tar.bz2
 Patch0:         monodevelop-fix-latest-nuget.patch
+Patch1:         monodevelop-avoidgiterrors.patch
 BuildRequires:  mono-devel >= 4.0.0
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  pkgconfig(nunit) >= 2.6.3
@@ -54,6 +55,9 @@ dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.
 dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/PackageSourceConverter.cs
 dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/RegisteredPackageSourceSettings.cs
 %patch0 -p1
+
+dos2unix src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+%patch1 -p1
 
 #mozroots --import --sync 
 
