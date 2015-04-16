@@ -3,8 +3,8 @@
 %global _missing_build_ids_terminate_build 0
 %global debug_package %{nil}
 # see https://fedorahosted.org/fpc/ticket/395
-%define monodir %{_prefix}/lib/mono
-%define monogacdir %{_prefix}/lib/mono/gac
+%define _monodir %{_prefix}/lib/mono
+%define _monogacdir %{_prefix}/lib/mono/gac
 %endif
 
 Name:           mono
