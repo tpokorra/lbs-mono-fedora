@@ -1,4 +1,4 @@
-%if 0%{?rhel}
+%if 0%{?rhel}%{?el6}%{?el7}
 # see https://lists.fedoraproject.org/pipermail/packaging/2011-May/007762.html
 %global _missing_build_ids_terminate_build 0
 %global debug_package %{nil}
