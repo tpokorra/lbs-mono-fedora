@@ -24,7 +24,7 @@ Source0:        nunit_%{version}+dfsg.orig.tar.gz
 Source1:	nunit.pc
 Source2:	nunit-gui.sh
 Source3:	nunit-console.sh
-BuildRequires:  mono-devel
+BuildRequires:  mono-devel libgdiplus-devel
 BuildArch:      noarch
 
 %description
