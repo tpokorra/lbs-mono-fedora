@@ -11,9 +11,9 @@ Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
 Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-5.7.0.660.tar.bz2
-BuildRequires:  mono-devel >= 3.0.4
+BuildRequires:  mono-devel >= 4.0.0
 BuildRequires:  mono-addins-devel >= 0.6
-BuildRequires:  mono-nunit-devel
+BuildRequires:  pkgconfig(nunit) >= 2.6.3
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
