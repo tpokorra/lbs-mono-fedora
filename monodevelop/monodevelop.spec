@@ -11,14 +11,14 @@ Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
 Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-5.7.0.660.tar.bz2
+Patch0:         monodevelop-fix-latest-nuget.patch
 BuildRequires:  mono-devel >= 4.0.0
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  pkgconfig(nunit) >= 2.6.3
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
-BuildRequires:  nuget
-#BuildRequires:  nuget dos2unix
+BuildRequires:  nuget dos2unix
 Requires:       mono-core >= 3.0.4
 Requires:       mono-addins >= 0.6
 # Using system nunit, but dependency not automatically picked up by RPM
@@ -50,6 +50,10 @@ Development files for %{name}.
 
 %prep
 %setup -qn %{name}-%{tarballversion}
+dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.Tests/MonoDevelop.PackageManagement.Tests.Helpers/FakeSettings.cs
+dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/PackageSourceConverter.cs
+dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/RegisteredPackageSourceSettings.cs
+%patch0 -p1
 
 #mozroots --import --sync 
 
