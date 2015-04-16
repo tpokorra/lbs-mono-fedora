@@ -12,7 +12,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-Name:           NUnit
+Name:           nunit
 Version:        2.6.3
 Release:        1
 Summary:        Unit test framework for CLI
