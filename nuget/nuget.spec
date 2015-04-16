@@ -25,7 +25,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        nuget_%{tarballversion}.orig.tar.bz2
 Source1:	nuget-core.pc
 Source2:	nuget.sh
-Source3:	build-minimal.sh
+Source3:	nuget-build-minimal.sh
 Patch0:		nuget-fix_xdt_hintpath
 BuildRequires:  mono-devel mono-winfx
 BuildArch:      noarch
