@@ -21,7 +21,7 @@ Source0:        http://download.mono-project.com/sources/mono/mono-%{version}~al
 # sn -k mono.snk
 # You should not regenerate this unless you have a really, really, really good reason.
 Source1:        mono.snk
-Patch0:		mono-4.0.0-fix-rpm-helpers.patch
+Patch0:         mono-4.0.0-fix-rpm-helpers.patch
 Patch1:         mono-4.0.0-ignore-reference-assemblies.patch
 
 BuildRequires:  bison

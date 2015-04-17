@@ -1,0 +1,26 @@
+diff -uNr mono-addins-1.0.old/configure.ac mono-addins-1.0/configure.ac
+--- mono-addins-1.0.old/configure.ac
++++ mono-addins-1.0/configure.ac
+@@ -33,8 +33,8 @@
+ 	AC_MSG_ERROR([No al tool found. You need to install either the mono or .Net SDK.])
+ fi
+ 
+-GACUTIL_FLAGS='/package mono-addins /root $(DESTDIR)$(libdir)'
+-GACUTIL_POLICY_FLAGS='/root $(DESTDIR)$(libdir)'
++GACUTIL_FLAGS='/package mono-addins /root $(DESTDIR)$(prefix)/lib'
++GACUTIL_POLICY_FLAGS='/root $(DESTDIR)$(prefix)/lib'
+ 
+ AC_SUBST(GACUTIL)
+ AC_SUBST(GACUTIL_FLAGS)
+diff -uNr mono-addins-1.0.old/mautil/Makefile.am mono-addins-1.0/mautil/Makefile.am
+--- mono-addins-1.0.old/mautil/Makefile.am
++++ mono-addins-1.0/mautil/Makefile.am
+@@ -8,7 +8,7 @@
+ include $(top_srcdir)/Makefile.include
+ include $(top_srcdir)/xbuild.include
+ 
+-programfilesdir = $(libdir)/mono/mono-addins
++programfilesdir = $(prefix)/lib/mono/mono-addins
+ programfiles_DATA = $(ASSEMBLY) $(build_datafiles)
+ 
+ man_MANS = mautil.1
