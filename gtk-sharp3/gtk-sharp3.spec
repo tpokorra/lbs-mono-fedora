@@ -1,8 +1,8 @@
 %global debug_package %{nil}
-Summary: gtk sharp for Mono
+Summary: gtk 3 sharp for Mono
 Name: gtk-sharp3
 Version: 2.99.3
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPL
 Group: Development/Languages
 Requires: mono-core
@@ -25,13 +25,16 @@ Source: gtk-sharp-%{version}.tar.xz
 
 Provides: libmono-profiler-gui-thread-check
 
+# Mono only available on these:
+ExclusiveArch: %{mono_arches}
+
 %description
 GTK 3 sharp for Mono
 
 %package devel
 License:      GPL
 Group:        Development/Libraries
-Summary:      development files for GTK Sharp for Mono
+Summary:      development files for GTK 3 Sharp for Mono
 Requires:     %{name} = %{version}
 %description devel
 Development files for GTK 3 Sharp for Mono
@@ -72,6 +75,9 @@ find %{buildroot} -iname "*.exe.so" -exec rm '{}' ';'
 %{_libdir}/*.a
 
 %changelog
+* Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-5
+- Add mono_arches
+
 * Thu Apr 16 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-4
 - Use mcs insted gmcs
 
