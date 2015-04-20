@@ -1,0 +1,56 @@
+diff -urN notify-sharp-0.4.0.old//configure.ac notify-sharp-0.4.0/configure.ac
+--- notify-sharp-0.4.0.old//configure.ac	2007-06-11 17:45:45.000000000 +0000
++++ notify-sharp-0.4.0/configure.ac	2011-07-07 05:08:01.751940314 +0000
+@@ -66,11 +66,11 @@
+ PKG_CHECK_MODULES(GTK_SHARP, gtk-sharp-2.0 >= $GTK_SHARP_REQ_VERSION)
+ AC_SUBST(GTK_SHARP_LIBS)
+ 
+-NDESK_DBUS_REQ_VERSION=0.4
+-NDESK_DBUS_GLIB_REQ_VERSION=0.3
+-PKG_CHECK_MODULES(NDESK_DBUS, ndesk-dbus-1.0 >= $NDESK_DBUS_REQ_VERSION \
+-                              ndesk-dbus-glib-1.0 >= $NDESK_DBUS_GLIB_REQ_VERSION)
+-AC_SUBST(NDESK_DBUS_LIBS)
++DBUS_SHARP_REQ_VERSION=0.7
++DBUS_SHARP_GLIB_REQ_VERSION=0.5
++PKG_CHECK_MODULES(DBUS_SHARP, dbus-sharp-1.0 >= $DBUS_SHARP_REQ_VERSION \
++                              dbus-sharp-glib-1.0 >= $DBUS_SHARP_GLIB_REQ_VERSION)
++AC_SUBST(DBUS_SHARP_LIBS)
+ 
+ required_assemblies="Mono.Posix"
+ 
+diff -urN notify-sharp-0.4.0.old//src/Global.cs notify-sharp-0.4.0/src/Global.cs
+--- notify-sharp-0.4.0.old//src/Global.cs	2007-06-11 17:45:45.000000000 +0000
++++ notify-sharp-0.4.0/src/Global.cs	2011-07-07 05:02:18.692940330 +0000
+@@ -24,7 +24,7 @@
+ using System.Reflection;
+ using System.Collections.Generic;
+ 
+-using NDesk.DBus;
++using DBus;
+ using org.freedesktop;
+ using org.freedesktop.DBus;
+ 
+diff -urN notify-sharp-0.4.0.old//src/Makefile.am notify-sharp-0.4.0/src/Makefile.am
+--- notify-sharp-0.4.0.old//src/Makefile.am	2007-06-11 17:45:45.000000000 +0000
++++ notify-sharp-0.4.0/src/Makefile.am	2011-07-07 05:03:05.599940327 +0000
+@@ -7,7 +7,7 @@
+ LIBFLAGS = \
+ 	-r:Mono.Posix \
+ 	$(GTK_SHARP_LIBS) \
+-	$(NDESK_DBUS_LIBS)
++	$(DBUS_SHARP_LIBS)
+ 
+ CSFILES = \
+ 	$(srcdir)/Global.cs \
+diff -urN notify-sharp-0.4.0.old//src/Notification.cs notify-sharp-0.4.0/src/Notification.cs
+--- notify-sharp-0.4.0.old//src/Notification.cs	2007-06-11 17:45:45.000000000 +0000
++++ notify-sharp-0.4.0/src/Notification.cs	2011-07-07 05:05:10.196940327 +0000
+@@ -28,7 +28,7 @@
+ using Gdk;
+ using Gtk;
+ 
+-using NDesk.DBus;
++using DBus;
+ using org.freedesktop;
+ using org.freedesktop.DBus;
+ 
