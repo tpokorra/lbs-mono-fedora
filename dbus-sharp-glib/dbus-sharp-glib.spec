@@ -1,9 +1,12 @@
 %define debug_package %{nil}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 
 Summary: C# bindings for D-Bus glib main loop integration
 Name: dbus-sharp-glib
 Version: 0.5.0
-Release: 11%{?dist}
+Release: 12%{?dist}
 URL: http://mono.github.com/dbus-sharp/
 Source0: https://github.com/downloads/mono/dbus-sharp/%{name}-%{version}.tar.gz
 License: MIT
@@ -50,6 +53,9 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 %{_libdir}/pkgconfig/dbus-sharp-glib-1.0.pc
 
 %changelog
+* Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.5.0-12
+- Define mono_arches for epel6
+
 * Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.5.0-11
 - Build for mono 4
 

@@ -1,9 +1,12 @@
 %define svndate 20100411
 %define debug_package %{nil}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 
 Name:           notify-sharp
 Version:        0.4.0
-Release:        0.23.%{svndate}svn%{?dist}
+Release:        0.25.%{svndate}svn%{?dist}
 Summary:        A C# implementation for Desktop Notifications
 
 Group:          System Environment/Libraries
@@ -37,7 +40,7 @@ a short period of time.
 %package devel
 Summary:        Development files for notify-sharp
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release} 
+Requires:       %{name} = %{version}-%{release}
 Requires:       pkgconfig
 
 %description devel
@@ -46,7 +49,7 @@ Development files for notify-sharp
 %package doc
 Summary:        Documentation files for notify-sharp
 Group:          Documentation
-Requires:       %{name} = %{version}-%{release} 
+Requires:       %{name} = %{version}-%{release}
 Requires:       monodoc
 
 %description doc
@@ -57,6 +60,7 @@ Documentation files for notify-sharp
 %patch0 -p1 -b .use_dbus_sharp
 
 %build
+sed -i "s#gmcs#mcs#g" configure.ac
 autoreconf --install
 %configure --libdir=%{_prefix}/lib
 make
@@ -87,6 +91,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/monodoc/sources/*
 
 %changelog
+* Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.4.0-0.25.20100411svn
+- Define mono_arches for epel6
+
+* Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.4.0-0.24.20100411svn
+- Build for mono 4
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.0-0.23.20100411svn
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
@@ -148,8 +158,8 @@ rm -rf $RPM_BUILD_ROOT
 * Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.0-0.6.20080912svn
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
-* Tue Oct 9 2008 Sindre Pedersen Bjørdal <sindrepb@fedoraproject.org - 0.4.0-0.5.20080912svn
-- Fix doc package dependencies. 
+* Thu Oct 9 2008 Sindre Pedersen Bjørdal <sindrepb@fedoraproject.org - 0.4.0-0.5.20080912svn
+- Fix doc package dependencies.
 
 * Wed Sep 24 2008 Sindre Pedersen Bjørdal <sindrepb@fedoraproject.org - 0.4.0-0.4.20080912svn
 - Replace with simple sed line in spec
