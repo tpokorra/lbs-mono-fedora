@@ -3,7 +3,7 @@
 Summary: C# bindings for D-Bus glib main loop integration
 Name: dbus-sharp-glib
 Version: 0.5.0
-Release: 10%{?dist}
+Release: 11%{?dist}
 URL: http://mono.github.com/dbus-sharp/
 Source0: https://github.com/downloads/mono/dbus-sharp/%{name}-%{version}.tar.gz
 License: MIT
@@ -29,6 +29,8 @@ Development files for D-Bus Sharp development.
 %setup -q
 
 %build
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
 export MONO_SHARED_DIR=%{_builddir}/%{?buildsubdir}
 %configure --libdir=%{_prefix}/lib
 make
@@ -48,6 +50,9 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 %{_libdir}/pkgconfig/dbus-sharp-glib-1.0.pc
 
 %changelog
+* Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.5.0-11
+- Build for mono 4
+
 * Tue Mar 24 2015 Than Ngo <than@redhat.com> - 0.5.0-10
 - use %%mono_arches
 
