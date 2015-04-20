@@ -1,6 +1,6 @@
 Name:           tomboy
 Version:        1.15.4
-Release:        7%{?dist}
+Release:        9%{?dist}
 Summary:        Note-taking application
 Group:          User Interface/Desktops
 License:        LGPLv2+ and GPLv2+ and MIT
@@ -17,6 +17,8 @@ BuildRequires:  gtk-sharp2-devel
 BuildRequires:  dbus-sharp-devel
 BuildRequires:  dbus-sharp-glib-devel
 BuildRequires:  mono-devel
+BuildRequires:  mono-addins-devel >= 0.3
+BuildRequires:  gnome-sharp-devel
 
 BuildRequires:  GConf2
 BuildRequires:  desktop-file-utils
@@ -193,6 +195,12 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 
 %changelog
+* Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.15.4-9
+- Add gnome-sharp-devel as buildrequires
+
+* Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.15.4-8
+- Add mono-addins-devel as buildrequires
+
 * Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.15.4-7
 - Rebuild for Mono 4
 
