@@ -16,6 +16,7 @@ BuildRequires:  gtkspell-devel
 BuildRequires:  gtk-sharp2-devel
 BuildRequires:  dbus-sharp-devel
 BuildRequires:  dbus-sharp-glib-devel
+BuildRequires:  mono-devel
 
 BuildRequires:  GConf2
 BuildRequires:  desktop-file-utils
@@ -62,6 +63,12 @@ done
 
 
 %build
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.in
+sed -i "s#Mono 2.0#Mono 4.5#g" configure
+sed -i "s#Mono 2.0#Mono 4.5#g" configure.in
+sed -i "s#mono/2.0#mono/4.5#g" configure
+sed -i "s#mono/2.0#mono/4.5#g" configure.in
 %configure --disable-scrollkeeper --disable-static
 mkdir bin
 make %{?_smp_mflags}
@@ -186,7 +193,7 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 
 %changelog
-* Fri Apr 17 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.15.4-7
+* Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.15.4-7
 - Rebuild for Mono 4
 
 * Thu Mar 26 2015 Richard Hughes <rhughes@redhat.com> - 1.15.4-6
