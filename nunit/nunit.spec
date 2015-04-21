@@ -1,33 +1,19 @@
-#
-# spec file for package nunit
-#
-# Copyright (c) 2014 Xamarin, Inc (http://www.xamarin.com)
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
-%define tarballname NUnit
+%global debug_package %{nil}
 
 Name:           nunit
 Version:        2.6.3
-Release:        1
+Release:        2%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT
-Group:          Development/Libraries/Other
+Group:          Development/Libraries
 Url:            http://www.nunit.org/
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        nunit_%{version}+dfsg.orig.tar.gz
-Source1:	nunit.pc
-Source2:	nunit-gui.sh
-Source3:	nunit-console.sh
+#Source0:        http://launchpad.net/nunitv2/trunk/%{version}/+download/NUnit-%{version}-src.zip
+Source1:        nunit.pc
+Source2:        nunit-gui.sh
+Source3:        nunit-console.sh
 BuildRequires:  mono-devel libgdiplus-devel
-BuildArch:      noarch
+ExclusiveArch:  %{mono_arches}
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -38,8 +24,17 @@ text or XML.
 NUnit targets the CLI (Common Language Infrastructure) and supports Mono and
 the Microsoft .NET Framework.
 
+%package        devel
+Summary:        Development files for NUnit
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+Requires:       pkgconfig
+ 
+%description devel
+Development files for %{name}.
+
 %prep
-%setup -qn %{tarballname}-%{version}
+%setup -qn NUnit-%{version}
 
 %build
 
@@ -64,9 +59,9 @@ xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe
 %install
 %{?env_options}
 %{__mkdir_p} %{buildroot}%{_prefix}/lib/nunit
-%{__mkdir_p} %{buildroot}%{_datadir}/pkgconfig
+%{__mkdir_p} %{buildroot}%{_libdir}/pkgconfig
 %{__mkdir_p} %{buildroot}%{_bindir}
-%{__install} -m0644 %{SOURCE1} %{buildroot}%{_datadir}/pkgconfig/
+%{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
 %{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`-2.6
 %{__install} -m0755 %{SOURCE3} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE3}`-2.6
 sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
@@ -75,19 +70,27 @@ sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
 find %{_builddir}/%{?buildsubdir} -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/" \;
 find %{_builddir}/%{?buildsubdir} -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/" \;
 for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
-	gacutil -i %{buildroot}%{_prefix}/lib/nunit/$i -package nunit -root %{buildroot}%{_prefix}/lib
-	rm -f %{buildroot}%{_prefix}/lib/nunit/$i
+    gacutil -i %{buildroot}%{_prefix}/lib/nunit/$i -package nunit -root %{buildroot}%{_prefix}/lib
+    rm -f %{buildroot}%{_prefix}/lib/nunit/$i
 done
 
 %files
 %defattr(-,root,root)
-%_prefix/lib/mono/gac/nunit*
-%_prefix/lib/mono/nunit
-%_prefix/lib/nunit
-%_datadir/pkgconfig/nunit.pc
-%_bindir/*
+%{_prefix}/lib/mono/gac/nunit*
+%{_prefix}/lib/mono/nunit
+%{_prefix}/lib/nunit
+%{_bindir}/*
+
+%files devel
+%defattr(-,root,root,-)
+%{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Tue Apr 21 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.6.3-2
+- Split nunit.pc into devel package
+- Use upstream zip source
+- Add ExclusiveArch
+
 * Thu Apr 16 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.3-1
 - build with Mono4
 

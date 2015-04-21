@@ -1,9 +1,8 @@
 prefix=/usr
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
-pkglibdir=${libdir}/cli
 
 Name: NUnit
 Description: Testing framework for CLI
 Version: 2.6.3
-Libs: -r:${pkglibdir}/nunit.core-2.6.3/nunit.core.dll -r:${pkglibdir}/nunit.util-2.6.3/nunit.util.dll -r:${pkglibdir}/nunit.framework-2.6.3/nunit.framework.dll -r:${pkglibdir}/nunit.core.interfaces-2.6.3/nunit.core.interfaces.dll -r:${pkglibdir}/nunit.mocks-2.6.3/nunit.mocks.dll -r:${pkglibdir}/nunit-console-runner-2.6.3/nunit-console-runner.dll
+Libs: -r:${libdir}/mono/nunit/nunit.core.dll -r:${libdir}/mono/nunit/nunit.util.dll -r:${libdir}/mono/nunit/nunit.framework.dll -r:${libdir}/mono/nunit/nunit.core.interfaces.dll -r:${libdir}/mono/nunit/nunit.mocks.dll -r:${libdir}/mono/nunit/nunit-console-runner.dll
