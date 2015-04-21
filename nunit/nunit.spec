@@ -1,4 +1,7 @@
 %global debug_package %{nil}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 
 Name:           nunit
 Version:        2.6.3
