@@ -1,0 +1,25 @@
+--- a/MonoDevelop.Database.Sql.MySql/Makefile.am
++++ b/MonoDevelop.Database.Sql.MySql/Makefile.am
+@@ -7,7 +7,7 @@
+ 	-r:$(top_builddir)/build/MonoDevelop.Database.Components.dll \
+ 	-r:$(top_builddir)/build/MonoDevelop.Database.Designer.dll \
+ 	-r:$(top_builddir)/build/MonoDevelop.Database.Sql.dll \
+-	-r:$(top_srcdir)/contrib/MySql/MySql.Data.dll \
++	-r:MySql.Data \
+ 	-r:Mono.Posix \
+ 	-r:System \
+ 	-r:System.Data
+
+
+--- a/MonoDevelop.Database.Sql.MySql/Makefile.in
++++ b/MonoDevelop.Database.Sql.MySql/Makefile.in
+@@ -254,7 +254,7 @@
+ 	-r:$(top_builddir)/build/MonoDevelop.Database.Components.dll \
+ 	-r:$(top_builddir)/build/MonoDevelop.Database.Designer.dll \
+ 	-r:$(top_builddir)/build/MonoDevelop.Database.Sql.dll \
+-	-r:$(top_srcdir)/contrib/MySql/MySql.Data.dll \
++	-r:MySql.Data \
+ 	-r:Mono.Posix \
+ 	-r:System \
+ 	-r:System.Data
+
