@@ -38,7 +38,7 @@ rm -rf %{buildroot}
 %{__mkdir_p} %{buildroot}/%{_prefix}/lib/mono/mysql-connector-net/
 %{__mkdir_p} %{buildroot}/%{_libdir}/pkgconfig
 
-install -p -m0755 %SOURCE1 %{buildroot}%{_libdir}/pkgconfig/
+install -p -m0644 %SOURCE1 %{buildroot}%{_libdir}/pkgconfig/
 %{__install} -m0755 Source/MySql.Data/bin/v4.5/Debug/MySql.Data.dll %{buildroot}%{_prefix}/lib/mono/mysql-connector-net/
 
 gacutil -i %{buildroot}%{_prefix}/lib/mono/mysql-connector-net/MySql.Data.dll -f -package mysql-connector-net -root %{buildroot}/%{_prefix}/lib
