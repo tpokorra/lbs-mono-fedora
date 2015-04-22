@@ -9,7 +9,7 @@
 
 Name:           mono
 Version:        4.0.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -23,6 +23,8 @@ Source0:        http://download.mono-project.com/sources/mono/mono-%{version}~al
 Source1:        mono.snk
 Patch0:         mono-4.0.0-fix-rpm-helpers.patch
 Patch1:         mono-4.0.0-ignore-reference-assemblies.patch
+# GetEncoding problem: see https://bugzilla.xamarin.com/show_bug.cgi?id=29294
+Patch2:         mono-4.0.0-getencoding.patch
 
 BuildRequires:  bison
 BuildRequires:  gcc-c++
@@ -289,6 +291,7 @@ Development file for monodoc
 %setup -q -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # Add undeclared Arg
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
@@ -786,6 +789,9 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
+* Wed Apr 22 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-8
+- workaround for problem with System.Text.Encoding GetEncoding, see Xamarin bug #29294
+
 * Thu Apr 16 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-7
 - no debuginfo package for Epel
 
