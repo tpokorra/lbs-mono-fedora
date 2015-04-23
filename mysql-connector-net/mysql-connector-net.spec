@@ -10,7 +10,7 @@
 
 Name:           mysql-connector-net
 Version:        6.9.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Mono ADO.NET driver for MySQL
 
 Group:          Development/Languages
@@ -52,7 +52,6 @@ xbuild /property:Configuration=Debug Source/MySql.Data/MySql.Data.csproj
 %{__mkdir_p} %{buildroot}/%{_monodir}/mysql-connector-net/
 
 install -p -m0644 %SOURCE1 %{buildroot}%{_libdir}/pkgconfig/
-install -p -m0644 %SOURCE1 %{buildroot}%{_prefix}/lib/pkgconfig/
 %{__install} -m0755 Source/MySql.Data/bin/v4.5/Debug/MySql.Data.dll %{buildroot}%{_monodir}/mysql-connector-net/
 
 gacutil -i %{buildroot}%{_monodir}/mysql-connector-net/MySql.Data.dll -f -package mysql-connector-net -root %{buildroot}/%{_prefix}/lib
@@ -67,5 +66,9 @@ gacutil -i %{buildroot}%{_monodir}/mysql-connector-net/MySql.Data.dll -f -packag
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Apr 22 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 6.9.6-2
+- Add pc file
+- Fix build for mono
+
 * Thu Nov 21 2013 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 6.9.6-1
 - Initial packaging

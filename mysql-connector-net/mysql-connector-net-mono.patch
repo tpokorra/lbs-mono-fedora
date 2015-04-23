@@ -1,5 +1,5 @@
---- mysql-connector-net-6.9.6/Source/MySql.Data/MySql.Data.csproj
-+++ mysql-connector-net-6.9.6-src/Source/MySql.Data/MySql.Data-mono.csproj
+--- a/Source/MySql.Data/MySql.Data.csproj
++++ b/Source/MySql.Data/MySql.Data.csproj
 @@ -1,64 +1,14 @@
 -<?xml version="1.0" encoding="utf-8"?>
 +﻿<?xml version="1.0" encoding="utf-8"?>

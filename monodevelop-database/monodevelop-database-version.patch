@@ -1,0 +1,274 @@
+--- a/MonoDevelop.Database.CodeGenerator/MonoDevelop.Database.CodeGenerator.addin.xml
++++ b/MonoDevelop.Database.CodeGenerator/MonoDevelop.Database.CodeGenerator.addin.xml
+@@ -15,11 +15,11 @@
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
+-		<Addin id="Ide" version="4.2.3"/>
+-		<Addin id="Database.Sql" version="4.2.3"/>
+-		<Addin id="Database.Components" version="4.2.3"/>
+-		<Addin id="Database.Query" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
++		<Addin id="Ide" version="5.7"/>
++		<Addin id="Database.Sql" version="5.7"/>
++		<Addin id="Database.Components" version="5.7"/>
++		<Addin id="Database.Query" version="5.7"/>
+ 	</Dependencies>
+ 
+ 	<Extension path = "/MonoDevelop/Ide/Commands">
+
+--- a/MonoDevelop.Database.Components/MonoDevelop.Database.Components.addin.xml
++++ b/MonoDevelop.Database.Components/MonoDevelop.Database.Components.addin.xml
+@@ -6,7 +6,7 @@
+ 	url		= "http://www.monodevelop.com"
+ 	description	= "Database Components Module"
+ 	category	= "Database"
+-	version		= "4.2.3">
++	version		= "5.7">
+     
+ 	<Runtime>
+ 		<Import assembly="MonoDevelop.Database.Components.dll"/>
+@@ -15,10 +15,10 @@
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
+-		<Addin id="Ide" version="4.2.3"/>
+-		<Addin id="Database.Sql" version="4.2.3"/>
+-		<Addin id="SourceEditor2" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
++		<Addin id="Ide" version="5.7"/>
++		<Addin id="Database.Sql" version="5.7"/>
++		<Addin id="SourceEditor2" version="5.7"/>
+ 	</Dependencies>
+ 
+ 	<ExtensionPoint path = "/MonoDevelop/Database/DataGrid/Renderers" name = "DataGrid renderers">
+
+--- a/MonoDevelop.Database.ConnectionManager/MonoDevelop.Database.ConnectionManager.addin.xml
++++ b/MonoDevelop.Database.ConnectionManager/MonoDevelop.Database.ConnectionManager.addin.xml
+@@ -6,7 +6,7 @@
+ 	url		= "http://www.monodevelop.com"
+ 	description	= "Database ConnectionManager Module"
+ 	category    = "Database"
+-	version		= "4.2.3">
++	version		= "5.7">
+     
+ 	<Runtime>
+ 		<Import assembly="MonoDevelop.Database.ConnectionManager.dll"/>
+@@ -15,12 +15,12 @@
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
+-		<Addin id="Ide" version="4.2.3"/>
+-		<Addin id="Database.Sql" version="4.2.3"/>
+-		<Addin id="Database.Components" version="4.2.3"/>
+-		<Addin id="Database.Query" version="4.2.3"/>
+-		<Addin id="Database.Designer" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
++		<Addin id="Ide" version="5.7"/>
++		<Addin id="Database.Sql" version="5.7"/>
++		<Addin id="Database.Components" version="5.7"/>
++		<Addin id="Database.Query" version="5.7"/>
++		<Addin id="Database.Designer" version="5.7"/>
+ 	</Dependencies>
+ 
+ 	<Extension path = "/MonoDevelop/Ide/Pads">
+
+--- a/MonoDevelop.Database.Designer/MonoDevelop.Database.Designer.addin.xml
++++ b/MonoDevelop.Database.Designer/MonoDevelop.Database.Designer.addin.xml
+@@ -6,7 +6,7 @@
+ 	url		= "http://www.monodevelop.com"
+ 	description	= "Database Designer Module"
+ 	category    = "Database"
+-	version		= "4.2.3">
++	version		= "5.7">
+     
+ 	<Runtime>
+ 		<Import assembly="MonoDevelop.Database.Designer.dll"/>
+@@ -15,9 +15,9 @@
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
+-		<Addin id="Ide" version="4.2.3"/>
+-		<Addin id="Database.Sql" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
++		<Addin id="Ide" version="5.7"/>
++		<Addin id="Database.Sql" version="5.7"/>
+ 	</Dependencies>
+ 
+ </Addin>
+
+--- a/MonoDevelop.Database.Query/MonoDevelop.Database.Query.addin.xml
++++ b/MonoDevelop.Database.Query/MonoDevelop.Database.Query.addin.xml
+@@ -6,7 +6,7 @@
+ 	url		= "http://www.monodevelop.com"
+ 	description	= "Database Query Module"
+ 	category    = "Database"
+-	version		= "4.2.3">
++	version		= "5.7">
+     
+ 	<Runtime>
+ 		<Import assembly="MonoDevelop.Database.Query.dll"/>
+@@ -15,10 +15,10 @@
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
+-		<Addin id="Ide" version="4.2.3"/>
+-		<Addin id="Database.Sql" version="4.2.3"/>
+-		<Addin id="Database.Components" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
++		<Addin id="Ide" version="5.7"/>
++		<Addin id="Database.Sql" version="5.7"/>
++		<Addin id="Database.Components" version="5.7"/>
+ 	</Dependencies>
+ 
+ 	<ExtensionPoint path = "/MonoDevelop/Database/ToolBar/SqlQueryView">
+
+--- a/MonoDevelop.Database.Sql/MonoDevelop.Database.Sql.addin.xml
++++ b/MonoDevelop.Database.Sql/MonoDevelop.Database.Sql.addin.xml
+@@ -6,14 +6,14 @@
+ 	url		= "http://www.monodevelop.com"
+ 	description	= "Database Module"
+ 	category	= "Database"
+-	version		= "4.2.3">
++	version		= "5.7">
+     
+ 	<Runtime>
+ 		<Import assembly="MonoDevelop.Database.Sql.dll"/>
+ 	</Runtime>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
+ 	</Dependencies>
+ 
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+
+--- a/MonoDevelop.Database.Sql.MySql/MonoDevelop.Database.Sql.MySql.addin.xml
++++ b/MonoDevelop.Database.Sql.MySql/MonoDevelop.Database.Sql.MySql.addin.xml
+@@ -6,7 +6,7 @@
+ 	url		= "http://www.monodevelop.com"
+ 	description	= "Database Module"
+ 	category    = "Database"
+-	version		= "4.2.3">
++	version		= "5.7">
+     
+ 	<Runtime>
+ 		<Import assembly="MonoDevelop.Database.Sql.MySql.dll"/>
+@@ -15,12 +15,12 @@
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
+-		<Addin id="Ide" version="4.2.3"/>
+-		<Addin id="Database.Sql" version="4.2.3"/>
+-		<Addin id="Database.Components" version="4.2.3"/>
+-		<Addin id="Database.Designer" version="4.2.3"/>
+-		<Addin id="SourceEditor2" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
++		<Addin id="Ide" version="5.7"/>
++		<Addin id="Database.Sql" version="5.7"/>
++		<Addin id="Database.Components" version="5.7"/>
++		<Addin id="Database.Designer" version="5.7"/>
++		<Addin id="SourceEditor2" version="5.7"/>
+ 	</Dependencies>
+ 
+ 	<Extension path = "/MonoDevelop/Database/Sql">
+
+--- a/MonoDevelop.Database.Sql.Npgsql/MonoDevelop.Database.Sql.Npgsql.addin.xml
++++ b/MonoDevelop.Database.Sql.Npgsql/MonoDevelop.Database.Sql.Npgsql.addin.xml
+@@ -6,7 +6,7 @@
+ 	url		= "http://www.monodevelop.com"
+ 	description	= "Database Module"
+ 	category    = "Database"
+-	version		= "4.2.3">
++	version		= "5.7">
+     
+ 	<Runtime>
+ 		<Import assembly="MonoDevelop.Database.Sql.Npgsql.dll"/>
+@@ -15,12 +15,12 @@
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
+-		<Addin id="Ide" version="4.2.3"/>
+-		<Addin id="Database.Sql" version="4.2.3"/>
+-		<Addin id="Database.Components" version="4.2.3"/>
+-		<Addin id="Database.Designer" version="4.2.3"/>
+-		<Addin id="SourceEditor2" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
++		<Addin id="Ide" version="5.7"/>
++		<Addin id="Database.Sql" version="5.7"/>
++		<Addin id="Database.Components" version="5.7"/>
++		<Addin id="Database.Designer" version="5.7"/>
++		<Addin id="SourceEditor2" version="5.7"/>
+ 	</Dependencies>
+ 
+ 	<Extension path = "/MonoDevelop/Database/Sql">
+
+--- a/MonoDevelop.Database.Sql.SqlServer/MonoDevelop.Database.Sql.SqlServer.addin.xml
++++ b/MonoDevelop.Database.Sql.SqlServer/MonoDevelop.Database.Sql.SqlServer.addin.xml
+@@ -6,7 +6,7 @@
+ 	url		= "http://www.monodevelop.com"
+ 	description	= "Database Module"
+ 	category    = "Database"
+-	version		= "4.2.3">
++	version		= "5.7">
+     
+ 	<Runtime>
+ 		<Import assembly="MonoDevelop.Database.Sql.SqlServer.dll"/>
+@@ -15,12 +15,12 @@
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
+-		<Addin id="Ide" version="4.2.3"/>
+-		<Addin id="Database.Sql" version="4.2.3"/>
+-		<Addin id="Database.Components" version="4.2.3"/>
+-		<Addin id="Database.Designer" version="4.2.3"/>
+-		<Addin id="SourceEditor2" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
++		<Addin id="Ide" version="5.7"/>
++		<Addin id="Database.Sql" version="5.7"/>
++		<Addin id="Database.Components" version="5.7"/>
++		<Addin id="Database.Designer" version="5.7"/>
++		<Addin id="SourceEditor2" version="5.7"/>
+ 	</Dependencies>
+ 
+ 	<Extension path = "/MonoDevelop/Database/Sql">
+
+--- a/MonoDevelop.Database.Sql.Sqlite/MonoDevelop.Database.Sql.Sqlite.addin.xml
++++ b/MonoDevelop.Database.Sql.Sqlite/MonoDevelop.Database.Sql.Sqlite.addin.xml
+@@ -6,7 +6,7 @@
+ 	url		= "http://www.monodevelop.com"
+ 	description	= "Database Module"
+ 	category    = "Database"
+-	version		= "4.2.3">
++	version		= "5.7">
+     
+ 	<Runtime>
+ 		<Import assembly="MonoDevelop.Database.Sql.Sqlite.dll"/>
+@@ -15,12 +15,12 @@
+   	<Localizer type="Gettext" catalog="monodevelop-database"/>
+ 
+ 	<Dependencies>
+-		<Addin id="Core" version="4.2.3"/>
+-		<Addin id="Ide" version="4.2.3"/>
+-		<Addin id="Database.Sql" version="4.2.3"/>
+-		<Addin id="Database.Components" version="4.2.3"/>
+-		<Addin id="Database.Designer" version="4.2.3"/>
+-		<Addin id="SourceEditor2" version="4.2.3"/>
++		<Addin id="Core" version="5.7"/>
++		<Addin id="Ide" version="5.7"/>
++		<Addin id="Database.Sql" version="5.7"/>
++		<Addin id="Database.Components" version="5.7"/>
++		<Addin id="Database.Designer" version="5.7"/>
++		<Addin id="SourceEditor2" version="5.7"/>
+ 	</Dependencies>
+ 
+ 	<Extension path = "/MonoDevelop/Database/Sql">
+
