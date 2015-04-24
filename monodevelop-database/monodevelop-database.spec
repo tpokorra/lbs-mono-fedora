@@ -7,11 +7,14 @@
 Summary:        MonoDevelop Database Add-in
 Name:           monodevelop-database
 Version:        5.7
-Release:        2%{?dist}
+Release:        4%{?dist}
 License:        MIT
 Group:          Development/Tools
 Source:         http://download.mono-project.com/sources/%{name}/%{name}-%{version}.0.660.tar.bz2
-#Patch0:         monodevelop-database-unbundle-mysql-data.patch
+Patch0:         monodevelop-database-version.patch
+# https://github.com/mono/monodevelop/pull/896
+Patch1:         monodevelop-database-fix-SqlQueryView.patch
+Patch2:         monodevelop-database-unbundle-mysql-data.patch
 URL:            http://www.monodevelop.com
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  monodevelop-devel >= 5.0
@@ -20,9 +23,8 @@ BuildRequires:  intltool
 BuildRequires:  gtk-sharp2-devel
 BuildRequires:  mono-data-sqlite
 BuildRequires:  mysql-connector-net-devel
-#BuildRequires:  mono-data-postgresql
+BuildRequires:  npgsql-devel
 Requires:       monodevelop >= 5.0
-Requires:       mono(MySql.Data) = 6.9.6.0
 ExclusiveArch:  %{mono_arches}
 
 #Package Devel
@@ -52,8 +54,12 @@ sed -i "s#Version 2#Version 4#g" configure.in
 # Delete shipped *.dll files
 #find -name '*.dll' -exec rm -f {} \;
 
+%patch0 -p1
+%patch1 -p1
+
 # Unbundle MySql.Data.dll
-#%patch0 -p1
+ln -sf %{_prefix}/lib/mono/mysql-connector-net/MySql.Data.dll contrib/MySql/MySql.Data.dll
+#%patch2 -p1
 
 %build
 %configure
@@ -62,6 +68,7 @@ make
 %install
 make install DESTDIR=%{buildroot}
 rm %{buildroot}%{_prefix}/lib/monodevelop/AddIns/MonoDevelop.Database/MySql.Data.dll
+
 find %{buildroot} -type f -o -type l|sed '
 s:'"%{buildroot}"'::
 s:\(.*/lib/monodevelop/AddIns/MonoDevelop.Database/locale/\)\([^/_]\+\)\(.*\.mo$\):%lang(\2) \1\2\3:
@@ -78,6 +85,13 @@ s:%lang(C) ::
 %{_prefix}/lib/pkgconfig/monodevelop-database.pc
 
 %changelog
+* Thu Apr 23 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.7-4
+- Fix bug in SqlQueryView. https://github.com/mono/monodevelop/pull/896
+
+* Thu Apr 23 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.7-3
+- Replace contrib/MySql.Data.dll with symlink to system dll
+- Add npgsql-devel as buildrequires
+
 * Wed Apr 22 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.7-2
 - Build for Mono 4
 - Do not ship bundle MySql.Data.dll depend on mysql-connector-net
