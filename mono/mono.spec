@@ -21,10 +21,9 @@ Source0:        http://download.mono-project.com/sources/mono/mono-%{version}.ta
 # sn -k mono.snk
 # You should not regenerate this unless you have a really, really, really good reason.
 Source1:        mono.snk
-Patch0:         mono-4.0.0-fix-rpm-helpers.patch
-Patch1:         mono-4.0.0-ignore-reference-assemblies.patch
+Patch0:         mono-4.0.0-ignore-reference-assemblies.patch
 # GetEncoding problem: see https://bugzilla.xamarin.com/show_bug.cgi?id=29294
-Patch2:         mono-4.0.0-getencoding.patch
+Patch1:         mono-4.0.0-getencoding.patch
 
 BuildRequires:  bison
 BuildRequires:  gcc-c++
@@ -291,7 +290,6 @@ Development file for monodoc
 %setup -q -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 # Add undeclared Arg
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
