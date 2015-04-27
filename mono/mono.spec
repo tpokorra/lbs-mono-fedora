@@ -8,8 +8,8 @@
 %endif
 
 Name:           mono
-Version:        4.0.0
-Release:        8%{?dist}
+Version:        4.0.1
+Release:        1%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -789,6 +789,9 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
+* Mon Apr 27 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.1-1
+- upgrading to Mono 4.0.1
+
 * Wed Apr 22 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-8
 - workaround for problem with System.Text.Encoding GetEncoding, see Xamarin bug #29294
 
