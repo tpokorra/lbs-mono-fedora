@@ -32,7 +32,7 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |gbrainy                        |Fedora package work without changes if Copr is configured|
 |gdata-sharp                    |Work from Copr|
 |gecko-sharp2                   | |
-|gio-sharp                      | |
+|gio-sharp                      |Need move to 4.5 profile|
 |giver                          |Nedd fix avahi-sharp |
 |gkeyfile-sharp                 | |
 |gmime                          | |
@@ -45,7 +45,7 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |gnome-subtitles                |Fedora package work without changes if Copr is configured|
 |graphviz                       | |
 |gsf-sharp                      | |
-|gtk-sharp-beans                |Need move to 4.5 profile|
+|gtk-sharp-beans                |Need move to 4.5 profile, requiere gio-sharp|
 |gtk-sharp2                     |Work from Copr|
 |gtksourceview-sharp            | |
 |gudev-sharp                    |Work from Copr|
