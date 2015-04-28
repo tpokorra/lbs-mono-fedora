@@ -1,3 +1,6 @@
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 %define tagname 2.14.0
 %define relvers 0
 %define tsuffix ga2ff3c5
@@ -7,7 +10,7 @@
 
 Name:           gtk-sharp-beans
 Version:        %{tagname}
-Release:        14%{?dist}
+Release:        15%{?dist}
 Summary:        C# bindings for GTK+ API not included in GTK#
 
 Group:          Development/Libraries
@@ -41,6 +44,7 @@ Development files for gtk-sharp-beans
 
 %prep
 %setup -q -n mono-%{name}-%{dsuffix}
+sed -i "s#gmcs#mcs#g" configure.ac
 
 %build
 NOCONFIGURE=true ./autogen.sh
@@ -60,6 +64,10 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/%{name}-2.0.pc
 
 %changelog
+* Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.14.0-15
+- Build with mono 4
+- Declare mono_arches for EPEL6
+
 * Tue Mar 24 2015 Than Ngo <than@redhat.com> - 2.14.0-14
 - use %%mono_arches
 

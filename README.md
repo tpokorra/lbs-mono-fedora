@@ -20,7 +20,7 @@ Package                        |Run with Mono 4
 OpenTK                         |Need move to 4.5 profile
 RepetierHost                   |Need move to 4.5 profile
 avahi-sharp                    |
-banshee                        |Need gtk-sharp-beans
+banshee                        |Need fix version requires of mono(gkeyfile-sharp)
 banshee-community-extensions   |Need fix banshe
 bareftp                        |Need fix version requires of mono(Gnome.Keyring)
 bless                          |Need move to 4.5 profile
@@ -45,7 +45,7 @@ gnome-sharp                    |Work from Copr
 gnome-subtitles                |Fedora package work without changes if Copr is configured
 graphviz                       |
 gsf-sharp                      |
-gtk-sharp-beans                |Need move to 4.5 profile
+gtk-sharp-beans                |Work from Copr
 gtk-sharp2                     |Work from Copr
 gtksourceview-sharp            |
 gudev-sharp                    |Work from Copr
