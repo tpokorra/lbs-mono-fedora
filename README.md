@@ -18,7 +18,7 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |OpenTK                         |Need move to 4.5 profile|
 |RepetierHost                   |Need move to 4.5 profile|
 |avahi-sharp                    | |
-|banshee                        |Need fix version requires of mono(Google.GData.Client) and mono(Mono.Zeroconf)|
+|banshee                        |Need fix version requires of mono(gudev-sharp)|
 |banshee-community-extensions   |Need fix banshe|
 |bareftp                        |Need fix version requires of mono(Gnome.Keyring)|
 |bless                          |Need move to 4.5 profile|
@@ -60,7 +60,7 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |mono-debugger                  | |
 |mono-reflection                | |
 |mono-tools                     | |
-|mono-zeroconf                  |Need move to 4.5 profile|
+|mono-zeroconf                  |Work from Copr|
 |monobristol                    | |
 |monodevelop                    |Work from Copr except EPEL6|
 |monodevelop-debugger-gdb       | |
