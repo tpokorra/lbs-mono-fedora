@@ -20,7 +20,7 @@ Package                        |Run with Mono 4
 OpenTK                         |Need move to 4.5 profile
 RepetierHost                   |Need move to 4.5 profile
 avahi-sharp                    |
-banshee                        |Need fix version requires of mono(gkeyfile-sharp)
+banshee                        |Need move to 4.5 profile
 banshee-community-extensions   |Need fix banshe
 bareftp                        |Need fix version requires of mono(Gnome.Keyring)
 bless                          |Need move to 4.5 profile
@@ -34,7 +34,7 @@ gdata-sharp                    |Work from Copr
 gecko-sharp2                   |
 gio-sharp                      |Work from Copr
 giver                          |Nedd fix avahi-sharp
-gkeyfile-sharp                 |Need move to 4.5 profile
+gkeyfile-sharp                 |Work from Copr
 gmime                          |
 gnome-desktop-sharp            |Work from Copr
 gnome-do                       |Need fix version requires of mono(NDesk.DBus.GLib)
