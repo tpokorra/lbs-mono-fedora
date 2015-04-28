@@ -1,9 +1,12 @@
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 %global         debug_package %{nil}
 %global         upstream_name libgoogle-data-mono
 
 Name:           gdata-sharp
 Version:        1.4.0.2
-Release:        14%{?dist}
+Release:        15%{?dist}
 Summary:        .NET library for the Google Data API
 
 Group:          System Environment/Libraries
@@ -57,6 +60,7 @@ developing applications that use %{name}.
 %prep
 %setup -q -n %{upstream_name}-%{version}
 %patch0 -p1 -b .pkgconfig
+sed -i "s#gmcs#mcs#g" Makefile
 
 %build
 make %{?_smp_mflags} PREFIX=%{_prefix}
@@ -84,6 +88,10 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 
 
 %changelog
+* Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.4.0.2-15
+- Build with mono 4
+- Declare mono_arches for EPEL6
+
 * Tue Mar 24 2015 Than Ngo <than@redhat.com> - 1.4.0.2-14
 - use %%mono_arches
 
