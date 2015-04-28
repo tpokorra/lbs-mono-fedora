@@ -1,20 +1,25 @@
-%global debug_package %{nil} 
+%global debug_package %{nil}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 Name:		poppler-sharp
 Version:	0.0.3
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	C sharp Bindings for Poppler
 Summary(es):	Enlaces C# para Poppler
 Group:		Development/Libraries
 License:	GPLv2+
 URL:		http://www.github.com/jacintos/poppler-sharp
 Source0:	http://github.com/downloads/jacintos/%{name}/%{name}-%{version}.tar.gz
-BuildArch:	noarch
 BuildRequires:	mono-devel
 BuildRequires:	gtk-sharp2-gapi
 BuildRequires:	gtk-sharp2-devel
 BuildRequires:	poppler-glib-devel
 
 Requires:	poppler
+
+# Mono only available on these:
+ExclusiveArch: %mono_arches
 
 %description
 Generates managed bindings for Poppler using the GAPI tools
@@ -37,9 +42,17 @@ Paquete de desarrollo para %{name}
 
 %prep
 %setup -q
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
+sed -i "s#gmcs#mcs#g" Makefile.am
+sed -i "s#gmcs#mcs#g" Makefile.in
+sed -i "s#mono/2.0#mono/4.5#g" configure
+sed -i "s#mono/2.0#mono/4.5#g" configure.ac
 
 %build
 %configure
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
 make %{?_smp_mflags}
 
 %install
@@ -56,6 +69,11 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.0.3-7
+- Build with mono 4
+- Declare mono_arches for EPEL6
+- Use mono_arches
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.0.3-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
@@ -80,11 +98,11 @@ make install DESTDIR=$RPM_BUILD_ROOT
 * Fri Aug 26 2011 Claudio Rodrigo Pereyra Diaz <claudiorodrigo@pereyradiaz.com.ar> 0.0.2-1
 - Update to upstream version
 
-* Thu Mar 22 2011 Claudio Rodrigo Pereyra Diaz <claudiorodrigo@pereyradiaz.com.ar> 0.0.1-3
+* Tue Mar 22 2011 Claudio Rodrigo Pereyra Diaz <claudiorodrigo@pereyradiaz.com.ar> 0.0.1-3
 - Translate spec summary and description to spanish
 - Add poppler-glib-devel dependency
 
-* Wed Oct 04 2010 Claudio Rodrigo Pereyra Diaz <claudiorodrigo@pereyradiaz.com.ar> 0.0.1-2
+* Mon Oct 04 2010 Claudio Rodrigo Pereyra Diaz <claudiorodrigo@pereyradiaz.com.ar> 0.0.1-2
 - Patch .pc package for work correctly on x86_64
 - Correct license according to http://github.com/jacintos/poppler-sharp
 
