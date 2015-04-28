@@ -1,3 +1,6 @@
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 %define tagname 0.3
 %define relvers 0
 %define tsuffix g8ed9274
@@ -7,7 +10,7 @@
 
 Name:           gio-sharp
 Version:        %{tagname}
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        C# bindings for gio
 
 Group:          Development/Libraries
@@ -42,6 +45,7 @@ Development files for gio-sharp
 
 %prep
 %setup -q -n mono-%{name}-%{dsuffix}
+sed -i "s#gmcs#mcs#g" configure.ac.in
 
 %build
 NOCONFIGURE=true ./autogen-2.22.sh
@@ -63,6 +67,10 @@ chmod 644 `find $RPM_BUILD_ROOT%{_prefix}/lib -name '*.dll.config'`
 %{_datadir}/gapi-2.0/gio-api.xml
 
 %changelog
+* Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.3-12
+- Build with mono 4
+- Declare mono_arches for EPEL6
+
 * Tue Mar 24 2015 Than Ngo <than@redhat.com> - 0.3-11
 - use %%mono_arches
 
