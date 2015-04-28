@@ -53,7 +53,7 @@ hyena                          |Work from Copr
 keepass                        |Work from Copr for Fedora, EPEL need fixes
 kimono                         |
 libappindicator                |
-libgpod                        |
+libgpod                        |Work from Copr
 log4net                        |Need move to 4.5 profile
 mono-addins                    |Work from Copr
 mono-basic                     |
