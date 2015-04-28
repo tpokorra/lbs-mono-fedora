@@ -28,7 +28,7 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |dbus-sharp-glib                |Work from Copr|
 |docky                          |Need fix requires of ndesk-dbus-glib|
 |gbrainy                        |Fedora package work without changes|
-|gdata-sharp                    |Need move to 4.5 profile|
+|gdata-sharp                    |Work from Copr|
 |gecko-sharp2                   | |
 |gio-sharp                      | |
 |giver                          |Nedd fix avahi-sharp |
