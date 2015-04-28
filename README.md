@@ -34,7 +34,7 @@ gdata-sharp                    |Work from Copr
 gecko-sharp2                   |
 gio-sharp                      |Work from Copr
 giver                          |Nedd fix avahi-sharp
-gkeyfile-sharp                 |
+gkeyfile-sharp                 |Need move to 4.5 profile
 gmime                          |
 gnome-desktop-sharp            |Work from Copr
 gnome-do                       |Need fix version requires of mono(NDesk.DBus.GLib)
