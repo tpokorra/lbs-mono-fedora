@@ -1,7 +1,10 @@
 %global debug_package %{nil}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 Name:		hyena
 Version:	0.5
-Release:	9%{?dist}
+Release:	10%{?dist}
 Summary:	A library of GUI and non-GUI C sharp code
 Summary(es):	Una librería para aplicaciones escritas en C#
 Group:		Development/Libraries
@@ -42,11 +45,14 @@ Development package for %{name}
 Paquete de desarrollo para %{name}
 
 %prep
-%setup -q 
+%setup -q
 %patch0 -p1
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
+sed -i "s#mono/2.0#mono/4.5#g" configure
 
 %build
-%configure 
+%configure
 make %{?_smp_mflags}
 
 %install
@@ -62,6 +68,10 @@ chmod a-x %{buildroot}%{_libdir}/hyena/*.config
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.5-10
+- Build with mono 4
+- Declare mono_arches for EPEL6
+
 * Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.5-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 

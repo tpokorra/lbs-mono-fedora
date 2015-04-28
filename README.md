@@ -49,7 +49,7 @@ gtk-sharp-beans                |Work from Copr
 gtk-sharp2                     |Work from Copr
 gtksourceview-sharp            |
 gudev-sharp                    |Work from Copr
-hyena                          |Need move to 4.5 profile
+hyena                          |Work from Copr
 keepass                        |Work from Copr for Fedora, EPEL need fixes
 kimono                         |
 libappindicator                |
