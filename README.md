@@ -4,13 +4,15 @@ Mono 4 packages for Fedora
 See https://copr.fedoraproject.org/coprs/tpokorra/mono
 
 # New packages
-* gtk-sharp3
-* monodevelop-database
-* mysql-connector-net
-* notify-sharp3
-* npgsql
-* nuget
-* nunit
+|Package                        |Notes              |
+|-------------------------------|-------------------|
+|gtk-sharp3                     |Epel6 not ship gtk3|
+|monodevelop-database           |Epel6 not build for mysql-connection-net dependency|
+|mysql-connector-net            |Epel6 fail build when try apply patch0|
+|notify-sharp3                  |Epel6 not ship gtk3|
+|npgsql                         | |
+|nuget                          | |
+|nunit                          | |
 
 # Dependecy list
 |Package                        |Run with Mono 4|
@@ -40,13 +42,13 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |gnome-keyring-sharp            | |
 |gnome-rdp                      |Need fix version requires of mono(Gnome.Keyring)|
 |gnome-sharp                    |Work from Copr|
-|gnome-subtitles                |Fedora package work without changes|
+|gnome-subtitles                |Fedora package work without changes if Copr is configured|
 |graphviz                       | |
 |gsf-sharp                      | |
 |gtk-sharp-beans                | |
 |gtk-sharp2                     |Work from Copr|
 |gtksourceview-sharp            | |
-|gudev-sharp                    | |
+|gudev-sharp                    |Need move to 4.5 profile|
 |hyena                          |Need move to 4.5 profile|
 |keepass                        |Work from Copr for Fedora, EPEL need fixes|
 |kimono                         | |
@@ -62,7 +64,7 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |mono-tools                     | |
 |mono-zeroconf                  |Work from Copr|
 |monobristol                    | |
-|monodevelop                    |Work from Copr except EPEL6|
+|monodevelop                    |Work from Copr|
 |monodevelop-debugger-gdb       | |
 |monosim                        | |
 |nant                           | |
@@ -71,13 +73,13 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |nini                           |Need move to 4.5 profile|
 |notify-sharp                   |Work from Copr, update |
 |pdfmod                         |Need poppler-sharp|
-|pinta                          |Fedora package work without changes|
+|pinta                          |Fedora package work without changes if Copr is configured|
 |poppler-sharp                  |Need move to 4.5 profile|
 |python-elasticsearch           | |
 |qyoto                          |Need move to 4.5 profile|
 |rescene                        | |
 |shogun                         | |
-|sparkleshare                   |Need fix version requires of mono(webkit-sharp)|
+|sparkleshare                   |Fedora package work without changes if Copr is configured|
 |syntastic                      | |
 |taglib-sharp                   | |
 |themonospot-base               | |
@@ -89,5 +91,5 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |thrift                         | |
 |tomboy                         |Work from Copr|
 |uwsgi                          | |
-|webkit-sharp                   |Need move to 4.5 profile|
+|webkit-sharp                   |Work from Copr|
 |xsp                            |Need move to 4.5 profile|

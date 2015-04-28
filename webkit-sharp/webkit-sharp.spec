@@ -1,6 +1,10 @@
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
+
 Name:		webkit-sharp
 Version:	0.3
-Release:	14%{?dist}
+Release:	15%{?dist}
 Summary:	.NET bindings for WebKit
 
 License:	MIT
@@ -64,6 +68,10 @@ make DESTDIR=%{buildroot} install
 
 
 %changelog
+* Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.3-15
+- Define %%mono_arches for epel6
+- Rebuild for mono 4
+
 * Tue Mar 24 2015 Than Ngo <than@redhat.com> - 0.3-14
 - use %%mono_arches
 
@@ -76,7 +84,7 @@ make DESTDIR=%{buildroot} install
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
-* Mon Mar 27 2013 Nikos Roussos <comzeradd@fedoraproject.org> 0.3-10
+* Wed Mar 27 2013 Nikos Roussos <comzeradd@fedoraproject.org> 0.3-10
 - Clean up package for F19
 
 * Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3-9
