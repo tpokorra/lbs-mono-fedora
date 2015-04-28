@@ -81,7 +81,7 @@ rescene                        |
 shogun                         |
 sparkleshare                   |Fedora package work without changes if Copr is configured
 syntastic                      |
-taglib-sharp                   |
+taglib-sharp                   |Work from Copr
 themonospot-base               |
 themonospot-console            |
 themonospot-gui-gtk            |

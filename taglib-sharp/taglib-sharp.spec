@@ -1,8 +1,11 @@
 %define debug_package %{nil}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 
 Name:    taglib-sharp
 Version: 2.0.3.7
-Release: 12%{?dist}
+Release: 13%{?dist}
 Summary: Provides tag reading and writing for Banshee and other Mono apps
 
 Group:   System Environment/Libraries
@@ -37,6 +40,8 @@ Development files for taglib-sharp.
 
 %prep
 %setup -q
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
 
 %build
 # Docs are broken.
@@ -61,6 +66,10 @@ mv %{buildroot}%{_datadir}/pkgconfig/*.pc %{buildroot}%{_libdir}/pkgconfig/
 %{_libdir}/pkgconfig/taglib-sharp.pc
 
 %changelog
+* Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.0.3.7-13
+- Build with mono 4
+- Declare mono_arches for EPEL6
+
 * Thu Nov 27 2014 Dan Horák <dan[at]danny.cz> - 2.0.3.7-12
 - switch to mono_arches
 
