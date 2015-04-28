@@ -1,3 +1,6 @@
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 %define tagname GUDEV_SHARP_0_1
 %define relvers 0
 %define tsuffix g2c53e2f
@@ -7,7 +10,7 @@
 
 Name:           gudev-sharp
 Version:        0.1
-Release:        15%{?dist}
+Release:        16%{?dist}
 Summary:        C# bindings for gudev
 
 Group:          Development/Libraries
@@ -31,7 +34,7 @@ ExclusiveArch: %mono_arches
 
 %package devel
 Summary:        Development files for gudev-sharp
-Requires:	pkgconfig
+Requires:       pkgconfig
 Requires:       %{name} = %{version}-%{release}
 
 %description
@@ -42,6 +45,7 @@ Development files for gudev-sharp
 
 %prep
 %setup -q -n mono-%{name}-%{dsuffix}
+sed -i "s#gmcs#mcs#g" configure.in
 
 %build
 sed -i 's|^\./configure.*||' autogen.sh # Remove the configure step, we'll do it manually
@@ -68,6 +72,10 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 %{_libdir}/pkgconfig/%{name}-1.0.pc
 
 %changelog
+* Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 0.1-16
+- Define %%mono_arches for epel6
+- Rebuild for mono 4
+
 * Tue Mar 24 2015 Than Ngo <than@redhat.com> - 0.1-15
 - use %%mono_arches 
 

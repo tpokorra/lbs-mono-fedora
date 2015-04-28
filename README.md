@@ -20,7 +20,7 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |OpenTK                         |Need move to 4.5 profile|
 |RepetierHost                   |Need move to 4.5 profile|
 |avahi-sharp                    | |
-|banshee                        |Need fix version requires of mono(gudev-sharp)|
+|banshee                        |Need gtk-sharp-beans|
 |banshee-community-extensions   |Need fix banshe|
 |bareftp                        |Need fix version requires of mono(Gnome.Keyring)|
 |bless                          |Need move to 4.5 profile|
@@ -29,7 +29,7 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |dbus-sharp                     |Work from Copr|
 |dbus-sharp-glib                |Work from Copr|
 |docky                          |Need fix requires of ndesk-dbus-glib|
-|gbrainy                        |Fedora package work without changes|
+|gbrainy                        |Fedora package work without changes if Copr is configured|
 |gdata-sharp                    |Work from Copr|
 |gecko-sharp2                   | |
 |gio-sharp                      | |
@@ -45,10 +45,10 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |gnome-subtitles                |Fedora package work without changes if Copr is configured|
 |graphviz                       | |
 |gsf-sharp                      | |
-|gtk-sharp-beans                | |
+|gtk-sharp-beans                |Need move to 4.5 profile|
 |gtk-sharp2                     |Work from Copr|
 |gtksourceview-sharp            | |
-|gudev-sharp                    |Need move to 4.5 profile|
+|gudev-sharp                    |Work from Copr|
 |hyena                          |Need move to 4.5 profile|
 |keepass                        |Work from Copr for Fedora, EPEL need fixes|
 |kimono                         | |
@@ -71,7 +71,7 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 |ndesk-dbus                     | |
 |ndesk-dbus-glib                | |
 |nini                           |Need move to 4.5 profile|
-|notify-sharp                   |Work from Copr, update |
+|notify-sharp                   |Work from Copr|
 |pdfmod                         |Need poppler-sharp|
 |pinta                          |Fedora package work without changes if Copr is configured|
 |poppler-sharp                  |Need move to 4.5 profile|
