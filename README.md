@@ -20,7 +20,7 @@ Package                        |Run with Mono 4
 OpenTK                         |Need move to 4.5 profile
 RepetierHost                   |Need move to 4.5 profile
 avahi-sharp                    |
-banshee                        |Work from Copr, EPEL6 need fix libgpod first
+banshee                        |Work from Copr, EPEL6 need fix libgpod first, EPEL7 missing gnome-desktop-devel
 banshee-community-extensions   |Need move to 4.5 profile
 bareftp                        |Need fix version requires of mono(Gnome.Keyring)
 bless                          |Need move to 4.5 profile
