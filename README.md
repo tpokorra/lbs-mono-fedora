@@ -6,10 +6,10 @@ See https://copr.fedoraproject.org/coprs/tpokorra/mono
 # New packages
 Package                        |Notes
 -------------------------------|-----
-gtk-sharp3                     |Epel6 not ship gtk3
-monodevelop-database           |Epel6 not build for mysql-connection-net dependency
+gtk-sharp3                     |Epel6 missing gtk3
+monodevelop-database           |Epel6 need fix mysql-connection-net first
 mysql-connector-net            |Epel6 fail build when try apply patch0
-notify-sharp3                  |Epel6 not ship gtk3
+notify-sharp3                  |Epel6 missing gtk3
 npgsql                         |
 nuget                          |
 nunit                          |
@@ -20,8 +20,8 @@ Package                        |Run with Mono 4
 OpenTK                         |Need move to 4.5 profile
 RepetierHost                   |Need move to 4.5 profile
 avahi-sharp                    |
-banshee                        |Need move to 4.5 profile
-banshee-community-extensions   |Need fix banshe
+banshee                        |Work from Copr, EPEL6 need fix libgpod first
+banshee-community-extensions   |Need move to 4.5 profile
 bareftp                        |Need fix version requires of mono(Gnome.Keyring)
 bless                          |Need move to 4.5 profile
 boo                            |Need move to 4.5 profile
