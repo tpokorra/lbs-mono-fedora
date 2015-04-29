@@ -1,3 +1,7 @@
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
+
 Name:    banshee
 Version: 2.6.2
 Release: 9%{?dist}
@@ -34,7 +38,6 @@ BuildRequires: libmtp-devel >= 0.2.0
 # https://bugzilla.redhat.com/show_bug.cgi?id=867133
 BuildRequires: dbus-glib-devel
 BuildRequires: GConf2-devel
-BuildRequires: libappstream-glib
 
 # Web Browser
 BuildRequires: webkitgtk-devel
@@ -116,7 +119,13 @@ developing extensions for %{name}.
 
 %build
 # Snapshots only
+sed -i "s#gmcs#mcs#g" configure.ac
+
 NOCONFIGURE=1 ./autogen.sh
+
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#mono/2.0#mono/4.5#g" configure
+sed -i "s#Mono 2.0#Mono 4.5#g" configure
 
 %configure  --disable-docs --enable-mtp \
 %ifarch s390 s390x
@@ -129,18 +138,6 @@ make %{?_smp_mflags} V=1
 
 %install
 make install DESTDIR=%{buildroot}
-
-# Update the screenshot shown in the software center
-#
-# NOTE: It would be *awesome* if this file was pushed upstream.
-#
-# See http://people.freedesktop.org/~hughsient/appdata/#screenshots for more details.
-#
-appstream-util replace-screenshots $RPM_BUILD_ROOT%{_datadir}/appdata/banshee.appdata.xml \
-  https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/banshee/a.png \
-  https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/banshee/b.png \
-  https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/banshee/c.png \
-  https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/banshee/d.png 
 
 # clean-up .a archives
 find %{buildroot} \( -name '*.la' -or -name '*.a' \) -exec rm -f {} \;
@@ -194,8 +191,9 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/banshee-*.pc
 
 %changelog
-* Mon Mar 30 2015 Richard Hughes <rhughes@redhat.com> - 2.6.2-9
-- Use better AppData screenshots
+* Wed Apr 29 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.6.2-9
+- Build with mono 4
+- Declare mono_arches for EPEL6
 
 * Wed Dec 10 2014 Tom Callaway <spot@fedoraproject.org> 2.6.2-8
 - add sqlite hinting
@@ -513,7 +511,7 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 * Mon Nov 10 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 1.4.0.1-1
 - update to 1.4.0.1
 
-* Mon Oct 28 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 1.2.1-3
+* Tue Oct 28 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 1.2.1-3
 - bump for new gnome-sharp
 
 * Mon Aug 25 2008 Michel Salim <salimma@fedoraproject.org> - 1.2.1-2
@@ -541,7 +539,7 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 * Wed Jun 4 2008 Nigel Jones <dev@nigelj.com> - 0.99.3-2
 - Disable boo (again) - Broken dependencies and 'issues'
 
-* Sat May 30 2008 Nigel Jones <dev@nigelj.com> - 0.99.3-1
+* Fri May 30 2008 Nigel Jones <dev@nigelj.com> - 0.99.3-1
 - New Upstream Release (0.99.3) - RC 1
 
 * Tue May 27 2008 Nigel Jones <dev@nigelj.com> - 0.99.2-3
@@ -554,10 +552,10 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 - New Upstream Release (0.99.2) - Beta 2
 - Enable podcast & boo
 
-* Sat May 5 2008 Nigel Jones <dev@nigelj.com> - 0.99.1-1.1
+* Mon May 5 2008 Nigel Jones <dev@nigelj.com> - 0.99.1-1.1
 - Fix brainfart...  Comment out the cp for Source1 which I moved out of the way
 
-* Sat May 5 2008 Nigel Jones <dev@nigelj.com> - 0.99.1-1
+* Mon May 5 2008 Nigel Jones <dev@nigelj.com> - 0.99.1-1
 - New Upstream Release (0.99.1) - Beta 1 (Closes: Bug# 445449)
 - boo doesn't work quite yet for us, this will most likely be enabled in a -2
   build (README.Fedora hence removed from sources)
