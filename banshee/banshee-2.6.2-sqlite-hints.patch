@@ -1,0 +1,96 @@
+diff -up banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumArtistListModel.cs.sqlite-hints banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumArtistListModel.cs
+--- banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumArtistListModel.cs.sqlite-hints	2014-12-10 09:37:49.872483455 -0500
++++ banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumArtistListModel.cs	2014-12-10 09:38:12.417302999 -0500
+@@ -46,7 +46,7 @@ namespace Banshee.Collection.Database
+             ReloadFragmentFormat = @"
+                 FROM CoreArtists WHERE CoreArtists.ArtistID IN
+                     (SELECT CoreAlbums.ArtistID FROM CoreAlbums, CoreTracks, CoreCache{0}
+-                        WHERE CoreCache.ModelID = {1} AND
++                        WHERE {4}(CoreCache.ModelID = {1}) AND
+                               CoreTracks.AlbumID = CoreAlbums.AlbumID AND
+                               EXISTS (SELECT 1 FROM CoreArtists WHERE ArtistID = CoreAlbums.ArtistID) AND
+                               CoreCache.ItemID = {2} {3})
+diff -up banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumListModel.cs.sqlite-hints banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumListModel.cs
+--- banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumListModel.cs.sqlite-hints	2014-12-10 09:38:30.161160971 -0500
++++ banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseAlbumListModel.cs	2014-12-10 09:38:54.591965964 -0500
+@@ -56,7 +56,7 @@ namespace Banshee.Collection.Database
+             ReloadFragmentFormat = @"
+                 FROM CoreAlbums WHERE CoreAlbums.AlbumID IN
+                         (SELECT CoreTracks.AlbumID FROM CoreTracks, CoreCache{0}
+-                            WHERE CoreCache.ModelID = {1} AND
++                            WHERE {4}(CoreCache.ModelID = {1}) AND
+                                   CoreCache.ItemId = {2} {3})
+                     ORDER BY CoreAlbums.TitleSortKey, CoreAlbums.ArtistNameSortKey";
+         }
+diff -up banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseArtistListModel.cs.sqlite-hints banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseArtistListModel.cs
+--- banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseArtistListModel.cs.sqlite-hints	2014-12-10 09:39:04.591887197 -0500
++++ banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseArtistListModel.cs	2014-12-10 09:39:25.215724751 -0500
+@@ -49,7 +49,7 @@ namespace Banshee.Collection.Database
+             ReloadFragmentFormat = @"
+                 FROM CoreArtists WHERE CoreArtists.ArtistID IN
+                     (SELECT CoreTracks.ArtistID FROM CoreTracks, CoreCache{0}
+-                        WHERE CoreCache.ModelID = {1} AND
++                        WHERE {4}(CoreCache.ModelID = {1}) AND
+                               CoreCache.ItemID = {2} {3})
+                     ORDER BY NameSortKey";
+         }
+diff -up banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseFilterListModel.cs.sqlite-hints banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseFilterListModel.cs
+--- banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseFilterListModel.cs.sqlite-hints	2014-12-10 09:39:37.711626326 -0500
++++ banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseFilterListModel.cs	2014-12-10 09:40:48.288063715 -0500
+@@ -124,7 +124,10 @@ namespace Banshee.Collection.Database
+                         "{0}.{1} AND CoreTracks.TrackID = {0}.{2}",
+                         FilteredModel.JoinTable, FilteredModel.JoinPrimaryKey, FilteredModel.JoinColumn)
+                     : "CoreTracks.TrackID",
+-                filtered ? GetFilterFragment () : ""
++                filtered ? GetFilterFragment () : "",
++                connection.LikelihoodSupport
++                    ? "UNLIKELY"
++                    : ""
+             );
+         }
+ 
+diff -up banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseQueryFilterModel.cs.sqlite-hints banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseQueryFilterModel.cs
+--- banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseQueryFilterModel.cs.sqlite-hints	2014-12-10 09:41:01.623957094 -0500
++++ banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseQueryFilterModel.cs	2014-12-10 09:41:23.190785407 -0500
+@@ -59,7 +59,7 @@ namespace Banshee.Collection.Database
+ 
+             ReloadFragmentFormat = @"
+                 FROM CoreTracks, CoreCache{0}
+-                    WHERE CoreCache.ModelID = {1} AND CoreCache.ItemID = {2} {3}
++                    WHERE {4}(CoreCache.ModelID = {1}) AND CoreCache.ItemID = {2} {3}
+                     ORDER BY Value";
+ 
+             QueryFields = new QueryFieldSet (query_filter_field);
+diff -up banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseYearListModel.cs.sqlite-hints banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseYearListModel.cs
+--- banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseYearListModel.cs.sqlite-hints	2014-12-10 09:41:32.695709740 -0500
++++ banshee-2.6.2/src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseYearListModel.cs	2014-12-10 09:41:57.127515245 -0500
+@@ -47,7 +47,7 @@ namespace Banshee.Collection.Database
+                 FROM (SELECT MIN(CoreTracks.TrackID) AS TrackID, CoreTracks.Year FROM CoreTracks GROUP BY CoreTracks.Year) AS CoreTracks
+                 WHERE CoreTracks.Year IN
+                     (SELECT CoreTracks.Year FROM CoreTracks, CoreCache{0}
+-                        WHERE CoreCache.ModelID = {1} AND
++                        WHERE {4}(CoreCache.ModelID = {1}) AND
+                               CoreCache.ItemID = {2} {3})
+                     ORDER BY Year";
+         }
+diff -up banshee-2.6.2/src/Hyena/Hyena.Data.Sqlite/Hyena.Data.Sqlite/HyenaSqliteConnection.cs.sqlite-hints banshee-2.6.2/src/Hyena/Hyena.Data.Sqlite/Hyena.Data.Sqlite/HyenaSqliteConnection.cs
+--- banshee-2.6.2/src/Hyena/Hyena.Data.Sqlite/Hyena.Data.Sqlite/HyenaSqliteConnection.cs.sqlite-hints	2014-12-10 09:43:41.246692119 -0500
++++ banshee-2.6.2/src/Hyena/Hyena.Data.Sqlite/Hyena.Data.Sqlite/HyenaSqliteConnection.cs	2014-12-10 09:44:24.646354018 -0500
+@@ -107,6 +107,17 @@ namespace Hyena.Data.Sqlite
+ 
+         public string ServerVersion { get { return Query<string> ("SELECT sqlite_version ()"); } }
+ 
++        private bool? likelihood_support = null;
++        public bool LikelihoodSupport { 
++            get {
++                if (likelihood_support.HasValue) {
++                    return likelihood_support.Value;
++                } else {
++                    likelihood_support = Query<bool> ("SELECT sqlite_version () >= '3.8.1'");
++                    return likelihood_support.Value;
++                }
++            } }
++
+         public HyenaSqliteConnection(string dbpath)
+         {
+             this.dbpath = dbpath;

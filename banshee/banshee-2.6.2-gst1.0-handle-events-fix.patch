@@ -1,0 +1,19 @@
+--- banshee-2.6.2.orig/libbanshee/banshee-player-video.c	2014-11-29 18:16:53.951304991 +0100
++++ banshee-2.6.2.orig/libbanshee/banshee-player-video.c	2014-11-29 18:19:50.559560282 +0100
+@@ -75,9 +75,13 @@ bp_video_find_video_overlay (BansheePlay
+     }
+ #endif
+     
+-    if (player->video_overlay != NULL && g_object_class_find_property (
+-        G_OBJECT_GET_CLASS (player->video_overlay), "handle-events")) {
+-        g_object_set (G_OBJECT (player->video_overlay), "handle-events", FALSE, NULL);
++    if (player->video_overlay != NULL) {
++        if (g_object_class_find_property (
++            G_OBJECT_GET_CLASS (player->video_overlay), "handle-events")) {
++            g_object_set (G_OBJECT (player->video_overlay), "handle-events", FALSE, NULL);
++        } else {
++            gst_video_overlay_handle_events (player->video_overlay, FALSE);
++        }
+     }
+ 
+     gst_object_unref (video_sink);
