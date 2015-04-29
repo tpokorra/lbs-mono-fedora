@@ -92,4 +92,4 @@ thrift                         |
 tomboy                         |Work from Copr
 uwsgi                          |
 webkit-sharp                   |Work from Copr
-xsp                            |Need move to 4.5 profile
+xsp                            |Work from Copr

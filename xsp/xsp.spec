@@ -1,6 +1,10 @@
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
+
 Name:		xsp
 Version:	2.10.2
-Release:	8%{?dist}
+Release:	9%{?dist}
 License:	MIT
 URL:		http://www.mono-project.com/Main_Page
 Source0:	http://ftp.novell.com/pub/mono/sources/%{name}/%{name}-%{version}.tar.bz2
@@ -10,17 +14,17 @@ Requires:	mono-core >= 2.10
 Summary:	A small web server that hosts ASP.NET
 Group:		System Environment/Daemons
 # Mono only available on these:
-ExclusiveArch: %ix86 x86_64 ppc ppc64 ia64 %{arm} sparcv9 alpha s390x
+ExclusiveArch: %{mono_arches}
 Obsoletes:	mono-4.0-xsp < 2.10
 
 %define debug_package %{nil}
 
 %description
 
-XSP is a standalone web server written in C# that can be used to run ASP.NET 
-applications as well as a set of pages, controls and web services that you can 
+XSP is a standalone web server written in C# that can be used to run ASP.NET
+applications as well as a set of pages, controls and web services that you can
 use to experience ASP.NET.
-	  
+
 %package devel
 Group: Development/Libraries
 Requires: %{name} = %{version}-%{release} pkgconfig
@@ -39,8 +43,13 @@ Files for testing the xsp server
 
 %prep
 %setup -q
-
 autoreconf -I build/m4/shamrock -I build/m4/shave
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
+sed -i "s#mono/2.0#mono/4.5#g" configure
+sed -i "s#Mono 2.0#Mono 4.5#g" configure
+sed -i "s#mono/4.0#mono/4.5#g" configure
+sed -i "s#Mono 4.0#Mono 4.5#g" configure
 
 %build
 %configure --libdir=%{_prefix}/lib
@@ -90,6 +99,10 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 %{_prefix}/lib/xsp/test
 
 %changelog
+* Wed Apr 29 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.10.2-9
+- Build with mono 4
+- Declare mono_arches for EPEL6
+
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.10.2-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
@@ -245,7 +258,7 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 * Sun Nov 11 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.5-1
 - bump
 
-* Thu Apr 22 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.4-1
+* Sun Apr 22 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.4-1
 - bump
 
 * Sun Mar 25 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.3-2
@@ -254,7 +267,7 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 * Thu Feb 15 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.3-1
 - bump
 
-* Sat Nov 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.1-1
+* Thu Nov 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.1-1
 - bump
 
 * Sat Oct 14 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.18-1
