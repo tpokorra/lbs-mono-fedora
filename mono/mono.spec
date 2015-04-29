@@ -12,7 +12,7 @@
 
 Name:           mono
 Version:        4.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -25,8 +25,6 @@ Source0:        http://download.mono-project.com/sources/mono/mono-%{version}.ta
 # You should not regenerate this unless you have a really, really, really good reason.
 Source1:        mono.snk
 Patch0:         mono-4.0.0-ignore-reference-assemblies.patch
-# GetEncoding problem: see https://bugzilla.xamarin.com/show_bug.cgi?id=29294
-Patch1:         mono-4.0.0-getencoding.patch
 
 BuildRequires:  bison
 BuildRequires:  gcc-c++
@@ -292,7 +290,6 @@ Development file for monodoc
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-%patch1 -p1
 
 # Add undeclared Arg
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
@@ -790,6 +787,9 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
+* Tue Apr 28 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.1-2
+- drop workaround for GetEncoding, monodevelop needs to require mono-locale-extras instead
+
 * Mon Apr 27 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.1-1
 - upgrading to Mono 4.0.1
 

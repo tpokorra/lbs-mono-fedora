@@ -4,7 +4,7 @@
 
 Name:           monodevelop
 Version:        %{version}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
@@ -25,6 +25,7 @@ Requires:       mono-addins >= 0.6
 # Using system nunit, but dependency not automatically picked up by RPM
 Requires:       mono(nunit.core)
 Requires:       mono(nunit.framework)
+Requires:       mono-locale-extras
 Requires:       gnome-desktop-sharp
 Requires:       subversion monodoc
 Requires:       hicolor-icon-theme shared-mime-info
@@ -123,6 +124,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Tue Apr 28 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.7.0.660-2
+- require mono-locale-extras to avoid Encoding errors
+
 * Tue Apr 14 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.7.0.660-1
 - Build latest release 5.7
 
