@@ -19,7 +19,7 @@ Package                        |Run with Mono 4
 -------------------------------|---------------
 OpenTK                         |Need move to 4.5 profile
 RepetierHost                   |Need move to 4.5 profile
-avahi-sharp                    |
+avahi-sharp                    |Need fix requires avahi-libs
 banshee                        |Work from Copr, EPEL6 need fix libgpod first, EPEL7 missing gnome-desktop-devel
 banshee-community-extensions   |Need move to 4.5 profile
 bareftp                        |Need fix version requires of mono(Gnome.Keyring)
@@ -31,7 +31,7 @@ dbus-sharp-glib                |Work from Copr
 docky                          |Need fix requires of ndesk-dbus-glib
 gbrainy                        |Fedora package work without changes if Copr is configured
 gdata-sharp                    |Work from Copr
-gecko-sharp2                   |
+gecko-sharp2                   |Need move to 4.5 profile
 gio-sharp                      |Work from Copr
 giver                          |Nedd fix avahi-sharp
 gkeyfile-sharp                 |Work from Copr
@@ -39,19 +39,19 @@ gmime                          |
 gnome-desktop-sharp            |Work from Copr
 gnome-do                       |Need fix version requires of mono(NDesk.DBus.GLib)
 gnome-guitar                   |Need move to 4.5 profile
-gnome-keyring-sharp            |
+gnome-keyring-sharp            |Need move to 4.5 profile
 gnome-rdp                      |Need fix version requires of mono(Gnome.Keyring)
 gnome-sharp                    |Work from Copr
 gnome-subtitles                |Fedora package work without changes if Copr is configured
 graphviz                       |
-gsf-sharp                      |
+gsf-sharp                      |Need move to 4.5 profile
 gtk-sharp-beans                |Work from Copr
 gtk-sharp2                     |Work from Copr
-gtksourceview-sharp            |
+gtksourceview-sharp            |Need move to 4.5 profile
 gudev-sharp                    |Work from Copr
 hyena                          |Work from Copr
 keepass                        |Work from Copr for Fedora, EPEL need fixes
-kimono                         |
+kimono                         |Need fix version requires of libmono-2.0.so.1
 libappindicator                |
 libgpod                        |Work from Copr, EPEL6 need fix missing libusbx
 log4net                        |Need move to 4.5 profile
