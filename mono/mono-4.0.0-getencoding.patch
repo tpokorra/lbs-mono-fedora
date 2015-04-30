@@ -1,0 +1,16 @@
+--- a/external/referencesource/mscorlib/system/text/encoding.cs	2015-04-22 09:17:41.520438734 +0200
++++ b/external/referencesource/mscorlib/system/text/encoding.cs	2015-04-22 09:19:25.944433854 +0200
+@@ -529,6 +529,13 @@
+                 }
+ 
+             }
++
++            if (result == null)
++            {
++                 throw new NotSupportedException(
++                     Environment.GetResourceString("NotSupported_NoCodepageData", codepage));
++            }
++
+             return result;
+         }
+

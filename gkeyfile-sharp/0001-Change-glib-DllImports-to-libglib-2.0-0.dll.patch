@@ -1,0 +1,77 @@
+From 1a1adb8ec4149b4a0a8e55db0e3baa172cbd2c3f Mon Sep 17 00:00:00 2001
+From: Bertrand Lorentz <bertrand.lorentz@gmail.com>
+Date: Sat, 11 Sep 2010 18:16:41 +0200
+Subject: [PATCH] Change glib DllImports to libglib-2.0-0.dll
+
+The DllImport statement were referring to the glib
+library as libglib-2.0.dll, without the -0, whereas the .config file
+has the -0. libglib-2.0-0.dll is the right filename for glib on Windows
+and is used by gtk-sharp, so we use it too.
+---
+ GKeyFile/GKeyFile.custom  |    8 ++++----
+ GKeyFile/gkeyfile-api.raw |    4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/GKeyFile/GKeyFile.custom b/GKeyFile/GKeyFile.custom
+index 0fbe131..98090a6 100644
+--- a/GKeyFile/GKeyFile.custom
++++ b/GKeyFile/GKeyFile.custom
+@@ -66,7 +66,7 @@
+ 		return GetStringList (group_name, key, out length);
+ 	}
+ 
+-	[DllImport("libglib-2.0.dll")]
++	[DllImport("libglib-2.0-0.dll")]
+ 	static extern unsafe IntPtr g_key_file_get_boolean_list(IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
+ 
+ 	public unsafe bool[] GetBooleanList(string group_name, string key) {
+@@ -88,7 +88,7 @@
+ 		return ret;
+ 	}
+ 
+-	[DllImport("libglib-2.0.dll")]
++	[DllImport("libglib-2.0-0.dll")]
+ 	static extern unsafe IntPtr g_key_file_get_integer_list(IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
+ 
+ 	public unsafe int[] GetIntegerList(string group_name, string key) {
+@@ -107,7 +107,7 @@
+ 		return ret;
+ 	}
+ 
+-	[DllImport("libglib-2.0.dll")]
++	[DllImport("libglib-2.0-0.dll")]
+ 	static extern unsafe IntPtr g_key_file_get_double_list(IntPtr raw, IntPtr group_name, IntPtr key, out UIntPtr length, out IntPtr error);
+ 
+ 	public unsafe double[] GetDoubleList(string group_name, string key) {
+@@ -126,7 +126,7 @@
+ 		return ret;
+ 	}
+ 	
+-	[DllImport("libglib-2.0.dll")]
++	[DllImport("libglib-2.0-0.dll")]
+ 	static extern void g_key_file_set_list_separator(IntPtr raw, byte separator);
+ 
+ 	public char ListSeparator { 
+diff --git a/GKeyFile/gkeyfile-api.raw b/GKeyFile/gkeyfile-api.raw
+index 8032844..62411bb 100644
+--- a/GKeyFile/gkeyfile-api.raw
++++ b/GKeyFile/gkeyfile-api.raw
+@@ -6,7 +6,7 @@
+         Please DO NOT MODIFY THIS FILE, modify .metadata files instead.
+ 
+ -->
+-  <namespace name="KeyFile" library="libglib-2.0.dll">
++  <namespace name="KeyFile" library="libglib-2.0-0.dll">
+     <enum name="Error" cname="GKeyFileError" type="enum">
+       <member cname="G_KEY_FILE_ERROR_UNKNOWN_ENCODING" name="UnknownEncoding" />
+       <member cname="G_KEY_FILE_ERROR_PARSE" name="Parse" />
+@@ -340,4 +340,4 @@
+       </method>
+     </struct>
+   </namespace>
+-</api>
+\ No newline at end of file
++</api>
+-- 
+1.7.3.4
+

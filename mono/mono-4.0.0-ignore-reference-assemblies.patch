@@ -1,10 +1,15 @@
 --- a/mcs/class/reference-assemblies/Makefile	2015-04-13 09:00:46.717596021 +0200
 +++ b/mcs/class/reference-assemblies/Makefile	2015-04-13 09:01:00.793595364 +0200
-@@ -6,7 +6,6 @@
+@@ -7,12 +7,6 @@
+ PROFILE_DIR=$(DESTDIR)$(mono_libdir)/mono/
  
  install-local:
- 	$(MKINSTALLDIRS) $(DESTDIR)$(LIBRARY_INSTALL_DIR)
--	$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.0/* $(DESTDIR)$(LIBRARY_INSTALL_DIR)
+-	$(MKINSTALLDIRS) $(PROFILE_DIR)/2.0
+-	$(MKINSTALLDIRS) $(PROFILE_DIR)/3.5
+-	$(MKINSTALLDIRS) $(PROFILE_DIR)/4.0
+-	$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v2.0/* $(PROFILE_DIR)/2.0
+-	$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v3.5/* $(PROFILE_DIR)/3.5
+-	$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.0/* $(PROFILE_DIR)/4.0
  
- DISTFILES = $(wildcard ../../../external/binary-reference-assemblies/v4.0/*) Makefile
+ DISTFILES = $(wildcard ../../../external/binary-reference-assemblies/v4.0/*) $(wildcard ../../../external/binary-reference-assemblies/v3.5/*) $(wildcard ../../../external/binary-reference-assemblies/v2.0/*) Makefile
  

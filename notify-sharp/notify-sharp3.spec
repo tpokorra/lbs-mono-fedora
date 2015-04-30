@@ -7,7 +7,7 @@
 %define _monogacdir %{_prefix}/lib/mono/gac
 %endif
 
-Name:           notify-sharp
+Name:           notify-sharp3
 Version:        3.0.3
 Release:        1%{?dist}
 Summary:        A C# implementation for Desktop Notifications
@@ -15,7 +15,7 @@ Summary:        A C# implementation for Desktop Notifications
 Group:          System Environment/Libraries
 License:        MIT
 URL:            https://www.meebey.net/projects/notify-sharp
-Source0:        https://www.meebey.net/projects/notify-sharp/downloads/%{name}-%{version}.tar.gz
+Source0:        https://www.meebey.net/projects/notify-sharp/downloads/notify-sharp-%{version}.tar.gz
 
 BuildRequires:  mono-devel, gtk-sharp3-devel, gnome-sharp-devel, dbus-sharp-glib-devel
 BuildRequires:  autoconf, automake, libtool
@@ -53,7 +53,7 @@ Requires:       monodoc
 Documentation files for notify-sharp
 
 %prep
-%setup -qn %{name}-%{version}
+%setup -qn notify-sharp-%{version}
 
 %build
 sed -i "s#gmcs#mcs#g" configure.ac

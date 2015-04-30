@@ -19,7 +19,7 @@ Version:        2.8.3
 Release:        1
 Summary:        Package manager for NuGet repositories
 License:        MIT
-Group:          Development/Libraries/Other
+Group:          Development/Libraries
 Url:            http://nuget.org/
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        nuget_%{tarballversion}.orig.tar.bz2

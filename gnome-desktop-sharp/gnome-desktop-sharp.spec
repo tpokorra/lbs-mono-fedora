@@ -1,6 +1,6 @@
 Name:           gnome-desktop-sharp
 Version:        2.26.0
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        .NET language binding for mono
 
 Group:          System Environment/Libraries
@@ -16,7 +16,11 @@ BuildRequires:  librsvg2-devel, vte-devel
 # BuildRequires: gnome-panel-devel
 BuildRequires:  libwnck-devel, gtksourceview2-devel, libgnomeprintui22-devel
 BuildRequires:  gnome-sharp-devel
+%if 0%{?rhel7}%{?el7}
+BuildRequires:  gnome-desktop3-devel
+%else
 BuildRequires:  gnome-desktop-devel
+%endif
 BuildRequires:  gtk-sharp2-gapi >= 2.12.0
 BuildRequires:  gtk-sharp2-devel >= 2.12.0
 
@@ -49,6 +53,11 @@ Package %{name}-devel provides development files for writing
 %setup -q
 %patch1 -p1 -b .target
 sed -i -e 's!@libdir@!${exec_prefix}/lib/!g' gtksourceview/gtksourceview2-sharp.pc.in
+
+%if 0%{?rhel7}%{?el7}
+# for Epel7, we only have gnome-desktop3 available
+sed -i -e 's!gnome-desktop-2.0!gnome-desktop-3.0!g' configure
+%endif
 
 # Fix permission
 chmod 0644 HACKING
@@ -109,6 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Apr 24 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.26.0-25
+- Fix for Epel7, we only have gnome-desktop3-devel available
+
 * Wed Apr 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.26.0-24
 - Build for Mono 4
 

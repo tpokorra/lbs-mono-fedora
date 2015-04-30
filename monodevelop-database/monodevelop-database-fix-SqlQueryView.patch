@@ -1,0 +1,11 @@
+--- a/MonoDevelop.Database.Query/SqlQueryView.cs
++++ b/MonoDevelop.Database.Query/SqlQueryView.cs
+@@ -135,6 +135,7 @@
+ 					Document.MimeType = GetMimeType ();
+ 				
+ 			};
++			Document.Text = string.Empty;
+ 			notebook.Hide ();
+ 		}
+ 
+
