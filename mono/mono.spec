@@ -1,10 +1,13 @@
 %if 0%{?rhel}%{?el6}%{?el7}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 # see https://lists.fedoraproject.org/pipermail/packaging/2011-May/007762.html
 %global _missing_build_ids_terminate_build 0
 %global debug_package %{nil}
 # see https://fedorahosted.org/fpc/ticket/395
 %define _monodir %{_prefix}/lib/mono
-%define _monogacdir %{_prefix}/lib/mono/gac
+%define _monogacdir %{_monodir}/gac
 %endif
 
 Name:           mono
@@ -38,7 +41,7 @@ BuildRequires:  gettext-devel
 # http://www.mono-project.com/docs/about-mono/releases/4.0.0/#npgsql
 Obsoletes:      mono-data-postgresql
 # http://www.mono-project.com/docs/about-mono/releases/4.0.0/#entityframework
-Obsoletes:      entityframework
+Obsoletes:      mono-entityframework
 
 # Yes, mono actually depends on itself, because
 # we deleted the bootstrapping binaries. If you
@@ -48,7 +51,7 @@ Obsoletes:      entityframework
 #BuildRequires: mono-core >= 3.4
 
 # JIT only available on these:
-ExclusiveArch: %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+ExclusiveArch: %mono_arches
 
 %define _use_internal_dependency_generator 0
 %define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/redhat/find-provides && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}%{_prefix} %{buildroot}%{_bindir}/mono-find-provides; } | sort | uniq'
@@ -146,9 +149,9 @@ Group:          Development/Languages
 Requires:       mono-core = %{version}-%{release}
 
 %description extras
-This package provides the libary and application to run services
+This package provides the library and application to run services
 and daemons with Mono. It also includes stubs for the following
-2.0 assemblies: Microsoft.Vsa,
+assemblies: Microsoft.Vsa,
 System.Configuration.Install, System.Management, System.Messaging.
 
 %package reactive
@@ -789,6 +792,11 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 
 * Mon Apr 27 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.1-1
 - upgrading to Mono 4.0.1
+
+* Fri Apr 24 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.0.0-9
+- Fix wrong obsolete for mono-entityframework
+- Use mono_arches macro
+- Better description for mono-extras
 
 * Wed Apr 22 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.0-8
 - workaround for problem with System.Text.Encoding GetEncoding, see Xamarin bug #29294
