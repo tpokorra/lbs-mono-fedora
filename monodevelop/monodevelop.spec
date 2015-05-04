@@ -1,17 +1,17 @@
 %global debug_package %{nil}
-%define version 5.7.0.660
-%define tarballversion 5.7
+%define tarballversion 5.9.0.431
 
 Name:           monodevelop
-Version:        %{version}
-Release:        2%{?dist}
+Version:        5.9
+Release:        1%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
-Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-5.7.0.660.tar.bz2
-Patch0:         monodevelop-fix-latest-nuget.patch
+Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{tarballversion}.tar.bz2
+Patch0:         monodevelop-nunit-unbundle.patch
+#Patch0:         monodevelop-fix-latest-nuget.patch
 Patch1:         monodevelop-avoidgiterrors.patch
 BuildRequires:  mono-devel >= 4.0.0
 BuildRequires:  mono-addins-devel >= 0.6
@@ -51,19 +51,16 @@ Development files for %{name}.
 
 
 %prep
-%setup -qn %{name}-%{tarballversion}
-dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.Tests/MonoDevelop.PackageManagement.Tests.Helpers/FakeSettings.cs
-dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/PackageSourceConverter.cs
-dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/RegisteredPackageSourceSettings.cs
+%setup -qn %{name}-%{version}
+#dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.Tests/MonoDevelop.PackageManagement.Tests.Helpers/FakeSettings.cs
+#dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/PackageSourceConverter.cs
+#dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/RegisteredPackageSourceSettings.cs
+dos2unix external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
 %patch0 -p1
-
-dos2unix src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
-%patch1 -p1
+%patch1 -p0
 
 #mozroots --import --sync 
 
-#dos2unix external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
-#%patch0 -p0
 #nuget restore
 # Delete shipped *.dll files
 #find -name '*.dll' -exec rm -f {} \;
@@ -124,6 +121,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Mon May 04 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9-1
+- Update to 5.9
+
 * Tue Apr 28 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.7.0.660-2
 - require mono-locale-extras to avoid Encoding errors
 

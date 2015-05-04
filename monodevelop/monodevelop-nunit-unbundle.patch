@@ -85,3 +85,18 @@
  		
  		public NunitTestInfo GetTestInfo (string path, List<string> supportAssemblies)
 
+
+--- a/external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
++++ b/external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
+@@ -86,9 +86,7 @@
+     <Reference Include="System.Core" />
+     <Reference Include="System.Xml" />
+     <Reference Include="System.Xml.Linq" />
+-    <Reference Include="nunit.framework">
+-      <HintPath>..\..\cecil\Test\libs\nunit-2.5.10\nunit.framework.dll</HintPath>
+-    </Reference>
++    <Reference Include="nunit.framework"/>
+   </ItemGroup>
+   <ItemGroup>
+     <Compile Include="..\ICSharpCode.NRefactory\Properties\GlobalAssemblyInfo.cs">
+
