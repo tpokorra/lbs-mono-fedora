@@ -10,6 +10,7 @@ License:        GPLv2+
 URL:            http://monodevelop.com/
 Source0:        https://jenkins.mono-project.com/view/Packaging-MonoDevelop/job/build-source-tarball-monodevelop/lastSuccessfulBuild/artifact/%{name}.tar.bz2
 Patch0:         monodevelop-nunit-unbundle.patch
+Patch1:         monodevelop-avoidgiterrors.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel
@@ -50,16 +51,23 @@ Development files for %{name}.
 
 %prep
 %setup -qn %{name}
-#%patch0 -p1 -b .unbundle
+%patch0 -p1 -b .unbundle
+%patch1 -p1
 
-mozroots --import --sync
+#mozroots --import --sync
 
 #%patch0 -p0
-nuget restore
+#nuget restore
 # Delete shipped *.dll files
 #find -name '*.dll' -exec rm -f {} \;
 
 %build
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.in
+sed -i "s#dmcs#mcs#g" configure
+sed -i "s#dmcs#mcs#g" configure.in
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 %configure --enable-git --disable-update-mimedb --disable-update-desktopdb
 
 make
