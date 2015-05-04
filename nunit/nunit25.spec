@@ -48,10 +48,10 @@ find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="
 xbuild /property:Configuration=Debug ./src/NUnitCore/core/nunit.core.dll.csproj
 xbuild /property:Configuration=Debug ./src/NUnitCore/interfaces/nunit.core.interfaces.dll.csproj
 xbuild /property:Configuration=Debug ./src/NUnitFramework/framework/nunit.framework.dll.csproj
-xbuild /property:Configuration=Debug ./src/NUnitMocks/mocks/nunit.mocks.csproj
-xbuild /property:Configuration=Debug ./src/ClientUtilities/util/nunit.util.dll.csproj
-xbuild /property:Configuration=Debug ./src/ConsoleRunner/nunit-console/nunit-console.csproj
-xbuild /property:Configuration=Debug ./src/ConsoleRunner/nunit-console-exe/nunit-console.exe.csproj
+#xbuild /property:Configuration=Debug ./src/NUnitMocks/mocks/nunit.mocks.csproj
+#xbuild /property:Configuration=Debug ./src/ClientUtilities/util/nunit.util.dll.csproj
+#xbuild /property:Configuration=Debug ./src/ConsoleRunner/nunit-console/nunit-console.csproj
+#xbuild /property:Configuration=Debug ./src/ConsoleRunner/nunit-console-exe/nunit-console.exe.csproj
 #xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui/nunit-gui.csproj
 #xbuild /property:Configuration=Debug ./src/GuiComponents/UiKit/nunit.uikit.dll.csproj
 #xbuild /property:Configuration=Debug ./src/GuiException/UiException/nunit.uiexception.dll.csproj
@@ -63,22 +63,23 @@ xbuild /property:Configuration=Debug ./src/ConsoleRunner/nunit-console-exe/nunit
 %{__mkdir_p} %{buildroot}%{_libdir}/pkgconfig
 %{__mkdir_p} %{buildroot}%{_bindir}
 %{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
-%{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`-2.5
-%{__install} -m0644 src/ConsoleRunner/nunit-console-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.5/nunit-console.exe.config
-%{__install} -m0644 src/GuiRunner/nunit-gui-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.5/nunit.exe.config
+#%{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`-2.5
+#%{__install} -m0644 src/ConsoleRunner/nunit-console-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.5/nunit-console.exe.config
+#%{__install} -m0644 src/GuiRunner/nunit-gui-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.5/nunit.exe.config
 find %{_builddir}/%{?buildsubdir} -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.5/" \;
-find %{_builddir}/%{?buildsubdir} -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.5/" \;
-for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
+#find %{_builddir}/%{?buildsubdir} -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.5/" \;
+#for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
+for i in nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll ; do
     gacutil -i %{buildroot}%{_prefix}/lib/nunit/2.5/$i -package nunit/2.5 -root %{buildroot}%{_prefix}/lib
-    rm -f %{buildroot}%{_prefix}/lib/nunit/2.5/$i
 done
+rm -f %{buildroot}%{_prefix}/lib/nunit/2.5/*
 
 %files
 %defattr(-,root,root)
 %{_prefix}/lib/mono/gac/nunit*
 %{_prefix}/lib/mono/nunit/2.5
-%{_prefix}/lib/nunit/2.5
-%{_bindir}/*
+#%{_prefix}/lib/nunit/2.5
+#%{_bindir}/*
 
 %files devel
 %defattr(-,root,root,-)
