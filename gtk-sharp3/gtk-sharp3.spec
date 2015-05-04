@@ -1,43 +1,64 @@
 %global debug_package %{nil}
-Summary: gtk 3 sharp for Mono
-Name: gtk-sharp3
-Version: 2.99.3
-Release: 5%{?dist}
-License: GPL
-Group: Development/Languages
-Requires: mono-core
-Requires: glib2
-Requires: gtk3
-Requires: libglade2
+Summary:        GTK+ 3 and GNOME 3 bindings for Mono
+Name:           gtk-sharp3
+Version:        2.99.3
+Release:        6%{?dist}
+License:        LGPLv2
+Group:          System Environment/Libraries
+
+BuildRequires:  mono-devel gtk3-devel libglade2-devel monodoc
+BuildRequires:  automake, libtool
 BuildRequires: gcc
-BuildRequires: libtool
 BuildRequires: gettext
 BuildRequires: make
-BuildRequires: automake
 BuildRequires: gcc-c++
-BuildRequires: mono-core
-BuildRequires: mono-devel
 BuildRequires: glib2-devel
-BuildRequires: gtk3-devel
 BuildRequires: libglade2-devel
-BuildRequires: dos2unix
-Source: gtk-sharp-%{version}.tar.xz
 
-Provides: libmono-profiler-gui-thread-check
+URL:            http://www.mono-project.com/GtkSharp
+Source:         http://ftp.acc.umu.se/pub/gnome/sources/gtk-sharp/2.99/gtk-sharp-%{version}.tar.xz
+
+Provides:       libmono-profiler-gui-thread-check
 
 # Mono only available on these:
-ExclusiveArch: %{mono_arches}
+ExclusiveArch:  %{mono_arches}
 
 %description
-GTK 3 sharp for Mono
+This package provides a library that allows you to build
+fully native graphical GNOME applications using Mono. Gtk#
+is a binding to version 3 of GTK+, the cross platform user interface
+toolkit used in GNOME. It includes bindings for Gtk, Atk,
+Pango, Gdk.
+
+%package gapi
+Group:          Development/Languages
+Summary:        Glib and GObject C source parser and C generator for the creation and maintenance of managed bindings for Mono and .NET
+Requires:       perl-XML-LibXML-Common perl-XML-LibXML perl-XML-SAX
+
+%description gapi
+This package provides developer tools for the creation and
+maintenance of managed bindings to native libraries which utilize
+glib and GObject. Some examples of libraries currently bound using
+the GAPI tools and found in Gtk# include Gtk, Atk, Pango, Gdk.
 
 %package devel
-License:      GPL
-Group:        Development/Libraries
-Summary:      development files for GTK 3 Sharp for Mono
-Requires:     %{name} = %{version}
+Summary:        Files needed for developing with gtk-sharp3
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+Requires:       pkgconfig
+
 %description devel
-Development files for GTK 3 Sharp for Mono
+This package provides the necessary development libraries and headers
+for writing gtk-sharp3 applications.
+
+%package doc
+Group:          Documentation
+Summary:        Gtk# 3 documentation
+Requires:       %{name} = %{version}-%{release}
+Requires:       monodoc
+
+%description doc
+This package provides the Gtk# 3 documentation for monodoc.
 
 %prep
 %setup -q -n gtk-sharp-%{version}
@@ -48,33 +69,54 @@ sed -i "s#gmcs#mcs#g" configure.ac
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 %configure
-make
+make %{?_smp_flags}
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install DESTDIR=%{buildroot}
 
-find %{buildroot} -iname "*.dll.so" -exec rm '{}' ';'
-find %{buildroot} -iname "*.exe.so" -exec rm '{}' ';'
+find %{buildroot} -iname "*.dll.so" -delete
+find %{buildroot} -iname "*.exe.so" -delete
+#Remove libtool archive
+find %{buildroot} -name \*.*a -delete
 
 %files
-%exclude %{_libdir}/pkgconfig/
+%defattr(-,root,root,-)
+%doc README AUTHORS
+%license COPYING
 %exclude %{_libdir}/*.so
-%exclude %{_libdir}/*.a
+%{_libdir}/*.so*
+%{_monogacdir}/*
+%{_monodir}/gtk-sharp-3.0
+
+%files gapi
+%defattr(-,root,root,-)
 %{_bindir}/gapi3-codegen
 %{_bindir}/gapi3-fixup
 %{_bindir}/gapi3-parser
-%{_libdir}/*.so*
-%{_libdir}/*.a*
-%{_libdir}/*.la*
-%{_prefix}/lib/*
-%{_datadir}/
+%{_prefix}/lib/gapi-3.0/gapi_codegen.exe
+%{_prefix}/lib/gapi-3.0/gapi-fixup.exe
+%{_prefix}/lib/gapi-3.0/gapi-parser.exe
+%{_prefix}/lib/gapi-3.0/gapi_pp.pl
+%{_prefix}/lib/gapi-3.0/gapi2xml.pl
+%{_datadir}/gapi-3.0
+%{_libdir}/pkgconfig/gapi-3.0.pc
 
 %files devel
-%{_libdir}/pkgconfig/
+%defattr(-,root,root,-)
+%{_libdir}/pkgconfig/*-sharp-3.0.pc
+%{_libdir}/pkgconfig/gtk-dotnet-3.0.pc
 %{_libdir}/*.so
-%{_libdir}/*.a
+
+%files doc
+%defattr(-,root,root,-)
+%{_prefix}/lib/monodoc/sources/*
 
 %changelog
+* Mon May 04 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-6
+- Use same subpackage criteria as gtk-sharp2
+- Spec clean up
+- Use license macro
+
 * Mon Apr 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-5
 - Add mono_arches
 
