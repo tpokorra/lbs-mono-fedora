@@ -15,7 +15,8 @@ Patch0:         monodevelop-nunit-unbundle.patch
 Patch1:         monodevelop-avoidgiterrors.patch
 BuildRequires:  mono-devel >= 4.0.0
 BuildRequires:  mono-addins-devel >= 0.6
-BuildRequires:  pkgconfig(nunit) >= 2.6.3
+BuildRequires:  nunit-devel >= 2.6.3
+BuildRequires:  nunit25-devel
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
