@@ -13,6 +13,7 @@ notify-sharp3                  |Epel6 missing gtk3
 npgsql                         |
 nuget                          |
 nunit                          |
+nunit25                        |
 
 # Dependecy list
 Package                        |Run with Mono 4
