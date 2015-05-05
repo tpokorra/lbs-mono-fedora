@@ -1,0 +1,8 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+
+Name: NUnit
+Description: Testing framework for CLI
+Version: 2.5.10
+Libs: -r:${libdir}/mono/nunit/2.5/nunit.core.dll -r:${libdir}/mono/nunit/2.5/nunit.framework.dll -r:${libdir}/mono/nunit/2.5/nunit.core.interfaces.dll
