@@ -1,16 +1,16 @@
 %global debug_package %{nil}
-%define version 5.7.0.660
-%define tarballversion 5.7
+%define version 5.9.0.431
+%define tarballversion 5.9
 
 Name:           monodevelop
 Version:        %{version}
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
-Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-5.7.0.660.tar.bz2
+Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{version}.tar.bz2
 Patch0:         monodevelop-fix-latest-nuget.patch
 Patch1:         monodevelop-avoidgiterrors.patch
 BuildRequires:  mono-devel >= 4.0.0
@@ -124,6 +124,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Tue May 05 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.9.0.431-1
+- Build latest release 5.9
+
 * Tue Apr 28 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.7.0.660-2
 - require mono-locale-extras to avoid Encoding errors
 
