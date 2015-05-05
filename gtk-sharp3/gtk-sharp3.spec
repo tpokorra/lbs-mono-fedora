@@ -1,19 +1,24 @@
+%if 0%{?rhel}%{?el7}
+# see https://fedorahosted.org/fpc/ticket/395
+%define _monodir %{_prefix}/lib/mono
+%define _monogacdir %{_monodir}/gac
+%endif
+
 %global debug_package %{nil}
 Summary:        GTK+ 3 and GNOME 3 bindings for Mono
 Name:           gtk-sharp3
 Version:        2.99.3
-Release:        6%{?dist}
+Release:        7%{?dist}
 License:        LGPLv2
 Group:          System Environment/Libraries
 
 BuildRequires:  mono-devel gtk3-devel libglade2-devel monodoc
 BuildRequires:  automake, libtool
-BuildRequires: gcc
-BuildRequires: gettext
-BuildRequires: make
-BuildRequires: gcc-c++
-BuildRequires: glib2-devel
-BuildRequires: libglade2-devel
+BuildRequires:  gcc
+BuildRequires:  gettext
+BuildRequires:  make
+BuildRequires:  gcc-c++
+BuildRequires:  glib2-devel
 
 URL:            http://www.mono-project.com/GtkSharp
 Source:         http://ftp.acc.umu.se/pub/gnome/sources/gtk-sharp/2.99/gtk-sharp-%{version}.tar.xz
@@ -32,7 +37,7 @@ Pango, Gdk.
 
 %package gapi
 Group:          Development/Languages
-Summary:        Glib and GObject C source parser and C generator for the creation and maintenance of managed bindings for Mono and .NET
+Summary:        Tools for creation and maintenance managed bindings for Mono and .NET
 Requires:       perl-XML-LibXML-Common perl-XML-LibXML perl-XML-SAX
 
 %description gapi
@@ -44,7 +49,7 @@ the GAPI tools and found in Gtk# include Gtk, Atk, Pango, Gdk.
 %package devel
 Summary:        Files needed for developing with gtk-sharp3
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       pkgconfig
 
 %description devel
@@ -54,8 +59,8 @@ for writing gtk-sharp3 applications.
 %package doc
 Group:          Documentation
 Summary:        Gtk# 3 documentation
-Requires:       %{name} = %{version}-%{release}
 Requires:       monodoc
+BuildArch:      noarch
 
 %description doc
 This package provides the Gtk# 3 documentation for monodoc.
@@ -63,24 +68,26 @@ This package provides the Gtk# 3 documentation for monodoc.
 %prep
 %setup -q -n gtk-sharp-%{version}
 
-%build
+# Fixes for build with Mono 4
 sed -i "s#gmcs#mcs#g" configure
 sed -i "s#gmcs#mcs#g" configure.ac
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
+
+%build
 %configure
 make %{?_smp_flags}
 
 %install
-%make_install DESTDIR=%{buildroot}
+%make_install
 
 find %{buildroot} -iname "*.dll.so" -delete
 find %{buildroot} -iname "*.exe.so" -delete
 #Remove libtool archive
-find %{buildroot} -name \*.*a -delete
+find %{buildroot} -name \*.a -delete
+find %{buildroot} -name \*.la -delete
 
 %files
-%defattr(-,root,root,-)
 %doc README AUTHORS
 %license COPYING
 %exclude %{_libdir}/*.so
@@ -89,7 +96,6 @@ find %{buildroot} -name \*.*a -delete
 %{_monodir}/gtk-sharp-3.0
 
 %files gapi
-%defattr(-,root,root,-)
 %{_bindir}/gapi3-codegen
 %{_bindir}/gapi3-fixup
 %{_bindir}/gapi3-parser
@@ -102,16 +108,21 @@ find %{buildroot} -name \*.*a -delete
 %{_libdir}/pkgconfig/gapi-3.0.pc
 
 %files devel
-%defattr(-,root,root,-)
 %{_libdir}/pkgconfig/*-sharp-3.0.pc
 %{_libdir}/pkgconfig/gtk-dotnet-3.0.pc
 %{_libdir}/*.so
 
 %files doc
-%defattr(-,root,root,-)
 %{_prefix}/lib/monodoc/sources/*
 
 %changelog
+* Tue May 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-7
+- gtk-sharp-3-doc not requiered gtk-sharp-3 and move to noarch
+- gapi summary less than 70 characters
+- Fixed for mono 4 moved to prep
+- Define _monodir and _monogacdir for rhel and epel7
+- Spec clean up
+
 * Mon May 04 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-6
 - Use same subpackage criteria as gtk-sharp2
 - Spec clean up
