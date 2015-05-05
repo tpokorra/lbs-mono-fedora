@@ -1,0 +1,50 @@
+--- a/src/addins/AspNet/MonoDevelop.AspNet.csproj       2015-04-07 10:04:42.000000000 +0200
++++ b/src/addins/AspNet/MonoDevelop.AspNet.csproj       2015-05-05 09:36:40.500386479 +0200
+@@ -452,31 +452,31 @@
+     <None Include="Templates\Projects\WebApplication.xpt.xml">
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll">
++    <None Include="/usr/lib/mono/4.5/System.Web.Mvc.dll">
+       <Link>System.Web.Mvc.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll">
++    <None Include="/usr/lib/mono/4.5/System.Web.Razor.dll">
+       <Link>System.Web.Razor.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll">
++    <None Include="/usr/lib/mono/4.5/System.Web.Helpers.dll">
+       <Link>System.Web.Helpers.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll">
++    <None Include="/usr/lib/mono/4.5/System.Web.WebPages.Deployment.dll">
+       <Link>System.Web.WebPages.Deployment.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll">
++    <None Include="/usr/lib/mono/4.5/System.Web.WebPages.dll">
+       <Link>System.Web.WebPages.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll">
++    <None Include="/usr/lib/mono/4.5/System.Web.WebPages.Razor.dll">
+       <Link>System.Web.WebPages.Razor.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+-    <None Include="..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll">
++    <None Include="/usr/lib/mono/4.5/Microsoft.Web.Infrastructure.dll">
+       <Link>Microsoft.Web.Infrastructure.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+@@ -525,7 +525,7 @@
+     <Folder Include="Templates\Projects\" />
+   </ItemGroup>
+   <Target Name="BeforeBuild">
+-    <PropertyGroup>
++    <PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+       <NuGet>$(SolutionDir)\external\nuget-binary\NuGet.exe</NuGet>
+       <NuGet Condition="$(OS)=='Unix'">mono $(NuGet)</NuGet>
+     </PropertyGroup>

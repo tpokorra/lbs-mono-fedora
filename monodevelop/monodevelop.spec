@@ -12,6 +12,7 @@ License:        GPLv2+
 URL:            http://monodevelop.com/
 Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{version}.tar.bz2
 Patch0:         monodevelop-avoidgiterrors.patch
+Patch1:         monodevelop-fixcopyaspnetdlls.patch
 BuildRequires:  mono-devel >= 4.0.0
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  pkgconfig(nunit) >= 2.6.3
@@ -54,6 +55,8 @@ Development files for %{name}.
 
 dos2unix src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
 %patch0 -p1
+dos2unix src/addins/AspNet/MonoDevelop.AspNet.csproj
+%patch1 -p1
 
 #mozroots --import --sync 
 
