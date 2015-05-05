@@ -1,0 +1,86 @@
+Index: xamarin-pkg-monodevelop/src/addins/AspNet/Properties/MonoDevelop.AspNet.addin.xml
+===================================================================
+--- xamarin-pkg-monodevelop.orig/src/addins/AspNet/Properties/MonoDevelop.AspNet.addin.xml	2015-04-28 10:16:13.348260401 +0100
++++ xamarin-pkg-monodevelop/src/addins/AspNet/Properties/MonoDevelop.AspNet.addin.xml	2015-04-28 10:16:13.344260401 +0100
+@@ -1,13 +1,13 @@
+ <ExtensionModel>
+ 	
+ 	<Runtime>
+-		<Import assembly = "System.Web.Helpers.dll" />
+-		<Import assembly = "System.Web.Mvc.dll" />
+-		<Import assembly = "System.Web.Razor.dll" />
+-		<Import assembly = "System.Web.WebPages.Deployment.dll" />
+-		<Import assembly = "System.Web.WebPages.dll" />
+-		<Import assembly = "System.Web.WebPages.Razor.dll" />
+-
++<!--		<Import assembly = "System.Web.Helpers.dll" />
++		<Import assembly = "System.Web.Mvc.dll" />
++		<Import assembly = "System.Web.Razor.dll" />
++		<Import assembly = "System.Web.WebPages.Deployment.dll" />
++		<Import assembly = "System.Web.WebPages.dll" />
++		<Import assembly = "System.Web.WebPages.Razor.dll" /> -->
++
+ 		<Import file = "Html/Schemas/xhtml1-strict.xsd" />
+ 		<Import file = "Html/Schemas/xhtml1-transitional.xsd" />
+ 		<Import file = "Html/Schemas/xhtml1-frameset.xsd" />
+@@ -202,10 +202,10 @@
+ 			guid="{E53F8FEA-EAE0-44A6-8774-FFD645390401}"
+ 			type="MonoDevelop.AspNet.Projects.AspMvc3Project"
+ 			useXBuild="true" />
+-		<DotNetProjectSubtype
++<!--		<DotNetProjectSubtype
+ 			guid="{E3E379DF-F4C6-4180-9B81-6769533ABE47}"
+ 			type="MonoDevelop.AspNet.Projects.AspMvc4Project"
+-			useXBuild="true" />
++			useXBuild="true" /> -->
+ 		<DotNetProjectSubtype
+ 			id="MonoDevelop.AspNet.Projects.AspNetAppProject"
+ 			guid="{349C5851-65DF-11DA-9384-00065B846F21}"
+@@ -216,7 +216,7 @@
+ 	<Extension path = "/MonoDevelop/TypeSystem/Parser">
+ 		<Parser class = "MonoDevelop.AspNet.WebForms.WebFormsParser" mimeType="application/x-aspx, application/x-ascx, application/x-master-page" />
+ 		<Parser class = "MonoDevelop.AspNet.Html.HtmlParser" mimeType="text/html, application/x-spark" />
+-		<Parser class = "MonoDevelop.AspNet.Razor.RazorCSharpParser" mimeType="text/x-cshtml" />
++		<Parser class = "MonoDevelop.AspNet.Razor.RazorCSharpParser" mimeType="text/x-cshtml" />
+ 	</Extension>
+ 
+ 	<Extension path = "/MonoDevelop/ProjectModel/SerializableClasses">
+Index: xamarin-pkg-monodevelop/src/addins/AspNet/MonoDevelop.AspNet.csproj
+===================================================================
+--- xamarin-pkg-monodevelop.orig/src/addins/AspNet/MonoDevelop.AspNet.csproj	2015-04-28 10:06:54.100238221 +0100
++++ xamarin-pkg-monodevelop/src/addins/AspNet/MonoDevelop.AspNet.csproj	2015-04-28 10:16:51.272261905 +0100
+@@ -452,34 +452,6 @@
+     <None Include="Templates\Projects\WebApplication.xpt.xml">
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll">
+-      <Link>System.Web.Mvc.dll</Link>
+-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+-    </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll">
+-      <Link>System.Web.Razor.dll</Link>
+-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+-    </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll">
+-      <Link>System.Web.Helpers.dll</Link>
+-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+-    </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll">
+-      <Link>System.Web.WebPages.Deployment.dll</Link>
+-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+-    </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll">
+-      <Link>System.Web.WebPages.dll</Link>
+-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+-    </None>
+-    <None Include="..\..\..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll">
+-      <Link>System.Web.WebPages.Razor.dll</Link>
+-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+-    </None>
+-    <None Include="..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll">
+-      <Link>Microsoft.Web.Infrastructure.dll</Link>
+-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+-    </None>
+     <None Include="packages.config" />
+   </ItemGroup>
+   <ItemGroup>

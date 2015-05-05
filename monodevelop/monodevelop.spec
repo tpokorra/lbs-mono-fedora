@@ -10,9 +10,9 @@ Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
 Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{tarballversion}.tar.bz2
-Patch0:         monodevelop-nunit-unbundle.patch
-#Patch0:         monodevelop-fix-latest-nuget.patch
-Patch1:         monodevelop-avoidgiterrors.patch
+Patch0:         monodevelop-avoidgiterrors.patch
+Patch1:         monodevelop-downgrade_to_mvc3.patch
+Patch2:         monodevelop-nunit-unbundle.patch
 BuildRequires:  mono-devel >= 4.0.0
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 2.6.3
@@ -53,12 +53,14 @@ Development files for %{name}.
 
 %prep
 %setup -qn %{name}-%{version}
-#dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.Tests/MonoDevelop.PackageManagement.Tests.Helpers/FakeSettings.cs
-#dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/PackageSourceConverter.cs
-#dos2unix src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement/RegisteredPackageSourceSettings.cs
-dos2unix external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
+
+#dos2unix src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
 %patch0 -p1
-%patch1 -p0
+
+%patch1 -p1
+
+#dos2unix external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
+%patch2 -p1
 
 #mozroots --import --sync 
 

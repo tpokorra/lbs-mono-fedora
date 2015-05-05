@@ -5,13 +5,12 @@
 
 Name:           nunit
 Version:        2.6.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT
 Group:          Development/Libraries
 Url:            http://www.nunit.org/
-Source0:        nunit_%{version}+dfsg.orig.tar.gz
-#Source0:        http://launchpad.net/nunitv2/trunk/%{version}/+download/NUnit-%{version}-src.zip
+Source0:        http://launchpad.net/nunitv2/trunk/%{version}/+download/NUnit-%{version}-src.zip
 Source1:        nunit.pc
 Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
@@ -61,27 +60,26 @@ xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe
 
 %install
 %{?env_options}
-%{__mkdir_p} %{buildroot}%{_prefix}/lib/nunit
+%{__mkdir_p} %{buildroot}%{_prefix}/lib/nunit/2.6
 %{__mkdir_p} %{buildroot}%{_libdir}/pkgconfig
 %{__mkdir_p} %{buildroot}%{_bindir}
 %{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
 %{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`-2.6
 %{__install} -m0755 %{SOURCE3} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE3}`-2.6
-sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
-%{__install} -m0644 src/ConsoleRunner/nunit-console-exe/App.config %{buildroot}%{_prefix}/lib/nunit/nunit-console.exe.config
-%{__install} -m0644 src/GuiRunner/nunit-gui-exe/App.config %{buildroot}%{_prefix}/lib/nunit/nunit.exe.config
-find %{_builddir}/%{?buildsubdir} -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/" \;
-find %{_builddir}/%{?buildsubdir} -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/" \;
+%{__install} -m0644 src/ConsoleRunner/nunit-console-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.6/nunit-console.exe.config
+%{__install} -m0644 src/GuiRunner/nunit-gui-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.6/nunit.exe.config
+find %{_builddir}/%{?buildsubdir} -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.6/" \;
+find %{_builddir}/%{?buildsubdir} -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.6/" \;
 for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
-    gacutil -i %{buildroot}%{_prefix}/lib/nunit/$i -package nunit -root %{buildroot}%{_prefix}/lib
-    rm -f %{buildroot}%{_prefix}/lib/nunit/$i
+    gacutil -i %{buildroot}%{_prefix}/lib/nunit/2.6/$i -package nunit/2.6 -root %{buildroot}%{_prefix}/lib
+    rm -f %{buildroot}%{_prefix}/lib/nunit/2.6/$i
 done
 
 %files
 %defattr(-,root,root)
 %{_prefix}/lib/mono/gac/nunit*
-%{_prefix}/lib/mono/nunit
-%{_prefix}/lib/nunit
+%{_prefix}/lib/mono/nunit/2.6
+%{_prefix}/lib/nunit/2.6
 %{_bindir}/*
 
 %files devel
@@ -89,6 +87,10 @@ done
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Mon May 04 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.6.3-3
+- Move to 2.6 folder for compat with other versions
+- Use real source file
+
 * Tue Apr 21 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.6.3-2
 - Split nunit.pc into devel package
 - Use upstream zip source
