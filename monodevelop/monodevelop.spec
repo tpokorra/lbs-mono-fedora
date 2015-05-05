@@ -54,34 +54,30 @@ Development files for %{name}.
 %prep
 %setup -qn %{name}-%{version}
 
-#dos2unix src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
 %patch0 -p1
-
 %patch1 -p1
-
-#dos2unix external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
+dos2unix external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
 %patch2 -p1
 
-#mozroots --import --sync 
-
-#nuget restore
 # Delete shipped *.dll files
-#find -name '*.dll' -exec rm -f {} \;
+find -name '*.dll' -exec rm -f {} \;
 
-%build
+#Fixes for Mono 4
 sed -i "s#gmcs#mcs#g" configure
 sed -i "s#gmcs#mcs#g" configure.in
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
+
+%build
 %configure --enable-git --disable-update-mimedb --disable-update-desktopdb
 
-make
+make %{?_smp_flags}
 
 %check
 make check
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 desktop-file-install \
                      --dir $RPM_BUILD_ROOT%{_datadir}/applications \

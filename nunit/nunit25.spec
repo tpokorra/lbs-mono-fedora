@@ -12,7 +12,7 @@ Group:          Development/Libraries
 Url:            http://www.nunit.org/
 Source0:        http://launchpad.net/nunitv2/2.5/2.5.10/+download/NUnit-%{zipversion}-src.zip
 Source1:        nunit25.pc
-Source2:        nunit-console25.sh
+#Source2:        nunit-console25.sh
 BuildRequires:  mono-devel libgdiplus-devel
 ExclusiveArch:  %{mono_arches}
 
@@ -37,49 +37,30 @@ Development files for %{name}.
 %prep
 %setup -qn NUnit-%{zipversion}
 
-%build
-
-# fix compile with Mono4
+# Fixes for Mono 4
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 
+%build
 %{?exp_env}
 %{?env_options}
 xbuild /property:Configuration=Debug ./src/NUnitCore/core/nunit.core.dll.csproj
 xbuild /property:Configuration=Debug ./src/NUnitCore/interfaces/nunit.core.interfaces.dll.csproj
 xbuild /property:Configuration=Debug ./src/NUnitFramework/framework/nunit.framework.dll.csproj
-#xbuild /property:Configuration=Debug ./src/NUnitMocks/mocks/nunit.mocks.csproj
-#xbuild /property:Configuration=Debug ./src/ClientUtilities/util/nunit.util.dll.csproj
-#xbuild /property:Configuration=Debug ./src/ConsoleRunner/nunit-console/nunit-console.csproj
-#xbuild /property:Configuration=Debug ./src/ConsoleRunner/nunit-console-exe/nunit-console.exe.csproj
-#xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui/nunit-gui.csproj
-#xbuild /property:Configuration=Debug ./src/GuiComponents/UiKit/nunit.uikit.dll.csproj
-#xbuild /property:Configuration=Debug ./src/GuiException/UiException/nunit.uiexception.dll.csproj
-#xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe.csproj
+xbuild /property:Configuration=Debug ./src/NUnitMocks/mocks/nunit.mocks.csproj
+xbuild /property:Configuration=Debug ./src/ClientUtilities/util/nunit.util.dll.csproj
+xbuild /property:Configuration=Debug ./src/ConsoleRunner/nunit-console/nunit-console.csproj
 
 %install
 %{?env_options}
 %{__mkdir_p} %{buildroot}%{_prefix}/lib/nunit/2.5/
 %{__mkdir_p} %{buildroot}%{_libdir}/pkgconfig
-%{__mkdir_p} %{buildroot}%{_bindir}
 %{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
-#%{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`-2.5
-#%{__install} -m0644 src/ConsoleRunner/nunit-console-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.5/nunit-console.exe.config
-#%{__install} -m0644 src/GuiRunner/nunit-gui-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.5/nunit.exe.config
-find %{_builddir}/%{?buildsubdir} -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.5/" \;
-#find %{_builddir}/%{?buildsubdir} -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.5/" \;
-#for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
-for i in nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll ; do
-    gacutil -i %{buildroot}%{_prefix}/lib/nunit/2.5/$i -package nunit/2.5 -root %{buildroot}%{_prefix}/lib
-done
-rm -f %{buildroot}%{_prefix}/lib/nunit/2.5/*
+find %{_builddir}/%{?buildsubdir}/bin -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.5/" \;
 
 %files
 %defattr(-,root,root)
-%{_prefix}/lib/mono/gac/nunit*
-%{_prefix}/lib/mono/nunit/2.5
-#%{_prefix}/lib/nunit/2.5
-#%{_bindir}/*
+%{_prefix}/lib/nunit/2.5
 
 %files devel
 %defattr(-,root,root,-)
