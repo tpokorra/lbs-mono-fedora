@@ -1,0 +1,14 @@
+--- b/src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.csproj
++++ b/src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.csproj
+@@ -57,9 +57,8 @@
+     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+     <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+     <Reference Include="Mono.Posix" />
+-    <Reference Include="NuGet.Core">
+-      <HintPath>..\..\..\external\nuget-binary\NuGet.Core.dll</HintPath>
+-    </Reference>
++    <Reference Include="NuGet.Core"/>
++    <Reference Include="Microsoft.Web.XmlTransform"/>
+     <Reference Include="Mono.Cairo" />
+     <Reference Include="System.Security" />
+   </ItemGroup>

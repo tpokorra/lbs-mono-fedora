@@ -93,4 +93,4 @@ thrift                         |
 tomboy                         |Work from Copr
 uwsgi                          |
 webkit-sharp                   |Work from Copr
-xsp                            |Work from Copr
+xsp                            |Work from Copr, EPEL6 need fix

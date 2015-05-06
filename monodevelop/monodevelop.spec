@@ -3,7 +3,7 @@
 
 Name:           monodevelop
 Version:        5.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
@@ -13,6 +13,7 @@ Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop
 Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-nunit-unbundle.patch
+Patch3:         monodevelop-nuget-unbundle.patch
 BuildRequires:  mono-devel >= 4.0.0
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 2.6.3
@@ -58,6 +59,7 @@ Development files for %{name}.
 %patch1 -p1
 dos2unix external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
 %patch2 -p1
+%patch3 -p1
 
 # Delete shipped *.dll files
 find -name '*.dll' -exec rm -f {} \;
@@ -120,6 +122,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Wed May 06 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9-2
+- Unbundle nuget on Monodevelop.PackageManagement addin
+
 * Mon May 04 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9-1
 - Update to 5.9
 
