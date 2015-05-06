@@ -71,7 +71,7 @@ find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="
 %build
 %configure --enable-git --disable-update-mimedb --disable-update-desktopdb
 
-make %{?_smp_flags}
+make %{?_smp_mflags}
 
 %check
 make check

@@ -5,10 +5,12 @@
 %endif
 
 %global debug_package %{nil}
+%global _docdir_fmt %{name}
+
 Summary:        GTK+ 3 and GNOME 3 bindings for Mono
 Name:           gtk-sharp3
 Version:        2.99.3
-Release:        7%{?dist}
+Release:        8%{?dist}
 License:        LGPLv2
 Group:          System Environment/Libraries
 
@@ -38,7 +40,6 @@ Pango, Gdk.
 %package gapi
 Group:          Development/Languages
 Summary:        Tools for creation and maintenance managed bindings for Mono and .NET
-Requires:       perl-XML-LibXML-Common perl-XML-LibXML perl-XML-SAX
 
 %description gapi
 This package provides developer tools for the creation and
@@ -76,7 +77,7 @@ find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="
 
 %build
 %configure
-make %{?_smp_flags}
+make %{?_smp_mflags}
 
 %install
 %make_install
@@ -87,8 +88,12 @@ find %{buildroot} -iname "*.exe.so" -delete
 find %{buildroot} -name \*.a -delete
 find %{buildroot} -name \*.la -delete
 
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
 %files
-%doc README AUTHORS
+%doc README
 %license COPYING
 %exclude %{_libdir}/*.so
 %{_libdir}/*.so*
@@ -99,6 +104,7 @@ find %{buildroot} -name \*.la -delete
 %{_bindir}/gapi3-codegen
 %{_bindir}/gapi3-fixup
 %{_bindir}/gapi3-parser
+%dir %{_prefix}/lib/gapi-3.0
 %{_prefix}/lib/gapi-3.0/gapi_codegen.exe
 %{_prefix}/lib/gapi-3.0/gapi-fixup.exe
 %{_prefix}/lib/gapi-3.0/gapi-parser.exe
@@ -116,6 +122,10 @@ find %{buildroot} -name \*.la -delete
 %{_prefix}/lib/monodoc/sources/*
 
 %changelog
+* Tue May 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-8
+- Add /sbin/ldconfig in post and postun
+- Remove requiere in gapi
+
 * Tue May 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-7
 - gtk-sharp-3-doc not requiered gtk-sharp-3 and move to noarch
 - gapi summary less than 70 characters
