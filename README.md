@@ -18,7 +18,7 @@ nunit25                        |
 # Dependecy list
 Package                        |Run with Mono 4
 -------------------------------|---------------
-OpenTK                         |Work from Copr
+OpenTK                         |Work from Copr, EPEL6 need fix
 RepetierHost                   |Need move to 4.5 profile
 avahi-sharp                    |Need fix requires avahi-libs
 banshee                        |Work from Copr, EPEL6 need fix libgpod first, EPEL7 missing gnome-desktop-devel

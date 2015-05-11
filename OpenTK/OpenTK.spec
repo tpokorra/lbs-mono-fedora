@@ -11,7 +11,7 @@ Name:           OpenTK
 %global         lowercase opentk
 Version:        1.1
 %global         snapshot 4c
-Release:        2.%{snapshot}%{?dist}
+Release:        3.%{snapshot}%{?dist}
 Summary:        C# library that wraps OpenGL, OpenCL and OpenAL
 # See License.txt for more information
 License:        MIT and BSD
@@ -26,6 +26,7 @@ BuildRequires:  mono(Mono.Cecil) = %{cecilver}
 BuildRequires:  mono(Mono.Cecil.Mdb) = %{cecilver}
 BuildRequires:  mono(Mono.Cecil.Pdb) = %{cecilver}
 BuildRequires:  mono(Mono.Cecil.Rocks) = %{cecilver}
+BuildRequires:  libgdiplus-devel
 
 BuildRequires:  dos2unix
 # https://bugzilla.redhat.com/show_bug.cgi?id=1032883
@@ -91,6 +92,9 @@ gacutil -i Binaries/OpenTK/Release/%{name}.GLControl.dll -f -package %{name} -ro
 %doc Source/Examples
 
 %changelog
+* Mon May 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 1.1-3.4c
+- Add libgdiplus-devel as buildrequires
+
 * Mon May 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 1.1-2.4c
 - Build for Mono 4
 - Use mono macros
