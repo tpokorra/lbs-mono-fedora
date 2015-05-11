@@ -10,7 +10,7 @@
 Summary:        GTK+ 3 and GNOME 3 bindings for Mono
 Name:           gtk-sharp3
 Version:        2.99.3
-Release:        8%{?dist}
+Release:        9%{?dist}
 License:        LGPLv2
 Group:          System Environment/Libraries
 
@@ -24,8 +24,6 @@ BuildRequires:  glib2-devel
 
 URL:            http://www.mono-project.com/GtkSharp
 Source:         http://ftp.acc.umu.se/pub/gnome/sources/gtk-sharp/2.99/gtk-sharp-%{version}.tar.xz
-
-Provides:       libmono-profiler-gui-thread-check
 
 # Mono only available on these:
 ExclusiveArch:  %{mono_arches}
@@ -122,6 +120,10 @@ find %{buildroot} -name \*.la -delete
 %{_prefix}/lib/monodoc/sources/*
 
 %changelog
+* Mon May 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-9
+- Remove virtual provides
+
+
 * Tue May 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-8
 - Add /sbin/ldconfig in post and postun
 - Remove requiere in gapi

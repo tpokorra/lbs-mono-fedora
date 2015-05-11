@@ -124,6 +124,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Wed May 06 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9-2
 - Unbundle nuget on Monodevelop.PackageManagement addin
+- Fix Monodevelop.PackageManagement addin
+- Fix Monodevelop.NUnit addin
 
 * Mon May 04 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9-1
 - Update to 5.9
