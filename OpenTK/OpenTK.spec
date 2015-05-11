@@ -2,9 +2,6 @@
 %if 0%{?el6}
 %define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
 %endif
-# see https://lists.fedoraproject.org/pipermail/packaging/2011-May/007762.html
-%global _missing_build_ids_terminate_build 0
-%global debug_package %{nil}
 # see https://fedorahosted.org/fpc/ticket/395
 %define _monodir %{_prefix}/lib/mono
 %define _monogacdir %{_monodir}/gac
@@ -22,7 +19,7 @@ URL:            http://www.%{lowercase}.com/
 Source0:        https://github.com/%{lowercase}/%{lowercase}/archive/%{version}-%{snapshot}.tar.gz
 # JIT only available on these:
 ExclusiveArch:  %mono_arches
-%global         cecilver 0.9.5.0
+%global         cecilver 0.9.6.0
 BuildRequires:  mono(xbuild)
 BuildRequires:  mono(gacutil)
 BuildRequires:  mono(Mono.Cecil) = %{cecilver}
@@ -68,6 +65,10 @@ cd Source/Generator.Rewrite
 sed -i 's/Include="Mono.Cecil"/Include="Mono.Cecil, version=%{cecilver}"/' Generator.Rewrite.csproj
 sed -i 's/Include="Mono.Cecil.Mdb"/Include="Mono.Cecil.Mdb, version=%{cecilver}"/' Generator.Rewrite.csproj
 cd -
+
+#Fixes for Mono 4
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 
 
 %build
