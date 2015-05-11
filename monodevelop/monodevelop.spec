@@ -3,7 +3,7 @@
 
 Name:           monodevelop
 Version:        5.9
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
@@ -14,7 +14,7 @@ Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-nunit-unbundle.patch
 Patch3:         monodevelop-nuget-unbundle.patch
-BuildRequires:  mono-devel >= 4.0.0
+BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 2.6.3
 BuildRequires:  nunit25-devel
@@ -122,6 +122,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Mon May 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9-3
+- Fix mono-devel version required
+
 * Wed May 06 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9-2
 - Unbundle nuget on Monodevelop.PackageManagement addin
 - Fix Monodevelop.PackageManagement addin
