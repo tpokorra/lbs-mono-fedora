@@ -1,14 +1,27 @@
+%if 0%{?rhel}%{?el6}%{?el7}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
+# see https://lists.fedoraproject.org/pipermail/packaging/2011-May/007762.html
+%global _missing_build_ids_terminate_build 0
+%global debug_package %{nil}
+# see https://fedorahosted.org/fpc/ticket/395
+%define _monodir %{_prefix}/lib/mono
+%define _monogacdir %{_monodir}/gac
+%endif
+
 Name:           OpenTK
 %global         lowercase opentk
 Version:        1.1
 %global         snapshot 4c
-Release:        1.%{snapshot}%{?dist}
+Release:        2.%{snapshot}%{?dist}
 Summary:        C# library that wraps OpenGL, OpenCL and OpenAL
 # See License.txt for more information
 License:        MIT and BSD
 URL:            http://www.%{lowercase}.com/
 Source0:        https://github.com/%{lowercase}/%{lowercase}/archive/%{version}-%{snapshot}.tar.gz
-BuildArch:      noarch
+# JIT only available on these:
+ExclusiveArch:  %mono_arches
 %global         cecilver 0.9.5.0
 BuildRequires:  mono(xbuild)
 BuildRequires:  mono(gacutil)
@@ -63,20 +76,24 @@ xbuild %{name}.sln /p:Configuration=Release
 chmod -x Source/Examples/obj/Release/Examples.exe
 
 %install
-mkdir -p %{buildroot}/usr/lib/mono/gac/
+mkdir -p %{buildroot}/%{_monogacdir}
 gacutil -i Binaries/OpenTK/Release/%{name}.dll -f -package %{name} -root %{buildroot}/usr/lib
 gacutil -i Binaries/OpenTK/Release/%{name}.Compatibility.dll -f -package %{name} -root %{buildroot}/usr/lib
 gacutil -i Binaries/OpenTK/Release/%{name}.GLControl.dll -f -package %{name} -root %{buildroot}/usr/lib
 
 %files
 %doc Documentation/*.txt
-/usr/lib/mono/gac/%{name}*
-/usr/lib/mono/%{name}
+%{_monogacdir}/%{name}*
+%{_monodir}/%{name}
 
 %files doc
 %doc Source/Examples
 
 %changelog
+* Mon May 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 1.1-2.4c
+- Build for Mono 4
+- Use mono macros
+
 * Sat Oct 25 2014 Miro Hrončok <mhroncok@redhat.com> - 1.1-1.4c
 - New post release 1.1-4c
 - Remove no longer existing PDF form the doc
