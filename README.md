@@ -59,6 +59,7 @@ log4net                        |Need move to 4.5 profile
 mono-addins                    |Work from Copr
 mono-basic                     |
 mono-bouncycastle              |
+mono-cecil                     |Work from Copr
 mono-cecil-flowanalysis        |
 mono-debugger                  |
 mono-reflection                |
