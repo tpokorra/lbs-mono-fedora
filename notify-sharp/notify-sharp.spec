@@ -58,9 +58,9 @@ Documentation files for notify-sharp
 %prep
 %setup -qn %{name}-%{svndate}
 %patch0 -p1 -b .use_dbus_sharp
+sed -i "s#gmcs#mcs#g" configure.ac
 
 %build
-sed -i "s#gmcs#mcs#g" configure.ac
 autoreconf --install
 %configure --libdir=%{_prefix}/lib
 make

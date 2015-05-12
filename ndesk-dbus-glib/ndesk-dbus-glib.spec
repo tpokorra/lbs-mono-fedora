@@ -1,3 +1,12 @@
+%if 0%{?rhel}%{?el6}%{?el7}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
+# see https://fedorahosted.org/fpc/ticket/395
+%define _monodir %{_prefix}/lib/mono
+%define _monogacdir %{_monodir}/gac
+%endif
+
 %define			debug_package %{nil}
 
 Name:			ndesk-dbus-glib
@@ -5,11 +14,9 @@ URL:			http://www.ndesk.org/DBusSharp
 License:		MIT
 Group:			Development/Libraries
 Version:		0.4.1
-Release:		17%{?dist}
+Release:		18%{?dist}
 Summary:		Provides glib mainloop integration for ndesk-dbus
 Source0:		http://www.ndesk.org/archive/dbus-sharp/ndesk-dbus-glib-%{version}.tar.gz
-BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
 
 BuildRequires:	mono-devel
 ## This EVR is necessary due to the WaitForIOCompletion API added in the Sugar
@@ -17,7 +24,7 @@ BuildRequires:	mono-devel
 BuildRequires:	ndesk-dbus-devel >= 0.6.1a-7
 
 # Mono only available on these:
-ExclusiveArch: %ix86 x86_64 ppc %{power64} ia64 %{arm} sparcv9 alpha s390x
+ExclusiveArch:	%{mono_arches}
 
 %description
 ndesk-dbus-glib provides glib mainloop integration for ndesk-dbus
@@ -34,26 +41,24 @@ Development files for ndesk-dbus-glib
 
 %prep
 %setup -q
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
 
 %build
 %configure --libdir=%{_prefix}/lib
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/pkgconfig/
 test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT%{_prefix}/lib/pkgconfig/*.pc $RPM_BUILD_ROOT%{_libdir}/pkgconfig/
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files
 %defattr(-,root,root,-)
 %doc COPYING
-%{_prefix}/lib/mono/gac/NDesk.DBus.GLib/
-%{_prefix}/lib/mono/ndesk-dbus-glib-1.0/
+%{_monogacdir}/NDesk.DBus.GLib/
+%{_monodir}/ndesk-dbus-glib-1.0/
 
 %files devel
 %defattr(-,root,root,-)
@@ -61,6 +66,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/ndesk-dbus-glib-1.0.pc
 
 %changelog
+* Tue May 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 0.4.1-18
+- Build for Mono 4
+- Use mono macros
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.1-17
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 

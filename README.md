@@ -70,8 +70,8 @@ monodevelop                    |Work from Copr
 monodevelop-debugger-gdb       |
 monosim                        |
 nant                           |
-ndesk-dbus                     |
-ndesk-dbus-glib                |
+ndesk-dbus                     |Work from Copr
+ndesk-dbus-glib                |Work from Copr
 nini                           |Need move to 4.5 profile
 notify-sharp                   |Work from Copr
 pdfmod                         |Need poppler-sharp
