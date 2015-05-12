@@ -2,9 +2,13 @@
 %global         minorver 0
 %global         debug_package %{nil}
 
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
+
 Name:           docky
 Version:        %{majorver}.%{minorver}
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Advanced dock application written in Mono
 License:        GPLv3+
 URL:            http://wiki.go-docky.com
@@ -36,12 +40,12 @@ Requires:       hicolor-icon-theme
 Requires:       gio-sharp dbus-sharp dbus-sharp-glib
 Requires:       ndesk-dbus-glib
 # Mono only available on these:
-ExclusiveArch:  %{ix86} x86_64 ppc %{power64} ia64 %{arm} sparcv9 alpha s390x
+ExclusiveArch:  %mono_arches
 
 %description
-Docky is an advanced shortcut bar that sits at the bottom, top, and/or sides 
-of your screen. It provides easy access to some of the files, folders, 
-and applications on your computer, displays which applications are 
+Docky is an advanced shortcut bar that sits at the bottom, top, and/or sides
+of your screen. It provides easy access to some of the files, folders,
+and applications on your computer, displays which applications are
 currently running, holds windows in their minimized state, and more.
 
 %package        devel
@@ -58,6 +62,9 @@ for developing applications that use %{name}.
 %patch1 -p1
 %patch3
 
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
+
 %build
 %configure --disable-schemas-install \
            --with-gconf-schema-file-dir=%{_sysconfdir}/gconf/schemas
@@ -65,7 +72,7 @@ for developing applications that use %{name}.
 make %{?_smp_mflags}
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 
 #gapi_codegen.exe is not distributed (licence is GNU GPL v2)
 rm -f %{buildroot}%{_libdir}/%{name}/gapi_codegen*
@@ -114,6 +121,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/docky.*.pc
 
 %changelog
+* Tue May 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.2.0-5
+- Build for Mono 4
+- Use mono macros
+
 * Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
