@@ -1,8 +1,17 @@
+%if 0%{?rhel}%{?el6}%{?el7}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
+# see https://fedorahosted.org/fpc/ticket/395
+%define _monodir %{_prefix}/lib/mono
+%define _monogacdir %{_monodir}/gac
+%endif
+
 %define			debug_package %{nil}
 
 Name:			ndesk-dbus
 Version:		0.6.1a
-Release:		16%{?dist}
+Release:		17%{?dist}
 Summary:		Managed C# implementation of DBus
 
 License:		MIT
@@ -12,11 +21,11 @@ Source0:		http://www.ndesk.org/archive/dbus-sharp/ndesk-dbus-%{version}.tar.gz
 
 Patch0:			%{name}-sugar-datastore.patch
 
-BuildRequires:		mono-devel
+BuildRequires:	mono-devel
 
 Requires:		mono-core
 
-ExclusiveArch:          %{mono_arches}
+ExclusiveArch:	%{mono_arches}
 
 %description
 Managed C# implementation of DBus
@@ -33,7 +42,8 @@ Development files for ndesk-dbus
 %prep
 %setup -q
 %patch0 -p1 -b .sugar-datastore
-
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.ac
 
 %build
 %configure --libdir=%{_prefix}/lib
@@ -41,20 +51,24 @@ make %{?_smp_mflags}
 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/pkgconfig/
 test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT%{_prefix}/lib/pkgconfig/*.pc $RPM_BUILD_ROOT%{_libdir}/pkgconfig/
 
 
 %files
-%{_prefix}/lib/mono/ndesk-dbus-1.0/
-%{_prefix}/lib/mono/gac/NDesk.DBus/
+%{_monodir}/ndesk-dbus-1.0/
+%{_monogacdir}/NDesk.DBus/
 
 %files devel
 %{_libdir}/pkgconfig/ndesk-dbus-1.0.pc
 
 %changelog
+* Tue May 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 0.6.1a-17
+- Build for Mono 4
+- Use mono macros
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.6.1a-16
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
@@ -155,7 +169,7 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT%{_prefix}/lib/pkgconf
 - Made package no longer be noarch
 - Added COPYING as documentation for the -devel package
 
-* Mon Jun 26 2007 David Nielsen <david@lovesunix.net> - 0.5.2-3
+* Fri Jun 26 2007 David Nielsen <david@lovesunix.net> - 0.5.2-3
 - Make this significantly less hacky
 
 * Mon Jun 25 2007 David Nielsen <david@lovesunix.net> - 0.5.2-2
