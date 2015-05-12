@@ -1,0 +1,118 @@
+diff --git a/src/Connection.cs b/src/Connection.cs
+index 22b20ca..eb27055 100644
+--- a/src/Connection.cs
++++ b/src/Connection.cs
+@@ -78,6 +78,7 @@ namespace NDesk.DBus
+ 			AddressEntry entry = entries[0];
+ 
+ 			transport = Transport.Create (entry);
++			transport.Connection = this;
+ 
+ 			//TODO: clean this bit up
+ 			ns = transport.Stream;
+@@ -204,6 +205,7 @@ namespace NDesk.DBus
+ 		}
+ 		*/
+ 
++		bool insideReadMessage=false;
+ 		internal Message ReadMessage ()
+ 		{
+ 			byte[] header;
+@@ -211,6 +213,8 @@ namespace NDesk.DBus
+ 
+ 			int read;
+ 
++			if (insideReadMessage) return null;
++
+ 			//16 bytes is the size of the fixed part of the header
+ 			byte[] hbuf = new byte[16];
+ 			read = ns.Read (hbuf, 0, 16);
+@@ -221,6 +225,9 @@ namespace NDesk.DBus
+ 			if (read != 16)
+ 				throw new Exception ("Header read length mismatch: " + read + " of expected " + "16");
+ 
++			// Make this method void if is call from inside
++			insideReadMessage=true;
++
+ 			EndianFlag endianness = (EndianFlag)hbuf[0];
+ 			MessageReader reader = new MessageReader (endianness, hbuf);
+ 
+@@ -274,8 +281,10 @@ namespace NDesk.DBus
+ 				body = new byte[bodyLen];
+ 				read = ns.Read (body, 0, bodyLen);
+ 
+-				if (read != bodyLen)
+-					throw new Exception ("Message body length mismatch: " + read + " of expected " + bodyLen);
++				while (read != bodyLen) {
++					WaitForIOCompletition(this);
++					read = read +ns.Read (body, read, bodyLen-read);
++				}
+ 			}
+ 
+ 			Message msg = new Message ();
+@@ -283,6 +292,8 @@ namespace NDesk.DBus
+ 			msg.Body = body;
+ 			msg.SetHeaderData (header);
+ 
++			insideReadMessage=false;
++
+ 			return msg;
+ 		}
+ 
+@@ -299,17 +310,34 @@ namespace NDesk.DBus
+ 
+ 		internal Thread mainThread = Thread.CurrentThread;
+ 
+-		//temporary hack
+-		public void Iterate ()
+-		{
+-			mainThread = Thread.CurrentThread;
+-
+-			//Message msg = Inbound.Dequeue ();
+-			Message msg = ReadMessage ();
+-			HandleMessage (msg);
+-			DispatchSignals ();
++ 		//temporary hack
++		bool insideIterate=false;
++ 		public void Iterate ()
++ 		{
++			if (!insideIterate) {
++				insideIterate=true;
++				mainThread = Thread.CurrentThread;
++
++				//Message msg = Inbound.Dequeue ();
++				Message msg = ReadMessage ();
++				if (msg!=null) {
++					HandleMessage (msg);
++				}
++				DispatchSignals ();
++				insideIterate=false;
++			} else {
++				DispatchSignals ();
++			}
+ 		}
+ 
++		public delegate void WaitForIOCompletitionFunc (Connection conn);
++
++		public event WaitForIOCompletitionFunc WaitForIOCompletitionFuncEvent;
++ 
++		public void WaitForIOCompletition(Connection conn) {
++			WaitForIOCompletitionFuncEvent(conn);
++ 		}
++ 
+ 		internal void HandleMessage (Message msg)
+ 		{
+ 			//TODO: support disconnection situations properly and move this check elsewhere
+diff --git a/src/MessageReader.cs b/src/MessageReader.cs
+index 5a1f662..696603a 100644
+--- a/src/MessageReader.cs
++++ b/src/MessageReader.cs
+@@ -362,7 +362,7 @@ namespace NDesk.DBus
+ 			}
+ 
+ 			//advance to the alignment of the element
+-			ReadPad (Protocol.GetAlignment (Signature.TypeToDType (elemType)));
++			ReadPad (Protocol.GetAlignment (DType.Array));
+ 
+ 			int endPos = pos + (int)ln;
+ 
