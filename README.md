@@ -23,13 +23,13 @@ RepetierHost                   |Need move to 4.5 profile
 avahi-sharp                    |Need fix requires avahi-libs
 banshee                        |Work from Copr, EPEL6 need fix libgpod first, EPEL7 missing gnome-desktop-devel
 banshee-community-extensions   |Need move to 4.5 profile
-bareftp                        |Need fix version requires of mono(Gnome.Keyring)
+bareftp                        |Need move to 4.5 profile
 bless                          |Need move to 4.5 profile
 boo                            |Need move to 4.5 profile
 cdcollect                      |Need move to 4.5 profile
 dbus-sharp                     |Work from Copr
 dbus-sharp-glib                |Work from Copr
-docky                          |Need fix requires of ndesk-dbus-glib
+docky                          |Need move to 4.5 profile
 gbrainy                        |Fedora package work without changes if Copr is configured
 gdata-sharp                    |Work from Copr
 gecko-sharp2                   |Need move to 4.5 profile
@@ -38,10 +38,10 @@ giver                          |Nedd fix avahi-sharp
 gkeyfile-sharp                 |Work from Copr
 gmime                          |
 gnome-desktop-sharp            |Work from Copr
-gnome-do                       |Need fix version requires of mono(NDesk.DBus.GLib)
+gnome-do                       |Need move to 4.5 profile
 gnome-guitar                   |Need move to 4.5 profile
-gnome-keyring-sharp            |Work from Copr
-gnome-rdp                      |Need fix version requires of mono(Gnome.Keyring)
+gnome-keyring-sharp            |Work from Copr, Epel6 missing libgnome-keyring-devel
+gnome-rdp                      |Need move to 4.5 profile
 gnome-sharp                    |Work from Copr
 gnome-subtitles                |Fedora package work without changes if Copr is configured
 graphviz                       |
