@@ -40,7 +40,7 @@ gmime                          |
 gnome-desktop-sharp            |Work from Copr
 gnome-do                       |Need fix version requires of mono(NDesk.DBus.GLib)
 gnome-guitar                   |Need move to 4.5 profile
-gnome-keyring-sharp            |Need move to 4.5 profile
+gnome-keyring-sharp            |Work from Copr
 gnome-rdp                      |Need fix version requires of mono(Gnome.Keyring)
 gnome-sharp                    |Work from Copr
 gnome-subtitles                |Fedora package work without changes if Copr is configured

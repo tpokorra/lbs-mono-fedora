@@ -1,9 +1,18 @@
+%if 0%{?rhel}%{?el6}%{?el7}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
+# see https://fedorahosted.org/fpc/ticket/395
+%define _monodir %{_prefix}/lib/mono
+%define _monogacdir %{_monodir}/gac
+%endif
+
 %global svn_rev 133722
 %global debug_package %{nil}
 
 Name:           gnome-keyring-sharp
 Version:        1.0.1
-Release:        0.18.%{svn_rev}svn%{?dist}
+Release:        0.19.%{svn_rev}svn%{?dist}
 Summary:        Mono implementation of GNOME Keyring
 
 Group:          System Environment/Libraries
@@ -63,7 +72,7 @@ for %{name}.
 %setup -q
 %patch1 -p0 -F 2 -b .new-api
 %patch2 -p1 -b .monodoc-dir
-
+sed -i "s#gmcs#mcs#g" configure.ac
 
 %build
 autoreconf -f -i
@@ -74,21 +83,15 @@ make
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 strip $RPM_BUILD_ROOT%{_libdir}/libgnome-keyring-sharp-glue.so
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING README
-%{_prefix}/lib/mono/gnome-keyring-sharp-1.0
-%{_prefix}/lib/mono/gac/Gnome.Keyring
+%{_monodir}/gnome-keyring-sharp-1.0
+%{_monogacdir}/Gnome.Keyring
 %{_libdir}/libgnome-keyring-sharp-glue.so
 
 %files devel
@@ -101,6 +104,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue May 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 1.0.1-0.19.133722svn
+- Build for Mono 4
+- Use mono macros
+
 * Tue Mar 24 2015 Than Ngo <than@redhat.com> - 1.0.1-0.18.133722svn
 - use %%mono_arches
 
