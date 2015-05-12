@@ -1,0 +1,46 @@
+diff -rupN docky-2.1.4.orig/Docky/Docky/Interface/DockPreferences.cs docky-2.1.4/Docky/Docky/Interface/DockPreferences.cs
+--- docky-2.1.4.orig/Docky/Docky/Interface/DockPreferences.cs	2012-04-03 17:15:28.359056371 +0200
++++ docky-2.1.4/Docky/Docky/Interface/DockPreferences.cs	2012-04-03 17:16:32.629057114 +0200
+@@ -202,9 +202,7 @@ namespace Docky.Interface
+ 		bool? zoom_enabled;
+ 		public bool ZoomEnabled {
+ 			get {
+-				if (!zoom_enabled.HasValue)
+-					zoom_enabled = GetOption<bool?> ("ZoomEnabled", true);
+-				return zoom_enabled.Value; 
++        return false;
+ 			}
+ 			set {
+ 				if (zoom_enabled == value)
+diff -rupN docky-2.1.4.orig/Docky/Docky/Interface/DockWindow.cs docky-2.1.4/Docky/Docky/Interface/DockWindow.cs
+--- docky-2.1.4.orig/Docky/Docky/Interface/DockWindow.cs	2012-04-03 17:15:28.359056371 +0200
++++ docky-2.1.4/Docky/Docky/Interface/DockWindow.cs	2012-04-03 17:16:10.890718631 +0200
+@@ -1858,28 +1858,8 @@ namespace Docky.Interface
+ 				else
+ 					centerPosition += offset;
+ 				
+-				if (!adi.Zoom) {
+ 					val.Zoom = 1;
+ 					val.Center = new Cairo.PointD ((int) centerPosition, center.Y);
+-				} else {
+-					// zoom is calculated as 1 through target_zoom (default 2).  
+-					// The larger your offset, the smaller your zoom
+-					
+-					// First we get the point on our curve that defines our current zoom
+-					// offset is always going to fall on a point on the curve >= 0
+-					zoom = 1 - Math.Pow (offsetPercent, 2);
+-					
+-					// scale this to match our zoomInPercent
+-					zoom = 1 + zoom * (zoomInPercent - 1);
+-					
+-					double zoomedCenterHeight = DockHeightBuffer + (iconSize * zoom / 2.0);
+-					
+-					if (zoom == 1)
+-						centerPosition = Math.Round (centerPosition);
+-					
+-					val.Center = new Cairo.PointD (centerPosition, zoomedCenterHeight);
+-					val.Zoom = zoom;
+-				}
+ 				
+ 				// now we undo our transforms to the point
+				if (Preferences.IsVertical) {
