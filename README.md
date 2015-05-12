@@ -71,7 +71,7 @@ ndesk-dbus                     |Work from Copr
 ndesk-dbus-glib                |Work from Copr
 nini                           |Need move to 4.5 profile
 notify-sharp                   |Work from Copr
-pdfmod                         |Need poppler-sharp
+pdfmod                         |Need move to 4.5 profile
 pinta                          |Fedora package work without changes if Copr is configured
 poppler-sharp                  |Work from Copr
 qyoto                          |Need move to 4.5 profile
