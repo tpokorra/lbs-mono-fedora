@@ -3,21 +3,29 @@
 #
 # Please submit bugfixes or comments via http://bugzilla.redhat.com
 
+%if 0%{?rhel}%{?el6}%{?el7}
+%if 0%{?el6}
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
+# see https://fedorahosted.org/fpc/ticket/395
+%define _monodir %{_prefix}/lib/mono
+%define _monogacdir %{_monodir}/gac
+%endif
+
 Name:	 	log4net
 BuildRequires:	mono-data-sqlite
 BuildRequires:	mono-devel
-BuildRequires:	unzip
-BuildRequires:	nant
+#BuildRequires:	unzip
+#BuildRequires:	nant
 URL:		http://logging.apache.org/log4net/
 License:	ASL 2.0
 Group:		System Environment/Libraries
 Version:	1.2.13
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	A .NET framework for logging
-Source:		http://mirror.reverse.net/pub/apache/logging/log4net/source/log4net-1.2.13-src.zip
-Patch0:		log4net-1.2.13-mono-2.0.patch
+Source:		http://mirror.reverse.net/pub/apache/logging/log4net/source/%{name}-%{version}-src.zip
 # Mono only available on these:
-ExclusiveArch: %ix86 x86_64 %{power64} ia64 sparcv9 alpha s390x
+ExclusiveArch: %mono_arches
 # Someone needs to build nant for %{arm}
 
 # %define debug_package %{nil}
@@ -41,52 +49,61 @@ framework to the .NET runtime
 
 %prep
 %setup -q
-%patch0 -p1 -b .mono-2.0
 %{__sed} -i 's/\r//' NOTICE
 %{__sed} -i 's/\r//' README.txt
 %{__sed} -i 's/\r//' LICENSE
 # Remove prebuilt dll files
 rm -rf bin/
 
-%build
+mv src/Layout/XMLLayout.cs src/Layout/XmlLayout.cs
+mv src/Layout/XMLLayoutBase.cs src/Layout/XmlLayoutBase.cs
+
+# Fix for mono 4
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
+
 # Use system mono.snk key
-rm -rf log4net.snk
-ln -s /etc/pki/mono/mono.snk log4net.snk
+sed -i -e 's!"..\\..\\..\\log4net.snk")]!"/etc/pki/mono/mono.snk")]!' src/AssemblyInfo.cs
+sed -i -e 's!|| SSCLI)!|| SSCLI || MONO)!' src/AssemblyInfo.cs
+
+
+%build
 # ASF recommend using nant to build log4net
-nant -buildfile:log4net.build compile-all
+xbuild /property:Configuration=Debug /property:DefineConstants=DEBUG,MONO,STRONG src/log4net.vs2010.csproj
+#nant -buildfile:log4net.build compile-all
 
 %install
-%{__rm} -rf $RPM_BUILD_ROOT
-
 # install pkgconfig file
 cat > %{name}.pc <<EOF
 Name: log4net
 Description: log4net - .Net logging framework
 Version: %{version}
-Libs: -r:%{_prefix}/lib/mono/log4net/log4net.dll
+Libs: -r:%{_monodir}/log4net/log4net.dll
 EOF
 
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 cp %{name}.pc $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
-%{__mkdir_p} $RPM_BUILD_ROOT/%{_prefix}/lib/mono/gac/
-echo $PWD
-gacutil -i bin/mono/2.0/release/log4net.dll -f -package log4net -root ${RPM_BUILD_ROOT}/%{_prefix}/lib
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_monogacdir}
 
-%clean
-%{__rm} -rf $RPM_BUILD_ROOT
+#gacutil -i bin/mono/2.0/release/log4net.dll -f -package log4net -root ${RPM_BUILD_ROOT}/%{_prefix}/lib
+gacutil -i build/bin/net/2.0/debug/log4net.dll -f -package log4net -root ${RPM_BUILD_ROOT}/%{_prefix}/lib
 
 %files
-%defattr(-,root,root,-)
-%{_prefix}/lib/mono/gac/log4net
-%{_prefix}/lib/mono/log4net
+%{_monogacdir}/log4net
+%{_monodir}/log4net
 %doc LICENSE NOTICE README.txt
 
 %files devel
-%defattr(-,root,root,-)
 %{_libdir}/pkgconfig/log4net.pc
 
-
 %changelog
+* Tue May 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.2.13-4
+- Build with mono 4
+- Declare mono_arches for EPEL6
+- Use mono_arches
+- Use xbuild insted nant for prevent recursive required. Nant need log4net.
+- Fix uppercase name problem
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.2.13-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
