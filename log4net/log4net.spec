@@ -97,7 +97,7 @@ gacutil -i build/bin/net/2.0/debug/log4net.dll -f -package log4net -root ${RPM_B
 %{_libdir}/pkgconfig/log4net.pc
 
 %changelog
-* Tue May 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.2.13-4
+* Wed May 13 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.2.13-4
 - Build with mono 4
 - Declare mono_arches for EPEL6
 - Use mono_arches
