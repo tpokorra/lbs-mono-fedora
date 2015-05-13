@@ -1,6 +1,7 @@
+%global bootstrap 1
 %if 0%{?rhel}%{?el6}%{?el7}
 %if 0%{?el6}
-%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64 ppc64le
 %endif
 # see https://lists.fedoraproject.org/pipermail/packaging/2011-May/007762.html
 %global _missing_build_ids_terminate_build 0
@@ -11,7 +12,7 @@
 %endif
 Name:           mono
 Version:        4.0.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -296,8 +297,11 @@ sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
 # Remove prebuilt binaries
 find . -name "*.dll" -not -path "./mcs/class/lib/monolite/*" -print -delete
 find . -name "*.exe" -not -path "./mcs/class/lib/monolite/*" -print -delete
-# for the moment, keep monolite. Mono 2.10 is too old
-#rm -rf mcs/class/lib/monolite/*
+%if 0%{bootstrap}
+# for bootstrap, keep monolite. Mono 2.10 is too old to compile Mono 4.0
+%else
+rm -rf mcs/class/lib/monolite/*
+%endif
 
 %build
 %ifarch ia64
@@ -315,7 +319,7 @@ export CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing"
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make
+make %{?_smp_mflags}
 
 %install
 make install DESTDIR=%{buildroot}
@@ -786,6 +790,11 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
+* Tue Apr 28 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.1-4
+- adding architecture ppc64le
+- make clear we only need monolite for bootstrap
+- enable parallel make
+
 * Mon May 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.0.1-3
 - Update to tarball 4.0.1.28
 
