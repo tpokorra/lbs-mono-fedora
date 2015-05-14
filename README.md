@@ -69,7 +69,7 @@ monosim                        |Fedora package install without changes if Copr i
 nant                           |Need mono(log4net) = 1.2.13.0
 ndesk-dbus                     |Work from Copr
 ndesk-dbus-glib                |Work from Copr
-nini                           |Need move to 4.5 profile
+nini                           |Work from Copr
 notify-sharp                   |Work from Copr
 pdfmod                         |Need move to 4.5 profile
 pinta                          |Fedora package work without changes if Copr is configured
