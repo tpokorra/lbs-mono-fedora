@@ -23,7 +23,7 @@ RepetierHost                   |Need move to 4.5 profile
 avahi-sharp                    |Need fix requires avahi-libs
 banshee                        |Work from Copr, EPEL6 need fix libgpod first, EPEL7 missing gnome-desktop-devel
 banshee-community-extensions   |Fedora package work without changes if Copr is configured
-bareftp                        |Need move to 4.5 profile
+bareftp                        |Work from Copr
 bless                          |Need move to 4.5 profile
 boo                            |Need move to 4.5 profile
 cdcollect                      |Need move to 4.5 profile
