@@ -5,17 +5,14 @@
 %global         upstream_name libgoogle-data-mono
 
 Name:           gdata-sharp
-Version:        1.4.0.2
-Release:        15%{?dist}
+Version:        2.2.0.0
+Release:        1%{?dist}
 Summary:        .NET library for the Google Data API
 
 Group:          System Environment/Libraries
 License:        ASL 2.0
 URL:            http://code.google.com/p/google-gdata/
 Source0:        http://google-gdata.googlecode.com/files/%{upstream_name}-%{version}.tar.gz
-# fixed in SVN:
-# http://code.google.com/p/google-gdata/source/detail?spec=svn933&r=890
-Patch0:         %{upstream_name}-1.4.0.2-pkgconfig.patch
 
 BuildRequires:  mono-devel mono-nunit
 #Requires:       
@@ -59,7 +56,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q -n %{upstream_name}-%{version}
-%patch0 -p1 -b .pkgconfig
+
 sed -i "s#gmcs#mcs#g" Makefile
 
 %build
@@ -88,6 +85,9 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 
 
 %changelog
+* Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.2.0.0-15
+- Update to 2.2.0.0
+
 * Tue Apr 28 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 1.4.0.2-15
 - Build with mono 4
 - Declare mono_arches for EPEL6

@@ -51,6 +51,7 @@ gudev-sharp                    |Work from Copr
 hyena                          |Work from Copr
 keepass                        |Work from Copr for Fedora, EPEL need fixes
 kimono                         |Need fix version requires of libmono-2.0.so.1
+libappindicator		       |
 libgpod                        |Work from Copr, EPEL6 need fix missing libusbx
 log4net                        |Work from Copr
 mono-addins                    |Work from Copr
