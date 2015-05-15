@@ -12,7 +12,7 @@
 %endif
 Name:           mono
 Version:        4.0.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -290,6 +290,9 @@ Development file for monodoc
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
+
+# modifications for Mono 4
+sed -i "s#mono/2.0#mono/4.5#g" data/mono-nunit.pc.in
 
 # Add undeclared Arg
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
@@ -790,7 +793,10 @@ rm -rf %{buildroot}%{_mandir}/man?/mono-configuration-crypto*
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
-* Tue Apr 28 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.1-4
+* Fri May 15 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.1-5
+- fix nunit.pc to point to 4.5 dlls
+
+* Tue May 12 2015  Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.0.1-4
 - adding architecture ppc64le
 - make clear we only need monolite for bootstrap
 - enable parallel make
