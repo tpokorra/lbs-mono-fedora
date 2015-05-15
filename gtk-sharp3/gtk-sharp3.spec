@@ -1,7 +1,7 @@
 %if 0%{?rhel}%{?el7}
 # see https://fedorahosted.org/fpc/ticket/395
-%define _monodir %{_prefix}/lib/mono
-%define _monogacdir %{_monodir}/gac
+%global _monodir %{_prefix}/lib/mono
+%global _monogacdir %{_monodir}/gac
 %endif
 
 %global debug_package %{nil}
@@ -10,7 +10,7 @@
 Summary:        GTK+ 3 and GNOME 3 bindings for Mono
 Name:           gtk-sharp3
 Version:        2.99.3
-Release:        9%{?dist}
+Release:        10%{?dist}
 License:        LGPLv2
 Group:          System Environment/Libraries
 
@@ -22,7 +22,7 @@ BuildRequires:  make
 BuildRequires:  gcc-c++
 BuildRequires:  glib2-devel
 
-URL:            http://www.mono-project.com/GtkSharp
+URL:            http://www.mono-project.com/docs/gui/gtksharp/
 Source:         http://ftp.acc.umu.se/pub/gnome/sources/gtk-sharp/2.99/gtk-sharp-%{version}.tar.xz
 
 # Mono only available on these:
@@ -66,6 +66,9 @@ This package provides the Gtk# 3 documentation for monodoc.
 
 %prep
 %setup -q -n gtk-sharp-%{version}
+
+# https://fedorahosted.org/FedoraReview/wiki/AutoTools
+sed -i "s#AM_PROG_LIBTOOL#LT_INIT#g" configure.ac
 
 # Fixes for build with Mono 4
 sed -i "s#gmcs#mcs#g" configure
@@ -120,9 +123,13 @@ find %{buildroot} -name \*.la -delete
 %{_prefix}/lib/monodoc/sources/*
 
 %changelog
+* Fri May 15 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-10
+- Fix url
+- Use global insted define for rhel and epel7
+- Replace old autotool macros in configure.ac
+
 * Mon May 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-9
 - Remove virtual provides
-
 
 * Tue May 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 2.99.3-8
 - Add /sbin/ldconfig in post and postun
