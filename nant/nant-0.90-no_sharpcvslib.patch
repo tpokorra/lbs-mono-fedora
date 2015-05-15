@@ -1,0 +1,19 @@
+diff -up nant-0.90/NAnt.build.no_sharpcvslib nant-0.90/NAnt.build
+--- nant-0.90/NAnt.build.no_sharpcvslib	2010-05-09 00:12:26.000000000 +0300
++++ nant-0.90/NAnt.build	2011-04-08 17:46:03.000000000 +0300
+@@ -41,7 +41,6 @@
+         <include name="NAnt.DotNet/NAnt.DotNet.build" />
+         <include name="NAnt.Compression/NAnt.Compression.build" />
+         <include name="NAnt.NUnit/NAnt.NUnit.build" />
+-        <include name="NAnt.SourceControl/NAnt.SourceControl.build" />
+         <include name="NAnt.MSNet/NAnt.MSNet.build" />
+         <include name="NAnt.Win32/NAnt.Win32.build" />
+         <include name="NAnt.VisualCpp/NAnt.VisualCpp.build" />
+@@ -51,7 +50,6 @@
+     <fileset id="ext.core.tests" basedir="tests">
+         <include name="NAnt.DotNet/NAnt.DotNet.build" />
+         <include name="NAnt.Compression/NAnt.Compression.build" />
+-        <include name="NAnt.SourceControl/NAnt.SourceControl.build" />
+         <include name="NAnt.MSNet/NAnt.MSNet.build" />
+         <include name="NAnt.Win32/NAnt.Win32.build" />
+         <include name="NAnt.VisualCpp/NAnt.VisualCpp.build" />

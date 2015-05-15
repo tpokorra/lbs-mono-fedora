@@ -1,0 +1,54 @@
+diff -up nant-0.90/Makefile.system_sharpziplib nant-0.90/Makefile
+--- nant-0.90/Makefile.system_sharpziplib	2011-04-08 19:05:54.000000000 +0300
++++ nant-0.90/Makefile	2011-04-08 19:05:54.000000000 +0300
+@@ -79,7 +79,7 @@ bootstrap/NAnt.DotNetTasks.dll:
+ 
+ bootstrap/NAnt.CompressionTasks.dll:
+ 	$(MCS) -target:library -warn:0 -define:MONO -out:bootstrap/NAnt.CompressionTasks.dll \
+-		-r:./bootstrap/NAnt.Core.dll -r:bootstrap/lib/common/neutral/ICSharpCode.SharpZipLib.dll \
++		-r:./bootstrap/NAnt.Core.dll -r:ICSharpCode.SharpZipLib.dll \
+ 		-recurse:src${DIRSEP}NAnt.Compression${DIRSEP}*.cs src${DIRSEP}CommonAssemblyInfo.cs
+ 
+ bootstrap/NAnt.Win32Tasks.dll:
+diff -up nant-0.90/src/NAnt.Compression/NAnt.Compression.build.system_sharpziplib nant-0.90/src/NAnt.Compression/NAnt.Compression.build
+--- nant-0.90/src/NAnt.Compression/NAnt.Compression.build.system_sharpziplib	2010-02-17 07:08:02.000000000 +0200
++++ nant-0.90/src/NAnt.Compression/NAnt.Compression.build	2011-04-08 19:05:54.000000000 +0300
+@@ -17,7 +17,7 @@
+             </sources>
+             <references basedir="${build.dir}/bin">
+                 <include name="NAnt.Core.dll" />
+-                <include name="${nant::scan-probing-paths(build.dir + '/bin','ICSharpCode.SharpZipLib.dll')}" />
++                <include name="ICSharpCode.SharpZipLib.dll" />
+             </references>
+             <resources>
+                 <include name="*.resx"/>
+diff -up nant-0.90/src/NAnt.Compression/Tasks/TarTask.cs.system_sharpziplib nant-0.90/src/NAnt.Compression/Tasks/TarTask.cs
+--- nant-0.90/src/NAnt.Compression/Tasks/TarTask.cs.system_sharpziplib	2010-05-08 21:06:43.000000000 +0300
++++ nant-0.90/src/NAnt.Compression/Tasks/TarTask.cs	2011-04-08 19:05:54.000000000 +0300
+@@ -147,7 +147,7 @@ namespace NAnt.Compression.Tasks {
+ 
+                 // do not use convert line endings of text files to \n, as this
+                 // converts all content to ASCII
+-                archive.AsciiTranslate = false;
++                archive.SetAsciiTranslation(false);
+ 
+                 // process all filesets
+                 foreach (TarFileSet fileset in TarFileSets) {
+@@ -255,7 +255,7 @@ namespace NAnt.Compression.Tasks {
+                 }
+ 
+                 // close the tar archive
+-                archive.Close();
++                archive.CloseArchive();
+             } catch (Exception ex) {
+                 // close the tar output stream
+                 if (outstream != null) {
+@@ -264,7 +264,7 @@ namespace NAnt.Compression.Tasks {
+ 
+                 // close the tar archive
+                 if (archive != null) {
+-                    archive.Close();
++                    archive.CloseArchive();
+                 }
+ 
+                 // delete the (possibly corrupt) tar file
