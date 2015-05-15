@@ -1,0 +1,24 @@
+diff -up nant-0.90/Makefile.no_ndoc nant-0.90/Makefile
+--- nant-0.90/Makefile.no_ndoc	2010-03-11 06:18:02.000000000 +0200
++++ nant-0.90/Makefile	2011-04-08 17:33:44.000000000 +0300
+@@ -73,7 +73,7 @@ bootstrap/NAnt.Core.dll:
+ bootstrap/NAnt.DotNetTasks.dll:
+ 	$(RESGEN)  src/NAnt.DotNet/Resources/Strings.resx bootstrap/NAnt.DotNet.Resources.Strings.resources
+ 	$(MCS) -target:library -warn:0 -define:MONO -out:bootstrap/NAnt.DotNetTasks.dll \
+-		-r:./bootstrap/NAnt.Core.dll -r:bootstrap/lib/net/1.0/NDoc.Core.dll \
++		-r:./bootstrap/NAnt.Core.dll \
+ 		-recurse:src${DIRSEP}NAnt.DotNet${DIRSEP}*.cs -resource:bootstrap/NAnt.DotNet.Resources.Strings.resources \
+ 		src${DIRSEP}CommonAssemblyInfo.cs
+ 
+diff -up nant-0.90/src/NAnt.DotNet/NAnt.DotNet.build.no_ndoc nant-0.90/src/NAnt.DotNet/NAnt.DotNet.build
+--- nant-0.90/src/NAnt.DotNet/NAnt.DotNet.build.no_ndoc	2010-02-17 07:08:02.000000000 +0200
++++ nant-0.90/src/NAnt.DotNet/NAnt.DotNet.build	2011-04-08 17:33:44.000000000 +0300
+@@ -22,8 +22,6 @@
+             </sources>
+             <references>
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+-                <include name="${nant::scan-probing-paths(build.dir + '/bin','NDoc.ExtendedUI.dll')}" />
+-                <include name="${nant::scan-probing-paths(build.dir + '/bin','NDoc.Core.dll')}" />
+             </references>
+             <resources prefix="NAnt.DotNet" dynamicprefix="true">
+                 <include name="Resources/**/*" />

@@ -1,0 +1,62 @@
+diff -up nant-0.90/Makefile.system_log4net nant-0.90/Makefile
+--- nant-0.90/Makefile.system_log4net	2011-04-08 19:38:50.000000000 +0300
++++ nant-0.90/Makefile	2011-04-08 19:38:50.000000000 +0300
+@@ -49,7 +49,7 @@ run-test: bootstrap
+ 	$(NANT) $(TARGET_FRAMEWORK) -f:NAnt.build test
+ 	
+ bootstrap/NAnt.exe:
+-	$(MCS) -target:exe -define:${DEFINE} -out:bootstrap${DIRSEP}NAnt.exe -r:bootstrap${DIRSEP}log4net.dll \
++	$(MCS) -target:exe -define:${DEFINE} -out:bootstrap${DIRSEP}NAnt.exe -pkg:log4net \
+ 		-recurse:src${DIRSEP}NAnt.Console${DIRSEP}*.cs src${DIRSEP}CommonAssemblyInfo.cs
+ 	
+ 
+@@ -59,15 +59,12 @@ bootstrap: setup bootstrap/NAnt.exe boot
+ setup:
+ 	mkdir -p bootstrap
+ 	cp -R lib/ bootstrap/lib
+-	# Mono loads log4net before privatebinpath is set-up, so we need this in the same directory
+-	# as NAnt.exe
+-	cp lib/common/neutral/log4net.dll bootstrap
+ 	cp src/NAnt.Console/App.config bootstrap/NAnt.exe.config
+ 
+ bootstrap/NAnt.Core.dll:
+ 	$(RESGEN)  src/NAnt.Core/Resources/Strings.resx bootstrap/NAnt.Core.Resources.Strings.resources
+ 	$(MCS) -target:library -warn:0 -define:${DEFINE} -out:bootstrap/NAnt.Core.dll -debug \
+-		-resource:bootstrap/NAnt.Core.Resources.Strings.resources -r:lib${DIRSEP}common${DIRSEP}neutral${DIRSEP}log4net.dll \
++		-resource:bootstrap/NAnt.Core.Resources.Strings.resources -pkg:log4net \
+ 		-r:System.Web.dll -recurse:src${DIRSEP}NAnt.Core${DIRSEP}*.cs src${DIRSEP}CommonAssemblyInfo.cs
+ 
+ bootstrap/NAnt.DotNetTasks.dll:
+diff -up nant-0.90/src/NAnt.Console/NAnt.Console.build.system_log4net nant-0.90/src/NAnt.Console/NAnt.Console.build
+--- nant-0.90/src/NAnt.Console/NAnt.Console.build.system_log4net	2007-11-16 14:21:36.000000000 +0200
++++ nant-0.90/src/NAnt.Console/NAnt.Console.build	2011-04-08 19:38:50.000000000 +0300
+@@ -30,10 +30,12 @@
+                 <include name="../CommonAssemblyInfo.cs" />
+             </sources>
+             <references>
+-                <include name="${build.dir}/bin/log4net.dll" />
+                 <include name="System.Configuration.dll" />
+                 <include name="System.Xml.dll" />
+             </references>
++            <pkg-references>
++                <package name="log4net"/>
++            </pkg-references>
+             <resources>
+                 <include name="*.resx"/>
+             </resources>
+diff -up nant-0.90/src/NAnt.Core/NAnt.Core.build.system_log4net nant-0.90/src/NAnt.Core/NAnt.Core.build
+--- nant-0.90/src/NAnt.Core/NAnt.Core.build.system_log4net	2007-04-14 16:00:49.000000000 +0300
++++ nant-0.90/src/NAnt.Core/NAnt.Core.build	2011-04-08 19:38:50.000000000 +0300
+@@ -25,9 +25,11 @@
+                 <include name="Resources/**/*" />
+             </resources>
+             <references>
+-                <include name="${build.dir}/bin/log4net.dll"/>
+                 <include name="System.Web.dll"/>
+             </references>
++            <pkg-references>
++                <package name="log4net"/>
++            </pkg-references>
+         </csc>
+     </target>
+ </project>
