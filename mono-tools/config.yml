@@ -1,0 +1,3 @@
+lbs:
+  source:
+    download: ["http://ftp.novell.com/pub/mono/sources/mono-tools/mono-tools-2.10.tar.bz2"]
