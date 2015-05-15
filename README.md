@@ -21,9 +21,9 @@ Package                        |Run with Mono 4
 OpenTK                         |Work from Copr, EPEL6 need fix
 RepetierHost                   |Need move to 4.5 profile
 avahi-sharp                    |Need fix requires avahi-libs
-banshee                        |Work from Copr, EPEL6 need fix libgpod first, EPEL7 missing gnome-desktop-devel
+banshee                        |Work from Copr, EPEL6/7 need fix libgpod first
 banshee-community-extensions   |Fedora package work without changes if Copr is configured
-bareftp                        |Work from Copr
+bareftp                        |Work from Copr, EPEL6 need fix gnome-keyring-sharp
 bless                          |Need move to 4.5 profile
 boo                            |Need move to 4.5 profile
 cdcollect                      |Need move to 4.5 profile
@@ -51,7 +51,7 @@ gudev-sharp                    |Work from Copr
 hyena                          |Work from Copr
 keepass                        |Work from Copr for Fedora, EPEL need fixes
 kimono                         |Need fix version requires of libmono-2.0.so.1
-libappindicator		       |
+libappindicator                |
 libgpod                        |Work from Copr, EPEL6 need fix missing libusbx
 log4net                        |Work from Copr
 mono-addins                    |Work from Copr
