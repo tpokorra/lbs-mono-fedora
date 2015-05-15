@@ -2,19 +2,20 @@
 
 Summary: A collection of tools for mono applications
 Name: mono-tools
-Version: 2.10
-Release: 12%{?dist}
+Version: 3.10
+Release: 1%{?dist}
 License: MIT
 Group: Development/Tools
-Source0: http://ftp.novell.com/pub/mono/sources/mono-tools/%{name}-%{version}.tar.bz2
+Source0: http://download.mono-project.com/sources/mono-tools/%{name}-%{version}.tar.gz
+Patch0: mono-tools-3.10-webdoc.patch
 URL: http://www.mono-project.com/Main_Page
-BuildRequires:  mono-data, mono-devel >= 2.8, gtk-sharp2-gapi, pkgconfig mono-nunit
+BuildRequires:  mono-data, mono-devel >= 4.0, gtk-sharp2-gapi, pkgconfig mono-nunit
 BuildRequires: gnome-sharp-devel, gettext-devel
 BuildRequires: gtk-sharp2-devel autoconf automake libtool mono-nunit-devel
 BuildRequires: hunspell-devel desktop-file-utils gnome-desktop-sharp-devel
 BuildRequires: mono-data-oracle monodoc-devel mono-web-devel
 BuildRequires: webkit-sharp-devel desktop-file-utils
-Requires: mono-core >= 2.8 links monodoc
+Requires: mono-core >= 4.0 links monodoc
 Requires: mono(webkit-sharp)
 
 # Mono only available on these:
@@ -55,8 +56,11 @@ Requires: %{name} = %{version}-%{release}
 Identify differences in the API exposed by mono library assemblies.
 
 %prep
-%setup -q 
+%setup -q
+%patch0 -p1
 chmod 644 COPYING
+
+find . -name "Makefile.in" -print -exec sed -i "s#GMCS#MCS#g" {} \;
 
 %build
 %configure --libdir=%{_prefix}/lib
@@ -163,6 +167,9 @@ update-desktop-database &> /dev/null || :
 %{_mandir}/man5/gendarme*
 
 %changelog
+* Fri May 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.10-1
+- upgrade to mono-tools 3.10, build with Mono4
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.10-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
