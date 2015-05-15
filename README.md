@@ -66,7 +66,7 @@ monobristol                    |Fedora package install without changes if Copr i
 monodevelop                    |Work from Copr
 monodevelop-debugger-gdb       |Fedora package install without changes if Copr is configured
 monosim                        |Fedora package install without changes if Copr is configured
-nant                           |Need mono(log4net) = 1.2.13.0
+nant                           |Need mono(log4net) = 1.2.13.0. bootstrap works on Copr
 ndesk-dbus                     |Work from Copr
 ndesk-dbus-glib                |Work from Copr
 nini                           |Work from Copr
