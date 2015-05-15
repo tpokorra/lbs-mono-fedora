@@ -61,7 +61,7 @@ mono-cecil                     |Work from Copr
 mono-cecil-flowanalysis        |Need move to 4.5 profile
 mono-debugger                  |Need move to 4.5 profile
 mono-reflection                |Need move to 4.5 profile
-mono-tools                     |Need move to 4.5 profile
+mono-tools                     |Work from Copr
 mono-zeroconf                  |Work from Copr
 monobristol                    |Fedora package install without changes if Copr is configured
 monodevelop                    |Work from Copr
