@@ -4,3 +4,6 @@ lbs:
       repos: ['epel-release']
     '7':
       repos: ['epel-release']
+  fedora:
+    '21'
+      repos: ['https://copr.fedoraproject.org/coprs/tpokorra/mono/repo/fedora-21/tpokorra-mono-fedora-21.repo']
