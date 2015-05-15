@@ -15,6 +15,7 @@ BuildRequires: gtk-sharp2-devel autoconf automake libtool mono-nunit-devel
 BuildRequires: hunspell-devel desktop-file-utils gnome-desktop-sharp-devel
 BuildRequires: mono-data-oracle monodoc-devel mono-web-devel
 BuildRequires: webkit-sharp-devel desktop-file-utils
+BuildRequires: libgdiplus-devel
 Requires: mono-core >= 4.0 links monodoc
 Requires: mono(webkit-sharp)
 
@@ -263,7 +264,7 @@ webkit engine of monodoc (BZ 478650)
 gtkhtml engine of monodoc (BZ 478650)
 - Minor spec file beautification to fix some rpmlint warnings
 
-* Sun Jun 09 2009 Paul F. Johnson <paul@all-the-johnsons.co.uk> - 2.4.2-1
+* Tue Jun 09 2009 Paul F. Johnson <paul@all-the-johnsons.co.uk> - 2.4.2-1
 - Bump to 2.4.2 preview 1
 - Add support for ppc and ppc64
 
@@ -351,7 +352,7 @@ gtkhtml engine of monodoc (BZ 478650)
 - fix patch files
 - branch off monodoc documentation
 
-* Wed Oct 03 2008 Paul F. Johnson <paul@all-the-johnsons.co.uk> - 2.0-7
+* Fri Oct 03 2008 Paul F. Johnson <paul@all-the-johnsons.co.uk> - 2.0-7
 - bump to rc3
 
 * Wed Oct 01 2008 Paul F. Johnson <paul@all-the-johnsons.co.uk> - 2.0-6
