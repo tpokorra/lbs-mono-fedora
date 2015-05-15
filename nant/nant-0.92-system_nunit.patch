@@ -1,0 +1,212 @@
+diff -uNr nant-0.92.old/examples/NUnit2/ReferenceAssemblies/default.build nant-0.92/examples/NUnit2/ReferenceAssemblies/default.build
+--- nant-0.92.old/examples/NUnit2/ReferenceAssemblies/default.build	2012-06-09 16:05:53.000000000 +0200
++++ nant-0.92/examples/NUnit2/ReferenceAssemblies/default.build	2015-05-12 22:19:40.235468824 +0200
+@@ -26,8 +26,10 @@
+ 			</sources>
+ 			<references basedir="Libraries">
+ 				<include name="Helper.dll" />
+-				<include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+ 			</references>
++			<pkg-references>
++			    <package name="mono-nunit"/>
++			</pkg-references>
+ 		</csc>
+ 	</target>
+ 
+diff -uNr nant-0.92.old/src/NAnt.NUnit/NAnt.NUnit.build nant-0.92/src/NAnt.NUnit/NAnt.NUnit.build
+--- nant-0.92.old/src/NAnt.NUnit/NAnt.NUnit.build	2012-06-09 16:05:54.000000000 +0200
++++ nant-0.92/src/NAnt.NUnit/NAnt.NUnit.build	2015-05-12 22:07:40.615521107 +0200
+@@ -18,27 +18,9 @@
+             <references>
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+             </references>
+-        </csc>
+-        <csc target="library" define="${current.build.defines}" warnaserror="${build.warnaserror}" debug="${build.debug}" output="${build.dir}/bin/NAnt.NUnit1Tasks.dll" doc="${build.dir}/bin/NAnt.NUnit1Tasks.xml">
+-            <nowarn>
+-                <!-- do not report warnings for missing XML comments -->
+-                <warning number="1591" />
+-                 <!-- workaround for Mono bug #61902: do not report deprecation warnings -->
+-                <warning number="0618" if="${framework::get-family(framework::get-target-framework()) == 'mono'}" />
+-            </nowarn>
+-            <sources>
+-                <include name="NUnit1/**/*.cs"/>
+-                <!-- common assembly-level attributes -->
+-                <include name="../CommonAssemblyInfo.cs" />
+-            </sources>
+-            <references>
+-                <include name="${build.dir}/bin/NAnt.Core.dll" />
+-                <include name="${build.dir}/bin/NAnt.NUnit.dll" />
+-                <include name="${nant::scan-probing-paths(build.dir + '/bin','NUnitCore.dll')}" />
+-            </references>
+-            <resources>
+-                <include name="*.resx"/>
+-            </resources>
++            <pkg-references>
++		    <package name="mono-nunit" />
++            </pkg-references>
+         </csc>
+         <csc target="library" define="${current.build.defines}" warnaserror="${build.warnaserror}" debug="${build.debug}" output="${build.dir}/bin/NAnt.NUnit2Tasks.dll" doc="${build.dir}/bin/NAnt.NUnit2Tasks.xml">
+             <nowarn>
+@@ -54,11 +36,10 @@
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+                 <include name="${build.dir}/bin/NAnt.NUnit.dll" />
+                 <include name="${build.dir}/bin/NAnt.DotNetTasks.dll" />
+-                <include name="${nant::scan-probing-paths(build.dir + '/bin','nunit.framework.dll')}" />
+-                <include name="${nant::scan-probing-paths(build.dir + '/bin','nunit.core.dll')}" />
+-                <include name="${nant::scan-probing-paths(build.dir + '/bin','nunit.util.dll')}" />
+-                <include name="${nant::scan-probing-paths(build.dir + '/bin','nunit.core.interfaces.dll')}" />
+             </references>
++            <pkg-references>
++		    <package name="mono-nunit" />
++            </pkg-references>
+         </csc>
+     </target>
+ </project>
+diff -uNr nant-0.92.old/src/NAnt.NUnit/NUnit2/NUnit2Task.cs nant-0.92/src/NAnt.NUnit/NUnit2/NUnit2Task.cs
+--- nant-0.92.old/src/NAnt.NUnit/NUnit2/NUnit2Task.cs	2012-06-09 16:05:54.000000000 +0200
++++ nant-0.92/src/NAnt.NUnit/NUnit2/NUnit2Task.cs	2015-05-12 22:09:54.572186739 +0200
+@@ -31,6 +31,7 @@
+ using System.Xml;
+ using System.Xml.Xsl;
+ using System.Xml.XPath;
++using NUnit.Core.Filters;
+ 
+ using NUnit.Core;
+ using NUnit.Core.Filters;
+diff -uNr nant-0.92.old/tests/NAnt.Compression/NAnt.Compression.build nant-0.92/tests/NAnt.Compression/NAnt.Compression.build
+--- nant-0.92.old/tests/NAnt.Compression/NAnt.Compression.build	2012-06-09 16:05:55.000000000 +0200
++++ nant-0.92/tests/NAnt.Compression/NAnt.Compression.build	2015-05-12 22:09:54.572186739 +0200
+@@ -21,8 +21,10 @@
+             <references>
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+                 <include name="${build.dir}/bin/NAnt.Core.Tests.dll" />
+-                <include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+             </references>
++            <pkg-references>
++                <package name="mono-nunit"/>
++            </pkg-references>
+         </csc>
+     </target>
+     <target name="test" depends="build">
+diff -uNr nant-0.92.old/tests/NAnt.Console/NAnt.Console.build nant-0.92/tests/NAnt.Console/NAnt.Console.build
+--- nant-0.92.old/tests/NAnt.Console/NAnt.Console.build	2012-06-09 16:05:55.000000000 +0200
++++ nant-0.92/tests/NAnt.Console/NAnt.Console.build	2015-05-12 22:09:54.572186739 +0200
+@@ -22,8 +22,10 @@
+             <references>
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+                 <include name="${build.dir}/bin/NAnt.Core.Tests.dll" />
+-                <include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+             </references>
++            <pkg-references>
++                <package name="mono-nunit"/>
++            </pkg-references>
+         </csc>
+     </target>
+     <target name="test" depends="build">
+diff -uNr nant-0.92.old/tests/NAnt.Core/NAnt.Core.build nant-0.92/tests/NAnt.Core/NAnt.Core.build
+--- nant-0.92.old/tests/NAnt.Core/NAnt.Core.build	2012-06-09 16:05:55.000000000 +0200
++++ nant-0.92/tests/NAnt.Core/NAnt.Core.build	2015-05-12 22:10:40.440757066 +0200
+@@ -22,9 +22,11 @@
+             </sources>
+             <references>
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+-                <include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+                 <include name="${nant::scan-probing-paths('netDumbster.dll')}" />
+             </references>
++            <pkg-references>
++                <package name="mono-nunit"/>
++            </pkg-references>
+             <resources failonempty="true" basedir="Resources" dynamicprefix="true" prefix="XML:">
+                 <include name="**/*.xml"/>
+                 <include name="**/*.build"/>
+diff -uNr nant-0.92.old/tests/NAnt.DotNet/NAnt.DotNet.build nant-0.92/tests/NAnt.DotNet/NAnt.DotNet.build
+--- nant-0.92.old/tests/NAnt.DotNet/NAnt.DotNet.build	2012-06-09 16:05:56.000000000 +0200
++++ nant-0.92/tests/NAnt.DotNet/NAnt.DotNet.build	2015-05-12 22:09:54.573186752 +0200
+@@ -29,8 +29,10 @@
+                 <include name="${build.dir}/bin/NAnt.Core.dll"/>
+                 <include name="${build.dir}/bin/NAnt.Core.Tests.dll"/>
+                 <include name="${build.dir}/bin/${project::get-name()}Tasks.dll"/>
+-                <include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+             </references>
++            <pkg-references>
++                <package name="mono-nunit"/>
++            </pkg-references>
+         </csc>
+     </target>
+     <target name="test" depends="build">
+diff -uNr nant-0.92.old/tests/NAnt.MSNet/NAnt.MSNet.build nant-0.92/tests/NAnt.MSNet/NAnt.MSNet.build
+--- nant-0.92.old/tests/NAnt.MSNet/NAnt.MSNet.build	2012-06-09 16:05:56.000000000 +0200
++++ nant-0.92/tests/NAnt.MSNet/NAnt.MSNet.build	2015-05-12 22:19:13.211132806 +0200
+@@ -21,8 +21,10 @@
+             <references>
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+                 <include name="${build.dir}/bin/NAnt.Core.Tests.dll" />
+-                <include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+             </references>
++            <pkg-references>
++                <package name="mono-nunit"/>
++            </pkg-references>
+         </csc>
+     </target>
+     <target name="test" depends="build" if="${framework::get-family(framework::get-target-framework()) == 'net'}">
+diff -uNr nant-0.92.old/tests/NAnt.SourceControl/NAnt.SourceControl.build nant-0.92/tests/NAnt.SourceControl/NAnt.SourceControl.build
+--- nant-0.92.old/tests/NAnt.SourceControl/NAnt.SourceControl.build	2012-06-09 16:05:56.000000000 +0200
++++ nant-0.92/tests/NAnt.SourceControl/NAnt.SourceControl.build	2015-05-12 22:18:52.556875994 +0200
+@@ -21,8 +21,10 @@
+             <references>
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+                 <include name="${build.dir}/bin/NAnt.Core.Tests.dll" />
+-                <include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+-            </references>
++	    </references>
++            <pkg-references>
++                <package name="mono-nunit"/>
++            </pkg-references>
+         </csc>
+     </target>
+     <target name="test" depends="build">
+diff -uNr nant-0.92.old/tests/NAnt.VisualCpp/NAnt.VisualCpp.build nant-0.92/tests/NAnt.VisualCpp/NAnt.VisualCpp.build
+--- nant-0.92.old/tests/NAnt.VisualCpp/NAnt.VisualCpp.build	2012-06-09 16:05:56.000000000 +0200
++++ nant-0.92/tests/NAnt.VisualCpp/NAnt.VisualCpp.build	2015-05-12 22:09:54.573186752 +0200
+@@ -22,8 +22,10 @@
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+                 <include name="${build.dir}/bin/NAnt.Core.Tests.dll" />
+                 <include name="${build.dir}/bin/NAnt.VisualCppTasks.dll" />
+-                <include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+             </references>
++            <pkg-references>
++                <package name="mono-nunit"/>
++            </pkg-references>
+         </csc>
+     </target>
+     <target name="test" depends="build" if="${platform::is-windows()}">
+diff -uNr nant-0.92.old/tests/NAnt.VSNet/NAnt.VSNet.build nant-0.92/tests/NAnt.VSNet/NAnt.VSNet.build
+--- nant-0.92.old/tests/NAnt.VSNet/NAnt.VSNet.build	2012-06-09 16:05:56.000000000 +0200
++++ nant-0.92/tests/NAnt.VSNet/NAnt.VSNet.build	2015-05-12 22:09:54.574186764 +0200
+@@ -22,8 +22,10 @@
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+                 <include name="${build.dir}/bin/NAnt.Core.Tests.dll" />
+                 <include name="${build.dir}/bin/NAnt.VisualCpp.Tests.dll" />
+-                <include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+             </references>
++            <pkg-references>
++                <package name="mono-nunit"/>
++            </pkg-references>
+         </csc>
+     </target>
+     <target name="test" depends="build" if="${platform::is-windows()}">
+diff -uNr nant-0.92.old/tests/NAnt.Win32/NAnt.Win32.build nant-0.92/tests/NAnt.Win32/NAnt.Win32.build
+--- nant-0.92.old/tests/NAnt.Win32/NAnt.Win32.build	2012-06-09 16:05:56.000000000 +0200
++++ nant-0.92/tests/NAnt.Win32/NAnt.Win32.build	2015-05-12 22:09:54.574186764 +0200
+@@ -21,8 +21,10 @@
+             <references>
+                 <include name="${build.dir}/bin/NAnt.Core.dll" />
+                 <include name="${build.dir}/bin/NAnt.Core.Tests.dll" />
+-                <include name="${nant::scan-probing-paths('nunit.framework.dll')}" />
+             </references>
++            <pkg-references>
++                <package name="mono-nunit"/>
++            </pkg-references>
+         </csc>
+     </target>
+     <target name="test" depends="build" if="${platform::is-windows()}">
