@@ -5,7 +5,7 @@
 Summary: NAnt is a build tool for Mono and .NET
 Name: nant
 Version: 0.92
-Release: 17%{?dist}
+Release: 1%{?dist}
 Epoch: 1
 Source0: http://downloads.sourceforge.net/nant/%{name}-%{version}-src.tar.gz
 Patch1: nant-0.92-no_ndoc.patch
@@ -111,6 +111,14 @@ rm -rf lib/*
 %patch5 -p1 -b .system_log4net
 %endif
 
+#Fixes for Mono 4
+sed -i "s#gmcs#mcs#g" Makefile
+sed -i "s#TARGET=mono-2.0#TARGET=mono-4.0#g" Makefile
+sed -i "s#mono/4.0#mono/4.5#g" src/NAnt.Console/App.config
+sed -i "s#dmcs#mcs#g" src/NAnt.Console/App.config
+find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
+
 %build
 make
 
@@ -150,6 +158,9 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/nant.pc
 
 %changelog
+* Fri May 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> 0.92-1
+- upgrade to NAnt 0.92, build for Mono 4
+
 * Tue Oct 14 2014 Karsten Hopp <karsten@redhat.com> 0.90-17
 - change exclusivearch from ppc64 to power64 macro to include ppc64le
 
@@ -277,7 +288,7 @@ rm -rf %{buildroot}
 * Fri Jun 06 2008 Caolán McNamara <caolanm@redhat.com> - 1:0.85-21
 - rebuild for dependancies
 
-* Mon Apr 10 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 1:0.85-20
+* Thu Apr 10 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 1:0.85-20
 - don't use prebuilt binary bits
 
 * Mon Apr  7 2008 Alex Lancaster <alexlan[AT]fedoraproject org> - 1:0.85-19
