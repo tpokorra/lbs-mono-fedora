@@ -1,0 +1,54 @@
+diff -Nru cdcollect-0.6.0-orig/src/cdcollect.in cdcollect-0.6.0/src/cdcollect.in
+--- cdcollect-0.6.0-orig/src/cdcollect.in	2006-11-24 18:12:13.000000000 +0100
++++ cdcollect-0.6.0/src/cdcollect.in	2007-07-17 18:08:13.000000000 +0200
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-LD_LIBRARY_PATH="@prefix@/lib/cdcollect:$LD_LIBRARY_PATH"
++LD_LIBRARY_PATH="@libdir@/cdcollect:$LD_LIBRARY_PATH"
+ export LD_LIBRARY_PATH
+ 
+-mono @prefix@/lib/cdcollect/cdcollect.exe $@
++mono @libdir@/cdcollect/cdcollect.exe $@
+diff -Nru cdcollect-0.6.0-orig/src/Makefile.am cdcollect-0.6.0/src/Makefile.am
+--- cdcollect-0.6.0-orig/src/Makefile.am	2006-11-24 18:12:13.000000000 +0100
++++ cdcollect-0.6.0/src/Makefile.am	2007-07-17 18:06:59.000000000 +0200
+@@ -63,7 +63,7 @@
+ 
+ all: cdcollect.exe
+ 
+-cdcollectlibdir = $(prefix)/lib/cdcollect
++cdcollectlibdir = $(libdir)/cdcollect
+ 
+ install-data-local: cdcollect.exe
+ 	$(mkinstalldirs) $(DESTDIR)$(cdcollectlibdir)
+@@ -72,7 +72,7 @@
+ bin_SCRIPTS = cdcollect
+ 
+ cdcollect: cdcollect.in
+-	sed -e "s|\@prefix\@|$(prefix)|" < $(srcdir)/cdcollect.in > cdcollect
++	sed -e "s|\@libdir\@|$(libdir)|" < $(srcdir)/cdcollect.in > cdcollect
+ 	chmod +x cdcollect 
+ 
+ EXTRA_DIST =				\
+diff -Nru cdcollect-0.6.0-orig/src/Makefile.in cdcollect-0.6.0/src/Makefile.in
+--- cdcollect-0.6.0-orig/src/Makefile.in	2006-11-24 18:12:36.000000000 +0100
++++ cdcollect-0.6.0/src/Makefile.in	2007-07-17 18:07:51.000000000 +0200
+@@ -270,7 +270,7 @@
+ 	-resource:$(top_srcdir)/resources/icons/cdcollect_small.png,cdcollect_small.png \
+ 	-resource:$(top_srcdir)/resources/icons/cdmovie.png,cdmovie.png
+ 
+-cdcollectlibdir = $(prefix)/lib/cdcollect
++cdcollectlibdir = $(libdir)/cdcollect
+ bin_SCRIPTS = cdcollect
+ EXTRA_DIST = \
+ 	$(CDCOLLECT_CSFILES)	\
+@@ -485,7 +485,7 @@
+ 	$(INSTALL_DATA) cdcollect.exe $(DESTDIR)$(cdcollectlibdir)/cdcollect.exe	
+ 
+ cdcollect: cdcollect.in
+-	sed -e "s|\@prefix\@|$(prefix)|" < $(srcdir)/cdcollect.in > cdcollect
++	sed -e "s|\@libdir\@|$(libdir)|" < $(srcdir)/cdcollect.in > cdcollect
+ 	chmod +x cdcollect 
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.
