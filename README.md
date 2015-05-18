@@ -1,7 +1,7 @@
 # lbs-mono-fedora
 Mono 4 packages for Fedora
 
-SeeBuild in [koji f23-mono4](https://copr.fedoraproject.org/coprs/tpokorra/mono
+See https://copr.fedoraproject.org/coprs/tpokorra/mono
 
 # New packages
 Package                        |Notes
