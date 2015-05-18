@@ -1,0 +1,9 @@
+diff -uraN boo-0.9.4.9.orig/extras/boo.pc.in boo-0.9.4.9/extras/boo.pc.in
+--- boo-0.9.4.9.orig/extras/boo.pc.in	2010-12-30 19:01:48.000000000 +0100
++++ boo-0.9.4.9/extras/boo.pc.in	2011-02-19 22:59:47.057876055 +0100
+@@ -6,4 +6,4 @@
+ Name: Boo
+ Description: A wrist friendly language for the CLI
+ Version: @VERSION@
+-Libs: -r:${libdir}/boo/Boo.Lang.dll -r:${libdir}/boo/Boo.Lang.Useful.dll -r:${libdir}/boo/Boo.Lang.CodeDom.dll -r:${libdir}/boo/Boo.Lang.Compiler.dll -r:${libdir}/boo/Boo.Lang.Parser.dll -r:${libdir}/boo/Boo.Lang.Interpreter.dll
++Libs: -r:${libdir}/mono/boo/Boo.Lang.dll -r:${libdir}/mono/boo/Boo.Lang.Useful.dll -r:${libdir}/mono/boo/Boo.Lang.CodeDom.dll -r:${libdir}/mono/boo/Boo.Lang.Compiler.dll -r:${libdir}/mono/boo/Boo.Lang.Parser.dll -r:${libdir}/mono/boo/Boo.Lang.Interpreter.dll

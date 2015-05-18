@@ -1,0 +1,12 @@
+diff -uraN boo-0.9.4.9/default.build boo-0.9.4.9.orig/default.build
+--- boo-0.9.4.9/default.build	2011-01-20 13:25:04.000000000 +0100
++++ boo-0.9.4.9.orig/default.build	2011-02-19 22:53:14.708570456 +0100
+@@ -579,7 +579,7 @@
+ 
+ 		<property name="sharedmime.prefix" value="${pkg-config::get-variable('shared-mime-info','prefix')}" />
+ 		<property name="fakeroot.sharedmime" value="${install.destdir}/${sharedmime.prefix}" />
+-		<property name="gsv.prefix" value="${pkg-config::get-variable('gtksourceview-1.0','prefix')}" />
++		<property name="gsv.prefix" value="${pkg-config::get-variable('gtksourceview-2.0','prefix')}" />
+ 		<property name="fakeroot.gsv" value="${install.destdir}/${gsv.prefix}" />
+ 
+ 		<mkdir dir="${fakeroot.boolib}"/>
