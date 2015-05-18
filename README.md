@@ -32,7 +32,7 @@ dbus-sharp-glib                |Work from Copr
 docky                          |Work from Copr, EPEL6 need fix gnome-keyring-sharp
 gbrainy                        |Fedora package work without changes if Copr is configured
 gdata-sharp                    |Work from Copr
-gecko-sharp2                   |Need move to 4.5 profile
+gecko-sharp2                   |Build in [koji f23-mono4](http://koji.fedoraproject.org/koji/buildinfo?buildID=637633)
 gio-sharp                      |Work from Copr
 giver                          |Nedd fix avahi-sharp
 gkeyfile-sharp                 |Work from Copr
@@ -43,7 +43,7 @@ gnome-keyring-sharp            |Work from Copr, Epel6 missing libgnome-keyring-d
 gnome-rdp                      |Need move to 4.5 profile
 gnome-sharp                    |Work from Copr
 gnome-subtitles                |Fedora package work without changes if Copr is configured
-gsf-sharp                      |Need move to 4.5 profile
+gsf-sharp                      |Build in [koji f23-mono4](http://koji.fedoraproject.org/koji/buildinfo?buildID=637661)
 gtk-sharp-beans                |Work from Copr
 gtk-sharp2                     |Work from Copr
 gtksourceview-sharp            |Need move to 4.5 profile
@@ -72,7 +72,7 @@ ndesk-dbus                     |Work from Copr
 ndesk-dbus-glib                |Work from Copr
 nini                           |Work from Copr
 notify-sharp                   |Work from Copr
-pdfmod                         |Need move to 4.5 profile
+pdfmod                         |Build in [koji f23-mono4](http://koji.fedoraproject.org/koji/buildinfo?buildID=637668)
 pinta                          |Fedora package work without changes if Copr is configured
 poppler-sharp                  |Work from Copr
 qyoto                          |Need move to 4.5 profile
