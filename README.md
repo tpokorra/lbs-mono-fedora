@@ -9,7 +9,7 @@ Package                        |Notes
 gtk-sharp3                     |Epel6 missing gtk3. Build in [koji f23-mono4](http://koji.fedoraproject.org/koji/buildinfo?buildID=637565)
 monodevelop-database           |Epel6 need fix mysql-connection-net first
 mysql-connector-net            |Epel6 fail build when try apply patch0
-notify-sharp3                  |Epel6 missing gtk3
+notify-sharp3                  |Epel6 missing gtk3. [Review request](https://bugzilla.redhat.com/show_bug.cgi?id=1222662)
 npgsql                         |
 nuget                          |
 nunit                          |
