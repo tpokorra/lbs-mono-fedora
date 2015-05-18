@@ -26,7 +26,7 @@ banshee-community-extensions   |Fedora package work without changes if Copr is c
 bareftp                        |Work from Copr, EPEL6 need fix gnome-keyring-sharp
 bless                          |Need move to 4.5 profile
 boo                            |Need move to 4.5 profile
-cdcollect                      |Need move to 4.5 profile
+cdcollect                      |Work from Copr, only need rebuild
 dbus-sharp                     |Work from Copr
 dbus-sharp-glib                |Work from Copr
 docky                          |Work from Copr, EPEL6 need fix gnome-keyring-sharp
