@@ -1,10 +1,14 @@
 %define debug_package %{nil}
-%define monodir %{_prefix}/lib
+%if 0%{?rhel}%{?el7}
+# see https://fedorahosted.org/fpc/ticket/395
+%global _monodir %{_prefix}/lib/mono
+%global _monogacdir %{_monodir}/gac
+%endif
 
 Summary: An OO statically typed language for CLI
 Name: boo
 Version: 0.9.4.9
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: MIT
 Group: Development/Languages
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -12,9 +16,10 @@ URL: http://boo.codehaus.org
 Source0: http://dist.codehaus.org/boo/distributions/%{name}-%{version}-src.tar.bz2
 Patch0: boo-pkgconfig_path_fix.patch
 Patch1: boo-gtksourceview.patch
+Patch2: boo-removeprebuild.patch
 BuildRequires: mono-devel, gtksourceview2-devel, shared-mime-info, pkgconfig, nant
 # Mono only available on these:
-ExclusiveArch: %ix86 x86_64 ppc ppc64 ia64 sparcv9 alpha s390x
+ExclusiveArch: %mono_arches
 # Nant needs to be built for %%{arm}
 
 %description
@@ -34,16 +39,17 @@ Development files for boo
 %setup -q
 %patch0 -p1 -b .pc-original
 %patch1 -p1 -b .sourceview
+%patch2 -p1
 
 # Get rid of prebuilt dll files
 rm -rf bin/*.dll bin/pt/*.dll
 
 %build
-nant -D:install.prefix=%{_prefix} -D:install.libdir=%{monodir}
+nant -D:install.prefix=%{_prefix} -D:install.libdir=%{_monodir}
 
 %install
 rm -rf %{buildroot}
-nant -f:default.build install -D:install.buildroot=%{buildroot} -D:install.prefix=%{buildroot}%{_prefix} -D:install.share=%{buildroot}%{_datadir} -D:install.libdir=%{buildroot}%{monodir} -D:install.bindir=%{buildroot}%{_bindir} -D:fakeroot.sharedmime=%{buildroot}%{_datadir}/.. -D:fakeroot.gsv=%{buildroot}%{_prefix}
+nant -f:default.build install -D:install.buildroot=%{buildroot} -D:install.prefix=%{buildroot}%{_prefix} -D:install.share=%{buildroot}%{_datadir} -D:install.libdir=%{buildroot}%{_monodir} -D:install.bindir=%{buildroot}%{_bindir} -D:fakeroot.sharedmime=%{buildroot}%{_datadir}/.. -D:fakeroot.gsv=%{buildroot}%{_prefix}
 
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgconfig/* $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
@@ -65,11 +71,11 @@ fi
 %files 
 %defattr(-,root,root,-)
 %doc license.txt notice.txt readme.txt docs/BooManifesto.sxw
-%{monodir}/boo*/
-%exclude %{monodir}/boo/Boo.NAnt.Tasks.dll
-%dir %{monodir}/mono/boo
-%{monodir}/mono/boo/*.dll
-%{monodir}/mono/gac/Boo*/
+%{_monodir}/boo*/
+%exclude %{_monodir}/Boo.NAnt.Tasks.dll
+%dir %{_monodir}/boo
+%{_monodir}/boo/*.dll
+%{_monogacdir}/Boo*/
 %{_bindir}/boo*
 %exclude %{_datadir}/gtksourceview-1.0/language-specs/boo.lang
 %{_datadir}/mime/packages/boo*
@@ -78,9 +84,13 @@ fi
 %files devel
 %defattr(-,root,root,-)
 %{_libdir}/pkgconfig/boo.pc
-%{monodir}/boo/Boo.NAnt.Tasks.dll
+%{_monodir}/boo/Boo.NAnt.Tasks.dll
 
 %changelog
+* Mon May 18 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 0.9.4.9-12
+- Rebuild for mono 4
+- Use mono macros
+
 * Mon Sep 08 2014 Rex Dieter <rdieter@fedoraproject.org> 0.9.4.9-11
 - update mime scriptlet
 

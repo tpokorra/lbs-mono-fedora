@@ -1,0 +1,15 @@
+--- a/default.build
++++ b/default.build
+@@ -612,12 +612,6 @@
+ 			</exec>
+ 		</do>
+ 		</foreach>
+-		
+-		<copy todir="${fakeroot.boolib}/pt">
+-			<fileset basedir="${build.dir}/pt">
+-				<include name="*"/>
+-			</fileset>
+-		</copy>
+ 
+ 		<copy todir="${fakeroot.bindir}">
+ 			<fileset basedir="${build.dir}">
