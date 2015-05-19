@@ -17,7 +17,6 @@ Patch3:         monodevelop-nuget-unbundle.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 2.6.3
-BuildRequires:  nunit25-devel
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
@@ -67,6 +66,7 @@ find -name '*.dll' -exec rm -f {} \;
 #Fixes for Mono 4
 sed -i "s#gmcs#mcs#g" configure
 sed -i "s#gmcs#mcs#g" configure.in
+sed -i "s#mono-nunit#nunit#g" configure.in
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 
