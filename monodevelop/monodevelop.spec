@@ -3,7 +3,7 @@
 
 Name:           monodevelop
 Version:        5.9
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
@@ -122,6 +122,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Tue May 19 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.9-4
+- Fix dependancies on nunit, no need for NUnit 2.5 anymore
+
 * Mon May 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9-3
 - Fix mono-devel version required
 
