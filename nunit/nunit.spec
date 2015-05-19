@@ -5,7 +5,7 @@
 
 Name:           nunit
 Version:        2.6.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT
 Group:          Development/Libraries
@@ -16,6 +16,7 @@ Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
 BuildRequires:  mono-devel libgdiplus-devel
 ExclusiveArch:  %{mono_arches}
+Obsoletes:       mono-nunit
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -31,6 +32,7 @@ Summary:        Development files for NUnit
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
 Requires:       pkgconfig
+Obsoletes:       mono-nunit-devel
  
 %description devel
 Development files for %{name}.
@@ -87,6 +89,9 @@ done
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Tue May 19 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.3-4
+- this package replaces mono-nunit
+
 * Mon May 04 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.6.3-3
 - Move to 2.6 folder for compat with other versions
 - Use real source file
