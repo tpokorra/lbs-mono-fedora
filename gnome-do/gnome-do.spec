@@ -1,16 +1,15 @@
 %global			debug_package %{nil}
-%global			mainver 0.95.1
 
 Name:			gnome-do
-Version:		%{mainver}
-Release:		4%{?dist}
+Version:		0.95.3
+Release:		1%{?dist}
 Summary:		Quick launch and search
 
 License:		GPLv3+
 Group:			Applications/File
 URL:			http://do.cooperteam.net/
-# http://launchpad.net/do/trunk/0.95.1/+download/gnome-do-0.95.1.tar.gz
-Source0:		http://launchpad.net/do/trunk/%{mainver}/+download/gnome-do-%{version}.tar.gz
+Source0:		http://launchpad.net/do/trunk/%{version}/+download/gnome-do-%{version}.tar.gz
+Patch0:			fix-build.patch
 
 BuildRequires:		mono-devel, mono-addins-devel
 BuildRequires:		mono-nunit-devel
@@ -18,7 +17,7 @@ BuildRequires:		desktop-file-utils
 BuildRequires:		dbus-sharp-devel
 BuildRequires:		dbus-sharp-glib-devel
 BuildRequires:		GConf2-devel
-BuildRequires:	        gtk-sharp2-devel, notify-sharp-devel
+BuildRequires:		gtk-sharp2-devel, notify-sharp-devel
 BuildRequires:		gnome-sharp-devel, gnome-desktop-sharp-devel >= 2.26
 BuildRequires:		gnome-keyring-sharp-devel
 BuildRequires:		gettext
@@ -37,7 +36,7 @@ Requires(preun):	GConf2
 Requires:		mono(NDesk.DBus.GLib) = 1.0.0.0
 Requires:		gnome-keyring-sharp, gnome-desktop-sharp, findutils
 Requires:		gnome-desktop, pkgconfig
-Requires:               gio-sharp, gkeyfile-sharp
+Requires:		gio-sharp, gkeyfile-sharp
 
 # Mono only available on these:
 ExclusiveArch: %mono_arches
@@ -61,6 +60,7 @@ Development files for GNOME Do
 
 %prep
 %setup -q
+%patch0 -p1
 
 sed -i "s#gmcs#mcs#g" configure*
 sed -i "s#gmcs#mcs#g" m4/shamrock/mono.m4
@@ -73,7 +73,7 @@ make %{?_smp_mflags}
 
 %install
 export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 desktop-file-install	\
 	--dir $RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart	\
@@ -136,6 +136,9 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Fri May 22 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 0.95.3-1
+- Update to version 0.95.3
+
 * Mon May 18 2015 Peter Robinson <pbrobinson@fedoraproject.org> 0.95.1-4
 - Rebuild (mono4)
 
