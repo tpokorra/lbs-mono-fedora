@@ -1,22 +1,15 @@
 Name:           libgdiplus
 Version:        3.12
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An Open Source implementation of the GDI+ API
 
 Group:          System Environment/Libraries
 License:        MIT
 URL:            http://www.mono-project.com/Main_Page
 Source0:        http://download.mono-project.com/sources/%{name}/%{name}-%{version}.tar.gz
-# Patch for linking against libpng 1.5 (BZ #843330)
-# https://github.com/mono/libgdiplus/commit/506df13e6e1c9915c248305e47f0b67549732566
-Patch0:         libgdiplus-2.10.9-libpng15.patch
-# Fix build with Freetype 2.5
-# https://github.com/mono/libgdiplus/commit/180c02e0f2a2016eba8520b456ca929e9dcf03db
-Patch1:         libgdiplus-2.10.9-freetype25.patch
+
 # drop -Wno-format so the default -Werror=format-security works
-Patch2:         libgdiplus-2.10.9-format.patch
-# https://github.com/mono/libgdiplus/commit/1fa831c7440f1985d2b730211bbf8a059c10a63b
-Patch3:         libgdiplus-2.10.9-tests.patch
+Patch1:         libgdiplus-2.10.9-format.patch
 BuildRequires:  freetype-devel glib2-devel libjpeg-devel libtiff-devel
 BuildRequires:  libpng-devel fontconfig-devel
 BuildRequires:  cairo-devel giflib-devel libexif-devel
@@ -35,18 +28,22 @@ Requires: %{name} = %{version}-%{release}
 Development files for libgdiplus
 
 %prep
-%setup -q 
-#%patch0 -p1 -b .libpng15
-#%patch1 -p1 -b .freetype25
-%patch2 -p1 -b .format
-#%patch3 -p1 -b .tests
+%setup -q
+%patch1 -p1 -b .format
+
+#https://fedoraproject.org/wiki/Changes/Harden_All_Packages#Troubleshooting_steps_for_package_maintainers
+CFLAGS="$RPM_OPT_FLAGS -Wl,-z,lazy"
+CXXFLAGS="$RPM_OPT_FLAGS -Wl,-z,lazy"
+
+export CFLAGS
+export CXXFLAGS
 
 %build
 %configure --disable-static 
 make %{?_smp_mflags}
 
 %install
-make install DESTDIR=%{buildroot} INSTALL="install -p"
+%make_install
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 %post -p /sbin/ldconfig
@@ -54,7 +51,9 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %postun -p /sbin/ldconfig
 
 %files
-%doc COPYING NEWS README TODO AUTHORS ChangeLog
+%{!?_licensedir:%global license %%doc}
+%license COPYING
+%doc NEWS README TODO AUTHORS ChangeLog
 %{_libdir}/lib*.so.*
 
 %files devel
@@ -62,8 +61,12 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_libdir}/lib*.so
 
 %changelog
+* Tue May 26 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 3.12-2
+- Fix hardened_build problem that cause not build git, tiff and jpg support
+
 * Tue Apr 14 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.12-1
 - updated to 3.12
+- Use %%license
 
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.10.9-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
