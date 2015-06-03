@@ -1,9 +1,4 @@
 %define debug_package %{nil}
-%if 0%{?rhel}%{?el7}
-# see https://fedorahosted.org/fpc/ticket/395
-%global _monodir %{_prefix}/lib/mono
-%global _monogacdir %{_monodir}/gac
-%endif
 
 Summary: An OO statically typed language for CLI
 Name: boo
@@ -11,15 +6,15 @@ Version: 0.9.4.9
 Release: 12%{?dist}
 License: MIT
 Group: Development/Languages
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 URL: http://boo.codehaus.org
+
 Source0: http://dist.codehaus.org/boo/distributions/%{name}-%{version}-src.tar.bz2
 Patch0: boo-pkgconfig_path_fix.patch
 Patch1: boo-gtksourceview.patch
 Patch2: boo-removeprebuild.patch
 BuildRequires: mono-devel, gtksourceview2-devel, shared-mime-info, pkgconfig, nant
 # Mono only available on these:
-ExclusiveArch: %mono_arches
+ExclusiveArch: %{mono_arches}
 # Nant needs to be built for %%{arm}
 
 %description
@@ -39,23 +34,22 @@ Development files for boo
 %setup -q
 %patch0 -p1 -b .pc-original
 %patch1 -p1 -b .sourceview
-%patch2 -p1
+#%patch2 -p1
 
 # Get rid of prebuilt dll files
 rm -rf bin/*.dll bin/pt/*.dll
+
+mkdir -p build/pt
 
 %build
 nant -D:install.prefix=%{_prefix} -D:install.libdir=%{_monodir}
 
 %install
-rm -rf %{buildroot}
 nant -f:default.build install -D:install.buildroot=%{buildroot} -D:install.prefix=%{buildroot}%{_prefix} -D:install.share=%{buildroot}%{_datadir} -D:install.libdir=%{buildroot}%{_monodir} -D:install.bindir=%{buildroot}%{_bindir} -D:fakeroot.sharedmime=%{buildroot}%{_datadir}/.. -D:fakeroot.gsv=%{buildroot}%{_prefix}
 
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgconfig/* $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 
-%clean
-rm -rf %{buildroot}
 
 %post
 /bin/touch --no-create %{_datadir}/mime/packages &>/dev/null ||:
@@ -69,8 +63,8 @@ fi
 /usr/bin/update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 %files 
-%defattr(-,root,root,-)
-%doc license.txt notice.txt readme.txt docs/BooManifesto.sxw
+%doc notice.txt readme.txt docs/BooManifesto.sxw
+%license license.txt
 %{_monodir}/boo*/
 %exclude %{_monodir}/Boo.NAnt.Tasks.dll
 %dir %{_monodir}/boo
@@ -82,7 +76,6 @@ fi
 %{_datadir}/mime-info/boo*
 
 %files devel
-%defattr(-,root,root,-)
 %{_libdir}/pkgconfig/boo.pc
 %{_monodir}/boo/Boo.NAnt.Tasks.dll
 

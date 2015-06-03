@@ -1,5 +1,6 @@
---- a/default.build
-+++ b/default.build
+diff -uraN boo-0.9.4.9.orig/default.build boo-0.9.4.9/default.build
+--- boo-0.9.4.9.orig/default.build
++++ boo-0.9.4.9/default.build
 @@ -612,12 +612,6 @@
  			</exec>
  		</do>
