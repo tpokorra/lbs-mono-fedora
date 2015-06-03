@@ -1,8 +1,0 @@
-prefix=/usr
-exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
-
-Name: NUnit
-Description: Testing framework for CLI
-Version: 2.5.10
-Libs: -r:${libdir}/nunit/2.5/nunit.core.dll -r:${libdir}/nunit/2.5/nunit.util.dll -r:${libdir}/nunit/2.5/nunit.framework.dll -r:${libdir}/nunit/2.5/nunit.core.interfaces.dll -r:${libdir}/nunit/2.5/nunit.mocks.dll -r:${libdir}/nunit/2.5/nunit-console-runner.dll
