@@ -69,7 +69,7 @@ xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe
 find %{_builddir}/%{?buildsubdir}/bin -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_libdir}/nunit/2.6/" \;
 find %{_builddir}/%{?buildsubdir}/bin -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_libdir}/nunit/2.6/" \;
 for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
-    gacutil -i %{buildroot}%{_libdir}/nunit/2.6/$i -package nunit/2.6 -root %{buildroot}%{_libdir}
+    gacutil -i %{buildroot}%{_libdir}/nunit/2.6/$i -package nunit/2.6 -root %{buildroot}/usr/lib
     rm -f %{buildroot}%{_libdir}/nunit/2.6/$i
 done
 
