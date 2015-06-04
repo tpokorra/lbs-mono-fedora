@@ -1,11 +1,8 @@
 %global debug_package %{nil}
-%if 0%{?el6}
-%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
-%endif
 
 Name:           nunit
 Version:        2.6.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT
 Group:          Development/Libraries
@@ -16,7 +13,6 @@ Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
 BuildRequires:  mono-devel libgdiplus-devel
 ExclusiveArch:  %{mono_arches}
-Obsoletes:       mono-nunit
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -32,7 +28,6 @@ Summary:        Development files for NUnit
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
 Requires:       pkgconfig
-Obsoletes:       mono-nunit-devel
  
 %description devel
 Development files for %{name}.
@@ -62,26 +57,26 @@ xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe
 
 %install
 %{?env_options}
-%{__mkdir_p} %{buildroot}%{_prefix}/lib/nunit/2.6
+%{__mkdir_p} %{buildroot}%{_libdir}/nunit/2.6
 %{__mkdir_p} %{buildroot}%{_libdir}/pkgconfig
 %{__mkdir_p} %{buildroot}%{_bindir}
 %{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
 %{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`-2.6
 %{__install} -m0755 %{SOURCE3} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE3}`-2.6
-%{__install} -m0644 src/ConsoleRunner/nunit-console-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.6/nunit-console.exe.config
-%{__install} -m0644 src/GuiRunner/nunit-gui-exe/App.config %{buildroot}%{_prefix}/lib/nunit/2.6/nunit.exe.config
-find %{_builddir}/%{?buildsubdir}/bin -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.6/" \;
-find %{_builddir}/%{?buildsubdir}/bin -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_prefix}/lib/nunit/2.6/" \;
+%{__install} -m0644 src/ConsoleRunner/nunit-console-exe/App.config %{buildroot}%{_libdir}/nunit/2.6/nunit-console.exe.config
+%{__install} -m0644 src/GuiRunner/nunit-gui-exe/App.config %{buildroot}%{_libdir}/nunit/2.6/nunit.exe.config
+find %{_builddir}/%{?buildsubdir}/bin -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_libdir}/nunit/2.6/" \;
+find %{_builddir}/%{?buildsubdir}/bin -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_libdir}/nunit/2.6/" \;
 for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
-    gacutil -i %{buildroot}%{_prefix}/lib/nunit/2.6/$i -package nunit/2.6 -root %{buildroot}%{_prefix}/lib
-    rm -f %{buildroot}%{_prefix}/lib/nunit/2.6/$i
+    gacutil -i %{buildroot}%{_libdir}/nunit/2.6/$i -package nunit/2.6 -root %{buildroot}%{_libdir}
+    rm -f %{buildroot}%{_libdir}/nunit/2.6/$i
 done
 
 %files
 %defattr(-,root,root)
-%{_prefix}/lib/mono/gac/nunit*
-%{_prefix}/lib/mono/nunit/2.6
-%{_prefix}/lib/nunit/2.6
+%{_libdir}/mono/gac/nunit*
+%{_libdir}/mono/nunit/2.6
+%{_libdir}/nunit/2.6
 %{_bindir}/*
 
 %files devel
@@ -89,6 +84,9 @@ done
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Thu Jun 04 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.3-5
+- do not replace mono-nunit. fix some rpmlint warnings and errors
+
 * Tue May 19 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.3-4
 - this package replaces mono-nunit
 
