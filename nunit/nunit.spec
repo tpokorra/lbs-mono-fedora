@@ -1,11 +1,8 @@
 %global debug_package %{nil}
-%if 0%{?el6}
-%global mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
-%endif
 
 Name:           nunit
 Version:        2.6.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT
 Group:          Development/Libraries
@@ -37,8 +34,6 @@ Development files for %{name}.
 
 %prep
 %setup -qn NUnit-%{version}
-# Delete shipped *.dll files
-find -name '*.dll' -exec rm -f {} \;
 
 %build
 
@@ -73,7 +68,7 @@ xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe
 find %{_builddir}/%{?buildsubdir}/bin -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_monodir}/nunit/" \;
 find %{_builddir}/%{?buildsubdir}/bin -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_monodir}/nunit/" \;
 for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
-    gacutil -i %{buildroot}%{_monodir}/nunit/$i -package nunit -root %{buildroot}%{_prefix}/lib
+    gacutil -i %{buildroot}%{_monodir}/nunit/$i -package nunit -root %{buildroot}%{_libdir}
 done
 
 %files
@@ -86,9 +81,11 @@ done
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Thu Jun 04 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.3-6
+- do not replace mono-nunit. fix some rpmlint warnings and errors
+
 * Wed Jun 03 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.3-5
 - Use mono macros
-- Don replaces mono-unit both should coexist
 - Require isa in devel subpackage
 - Use global insted define
 
