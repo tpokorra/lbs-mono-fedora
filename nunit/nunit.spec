@@ -27,6 +27,7 @@ the Microsoft .NET Framework.
 Summary:        Development files for NUnit
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       pkgconfig
  
 %description devel
@@ -61,8 +62,8 @@ xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe
 %{__mkdir_p} %{buildroot}%{_libdir}/pkgconfig
 %{__mkdir_p} %{buildroot}%{_bindir}
 %{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
-%{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`-2.6
-%{__install} -m0755 %{SOURCE3} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE3}`-2.6
+%{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`26
+%{__install} -m0755 %{SOURCE3} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE3}`26
 %{__install} -m0644 src/ConsoleRunner/nunit-console-exe/App.config %{buildroot}%{_libdir}/nunit/2.6/nunit-console.exe.config
 %{__install} -m0644 src/GuiRunner/nunit-gui-exe/App.config %{buildroot}%{_libdir}/nunit/2.6/nunit.exe.config
 find %{_builddir}/%{?buildsubdir}/bin -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_libdir}/nunit/2.6/" \;
@@ -73,14 +74,13 @@ for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit
 done
 
 %files
-%defattr(-,root,root)
-%{_libdir}/mono/gac/nunit*
-%{_libdir}/mono/nunit/2.6
+%license license.txt
+%{_monogacdir}/nunit*
+%{_monodir}/nunit/2.6
 %{_libdir}/nunit/2.6
 %{_bindir}/*
 
 %files devel
-%defattr(-,root,root,-)
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
