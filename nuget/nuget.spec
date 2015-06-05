@@ -1,3 +1,4 @@
+%global debug_package %{nil}
 %if 0%{?el6}
 %global mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
 %endif
@@ -60,6 +61,9 @@ sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
 %_bindir/*
 
 %changelog
+* Wed Jun 02 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.3-3
+- Fix empty debug_package
+
 * Wed May 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.3-2
 - Use xbuild option to build with mono 4
 - Use global insted define
