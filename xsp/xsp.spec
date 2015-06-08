@@ -1,30 +1,27 @@
-%if 0%{?el6}
-%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
-%endif
-
 Name:		xsp
-Version:	2.10.2
-Release:	9%{?dist}
+Version:	3.8
+Release:	1%{?dist}
 License:	MIT
 URL:		http://www.mono-project.com/Main_Page
-Source0:	http://ftp.novell.com/pub/mono/sources/%{name}/%{name}-%{version}.tar.bz2
-BuildRequires:	mono-web-devel, mono-data, mono-devel >= 2.10, pkgconfig, autoconf automake mono-data-sqlite mono-nunit-devel
-BuildRequires:	mono-data-oracle monodoc-devel
-Requires:	mono-core >= 2.10
 Summary:	A small web server that hosts ASP.NET
 Group:		System Environment/Daemons
+
+Source0:	http://download.mono-project.com/sources/%{name}/%{name}-%{version}.tar.gz
+BuildRequires:	mono-web-devel, mono-data, mono-devel, mono-data-sqlite, nunit-devel
+BuildRequires:	mono-data-oracle monodoc-devel
+BuildRequires:	autoconf automake libtool
+Requires:	mono-core
 # Mono only available on these:
-ExclusiveArch: %{mono_arches}
-Obsoletes:	mono-4.0-xsp < 2.10
+ExclusiveArch: %mono_arches
 
 %define debug_package %{nil}
 
 %description
 
-XSP is a standalone web server written in C# that can be used to run ASP.NET
-applications as well as a set of pages, controls and web services that you can
+XSP is a standalone web server written in C# that can be used to run ASP.NET 
+applications as well as a set of pages, controls and web services that you can 
 use to experience ASP.NET.
-
+	  
 %package devel
 Group: Development/Libraries
 Requires: %{name} = %{version}-%{release} pkgconfig
@@ -57,32 +54,40 @@ make
 
 %install
 make DESTDIR=%{buildroot} install
+rm -f %{buildroot}%{_prefix}/lib/libfpm_helper.a
+rm -f %{buildroot}%{_prefix}/lib/libfpm_helper.la
+rm -f %{buildroot}%{_prefix}/lib/libfpm_helper.so
+rm -rf %{buildroot}%{_prefix}/lib/xsp/unittests
 
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgconfig/* $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 
 %files
-%defattr(-, root, root,-)
 %doc NEWS README COPYING
 %{_bindir}/asp*
 %{_bindir}/dbsessmgr*
 %{_bindir}/mod-mono*
 %{_bindir}/xsp*
 %{_bindir}/fastcgi-mono-server*
+%{_bindir}/shim
+%{_bindir}/mono-fpm
 %{_prefix}/lib/xsp
 %{_prefix}/lib/mono/gac/Mono.WebServer*/
 %{_prefix}/lib/mono/gac/fastcgi-mono-server2
 %{_prefix}/lib/mono/gac/mod-mono-server*/
 %{_prefix}/lib/mono/gac/xsp*/
+%{_prefix}/lib/mono/gac/mono-fpm
 %{_prefix}/lib/mono/2.0/*.dll
 %{_prefix}/lib/mono/2.0/*.exe
 %{_prefix}/lib/monodoc/sources/Mono.WebServer.*
 %{_prefix}/lib/monodoc/sources/Mono.FastCGI.*
-%{_prefix}/lib/mono/4.0/Mono.WebServer2.dll
-%{_prefix}/lib/mono/4.0/fastcgi-mono-server4.exe
-%{_prefix}/lib/mono/4.0/mod-mono-server4.exe
-%{_prefix}/lib/mono/4.0/xsp4.exe
+%{_prefix}/lib/mono/4.5/Mono.WebServer2.dll
+%{_prefix}/lib/mono/4.5/fastcgi-mono-server4.exe
+%{_prefix}/lib/mono/4.5/mod-mono-server4.exe
+%{_prefix}/lib/mono/4.5/xsp4.exe
+%{_prefix}/lib/mono/4.5/mono-fpm.exe
 %{_prefix}/lib/mono/gac/fastcgi-mono-server4
+%{_prefix}/lib/libfpm_helper.so.0*
 %{_mandir}/man1/asp*
 %{_mandir}/man1/dbsessmgr*
 %{_mandir}/man1/mod-mono-server*
@@ -90,18 +95,16 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 %{_mandir}/man1/fastcgi-mono-server*
 
 %files devel
-%defattr(-, root, root,-)
 %{_libdir}/pkgconfig/xsp*
 
 %files tests
-%defattr(-, root, root,-)
 %{_prefix}/lib/xsp/2.0
 %{_prefix}/lib/xsp/test
 
 %changelog
-* Wed Apr 29 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.10.2-9
-- Build with mono 4
-- Declare mono_arches for EPEL6
+* Mon May 18 2015 Peter Robinson <pbrobinson@fedoraproject.org> 3.8-1
+- Update to 3.8
+- Rebuild (mono4)
 
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.10.2-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
@@ -236,81 +239,3 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 * Sun Aug 03 2008 Paul F. Johnson <paul@all-the-johnsons.co.uk> 2.0-1
 - bump to 2.0 preview 1
 - spec file fixes
-
-* Mon Apr 21 2008 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.9.1-1
-- bump
-
-* Thu Feb 21 2008 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.9-2
-- fix for problem with the test makefile
-
-* Thu Feb 21 2008 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.9-1
-- bump
-
-* Thu Dec 20 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.6-1.2
-- remove arch ppc64
-- add br mono-data-sqlite
-
-* Thu Nov 22 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.6-1
-- bump
-- spec file fixes
-- added new tests subpackage
-
-* Sun Nov 11 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.5-1
-- bump
-
-* Sun Apr 22 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.4-1
-- bump
-
-* Sun Mar 25 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.3-2
-- fix for un-owned directories
-
-* Thu Feb 15 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.3-1
-- bump
-
-* Thu Nov 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.2.1-1
-- bump
-
-* Sat Oct 14 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.18-1
-- bump
-
-* Thu Aug 31 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.17-1
-- bump to new version
-- added patches for architecture independance
-- added devel package
-
-* Tue Jul 11 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.16-1
-- bump to new version
-
-* Tue Jul 4 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.15-7
-- brought into line with the new packaging regs for mono apps
-
-* Mon Jun 19 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.15-6
-- removed the libdir hack
-- removed the overzealous AC_CANONICAL from config.in
-
-* Sun Jun 18 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.15-5
-- Added back the libdir hack
-
-* Thu Jun 15 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.15-4
-- Removed libhack
-- Made noarch
-- Removed debug package
-- Altered configure to keep it happy
-
-* Wed Jun 14 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.15-3
-- Added BR pkgconfig
-
-* Tue Jun 06 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.15-2
-- fixes for (clean) mock builds
-
-* Sun May 14 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.13-4
-- minor alteration to the spec file
-
-* Mon May 08 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.13-3
-- Fixes to the spec file
-- Added clean
-
-* Mon Apr 17 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 1.1.13-1
-- Initial import for FE
-- Heavily amended spec file (based on the Novell original)
-

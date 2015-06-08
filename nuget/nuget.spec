@@ -1,18 +1,7 @@
-#
-# spec file for package nuget
-#
-# Copyright (c) 2014 Xamarin, Inc (http://www.xamarin.com)
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
-%define tarballversion 2.8.3+md58+dhx1
+%global debug_package %{nil}
+%if 0%{?el6}
+%global mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%endif
 
 Name:           nuget
 Version:        2.8.3
@@ -21,14 +10,15 @@ Summary:        Package manager for NuGet repositories
 License:        MIT
 Group:          Development/Libraries
 Url:            http://nuget.org/
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Source0:        nuget_%{tarballversion}.orig.tar.bz2
-Source1:	nuget-core.pc
-Source2:	nuget.sh
-Source3:	nuget-build-minimal.sh
-Patch0:		nuget-fix_xdt_hintpath
+
+%global tarballversion %{version}+md58+dhx1
+Source0:        http://download.mono-project.com/sources/%{name}/%{name}-%{tarballversion}.tar.bz2
+Source1:        nuget-core.pc
+Source2:        nuget.sh
+Patch0:         nuget-fix_xdt_hintpath
 BuildRequires:  mono-devel mono-winfx
-BuildArch:      noarch
+
+ExclusiveArch:  %{mono_arches}
 
 %description
 NuGet is the package manager for the Microsoft
@@ -38,7 +28,7 @@ packages. The NuGet Gallery is the central package
 repository used by all package authors and consumers.
 
 %prep
-%setup -n nuget-git
+%setup -qn nuget-git
 %patch0 -p1
 
 # fix compile with Mono4
@@ -48,7 +38,10 @@ find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="
 %build
 %{?exp_env}
 %{?env_options}
-%{SOURCE3}
+
+xbuild xdt/XmlTransform/Microsoft.Web.XmlTransform.csproj
+xbuild src/Core/Core.csproj /p:Configuration="Mono Release"
+xbuild src/CommandLine/CommandLine.csproj /p:Configuration="Mono Release"
 
 %install
 %{?env_options}
@@ -63,12 +56,18 @@ sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
 %{__install} -m0755 src/CommandLine/bin/Release/NuGet.exe %{buildroot}%{_prefix}/lib/nuget/
 
 %files
-%defattr(-,root,root)
 %_prefix/lib/nuget
 %_datadir/pkgconfig/nuget-core.pc
 %_bindir/*
 
 %changelog
+* Wed Jun 02 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.3-3
+- Fix empty debug_package
+
+* Wed May 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.3-2
+- Use xbuild option to build with mono 4
+- Use global insted define
+
 * Thu Apr 16 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.8.3-1
 - build with Mono4
 

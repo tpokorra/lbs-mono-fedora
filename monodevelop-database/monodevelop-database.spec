@@ -1,7 +1,7 @@
 # rpm does not currently pull debuginfo out of mono packages
 %global debug_package %{nil}
 %if 0%{?el6}
-%define mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
+%global mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
 %endif
 
 Summary:        MonoDevelop Database Add-in
@@ -44,12 +44,17 @@ Contains development files for %{name}.
 
 %prep
 %setup -q
-sed -i "s#gmcs#mcs#g" configure
-sed -i "s#gmcs#mcs#g" configure.in
+sed -i "s#dmcs#mcs#g" configure
+sed -i "s#dmcs#mcs#g" configure.in
 sed -i "s#Version=2#Version=4#g" configure
 sed -i "s#Version 2#Version 4#g" configure
 sed -i "s#Version=2#Version=4#g" configure.in
 sed -i "s#Version 2#Version 4#g" configure.in
+sed -i "s#Npgsql, Version=4#Npgsql#g" configure
+sed -i "s#Npgsql, Version 4#Npgsql#g" configure
+sed -i "s#Npgsql, Version=4#Npgsql#g" configure.in
+sed -i "s#Npgsql, Version 4#Npgsql#g" configure.in
+
 
 # Delete shipped *.dll files
 #find -name '*.dll' -exec rm -f {} \;
@@ -66,8 +71,8 @@ ln -sf %{_prefix}/lib/mono/mysql-connector-net/MySql.Data.dll contrib/MySql/MySq
 make
 
 %install
-make install DESTDIR=%{buildroot}
 rm %{buildroot}%{_prefix}/lib/monodevelop/AddIns/MonoDevelop.Database/MySql.Data.dll
+%make_install
 
 find %{buildroot} -type f -o -type l|sed '
 s:'"%{buildroot}"'::
@@ -77,11 +82,9 @@ s:%lang(C) ::
 /^$/d' > %{name}.lang
 
 %files -f %{name}.lang
-%defattr(-,root,root,-)
 %{_prefix}/lib/monodevelop/AddIns/MonoDevelop.Database
 
 %files devel
-%defattr(-,root,root,-)
 %{_prefix}/lib/pkgconfig/monodevelop-database.pc
 
 %changelog

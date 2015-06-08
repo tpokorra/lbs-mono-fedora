@@ -1,15 +1,14 @@
 %global debug_package %{nil}
-%define tarballversion 5.9.0.431
 
 Name:           monodevelop
-Version:        5.9
-Release:        4%{?dist}
+Version:        5.9.4
+Release:        1%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
-Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{tarballversion}.tar.bz2
+Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{version}.2.tar.bz2
 Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-nunit-unbundle.patch
@@ -20,7 +19,8 @@ BuildRequires:  nunit-devel >= 2.6.3
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
-BuildRequires:  nuget dos2unix
+BuildRequires:  nuget
+BuildRequires:  dos2unix
 Requires:       mono-core >= 3.0.4
 Requires:       mono-addins >= 0.6
 # Using system nunit, but dependency not automatically picked up by RPM
@@ -33,7 +33,7 @@ Requires:       hicolor-icon-theme shared-mime-info
 Requires:       gtk-sharp2-devel
 
 # Mono only available on these:
-ExclusiveArch: %ix86 x86_64 ppc ppc64 ia64 %{arm} sparcv9 alpha s390x
+ExclusiveArch: %mono_arches
 
 %description
 This package provides MonoDevelop, a full-featured IDE for Mono with
@@ -108,7 +108,6 @@ update-desktop-database &> /dev/null || :
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING README
 %{_bindir}/m*
 %{_prefix}/lib/monodevelop
@@ -118,10 +117,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/mime/packages/monodevelop.xml
 
 %files devel
-%defattr(-,root,root,-)
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Fri Jun 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.4-1
+- Update tarball to 5.9.4.2
+
 * Tue May 19 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.9-4
 - Fix dependancies on nunit, no need for NUnit 2.5 anymore
 
