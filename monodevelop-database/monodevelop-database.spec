@@ -7,7 +7,7 @@
 Summary:        MonoDevelop Database Add-in
 Name:           monodevelop-database
 Version:        5.7
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        MIT
 Group:          Development/Tools
 Source:         http://download.mono-project.com/sources/%{name}/%{name}-%{version}.0.660.tar.bz2
@@ -50,10 +50,10 @@ sed -i "s#Version=2#Version=4#g" configure
 sed -i "s#Version 2#Version 4#g" configure
 sed -i "s#Version=2#Version=4#g" configure.in
 sed -i "s#Version 2#Version 4#g" configure.in
-sed -i "s#Npgsql, Version=4#Npgsql#g" configure
-sed -i "s#Npgsql, Version 4#Npgsql#g" configure
-sed -i "s#Npgsql, Version=4#Npgsql#g" configure.in
-sed -i "s#Npgsql, Version 4#Npgsql#g" configure.in
+#sed -i "s#Npgsql, Version=4#Npgsql#g" configure
+#sed -i "s#Npgsql, Version 4#Npgsql#g" configure
+#sed -i "s#Npgsql, Version=4#Npgsql#g" configure.in
+#sed -i "s#Npgsql, Version 4#Npgsql#g" configure.in
 
 
 # Delete shipped *.dll files
@@ -61,6 +61,9 @@ sed -i "s#Npgsql, Version 4#Npgsql#g" configure.in
 
 %patch0 -p1
 %patch1 -p1
+#Temporary fix for connetion to SqlServer using connection string becouse
+#String build fail in mono 4 see https://bugzilla.xamarin.com/show_bug.cgi?id=29823
+sed -i "s#builder.ToString ()#settings.UseConnectionString ? settings.ConnectionString : builder.ToString ()#g" MonoDevelop.Database.Sql.SqlServer/SqlServerConnectionProvider.cs
 
 # Unbundle MySql.Data.dll
 ln -sf %{_prefix}/lib/mono/mysql-connector-net/MySql.Data.dll contrib/MySql/MySql.Data.dll
@@ -71,7 +74,7 @@ ln -sf %{_prefix}/lib/mono/mysql-connector-net/MySql.Data.dll contrib/MySql/MySq
 make
 
 %install
-rm %{buildroot}%{_prefix}/lib/monodevelop/AddIns/MonoDevelop.Database/MySql.Data.dll
+#rm %{buildroot}%{_prefix}/lib/monodevelop/AddIns/MonoDevelop.Database/MySql.Data.dll
 %make_install
 
 find %{buildroot} -type f -o -type l|sed '
@@ -88,6 +91,9 @@ s:%lang(C) ::
 %{_prefix}/lib/pkgconfig/monodevelop-database.pc
 
 %changelog
+* Thu Apr 23 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.7-5
+- Patch for fix bug fix https://bugzilla.xamarin.com/show_bug.cgi?id=29823
+
 * Thu Apr 23 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.7-4
 - Fix bug in SqlQueryView. https://github.com/mono/monodevelop/pull/896
 
