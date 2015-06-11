@@ -10,8 +10,7 @@ URL: http://boo.codehaus.org
 
 Source0: http://dist.codehaus.org/boo/distributions/%{name}-%{version}-src.tar.bz2
 Patch0: boo-pkgconfig_path_fix.patch
-Patch1: boo-gtksourceview.patch
-Patch2: boo-removeprebuild.patch
+Patch1: boo-removeprebuild.patch
 BuildRequires: mono-devel, gtksourceview2-devel, shared-mime-info, pkgconfig, nant
 # Mono only available on these:
 ExclusiveArch: %{mono_arches}
@@ -33,22 +32,30 @@ Development files for boo
 %prep
 %setup -q
 %patch0 -p1 -b .pc-original
-%patch1 -p1 -b .sourceview
-#%patch2 -p1
+#%patch1 -p1 -b .prebuild
 
 # Get rid of prebuilt dll files
 rm -rf bin/*.dll bin/pt/*.dll
 
 mkdir -p build/pt
 
+#Mono 4 rename assemblies with v4.0 sufix
+sed -i "s#\"Microsoft.Build.Utilities.dll#\"Microsoft.Build.Utilities.v4.0.dll#g" default.build
+sed -i "s#\"Microsoft.Build.Tasks.dll#\"Microsoft.Build.Tasks.v4.0.dll#g" default.build
+#Prevent problem with pedump verify
+sed -i "s#assemblies\" if#assemblies\" unless#g" default.build
+#Fix gtksourceview version
+sed -i "s#gtksourceview-1.0#gtksourceview-2.0#g" default.build
+
 %build
-nant -D:install.prefix=%{_prefix} -D:install.libdir=%{_monodir}
+nant -D:install.prefix=%{_prefix} -t:mono-4.0 -D:skip.vs=true
 
 %install
-nant -f:default.build install -D:install.buildroot=%{buildroot} -D:install.prefix=%{buildroot}%{_prefix} -D:install.share=%{buildroot}%{_datadir} -D:install.libdir=%{buildroot}%{_monodir} -D:install.bindir=%{buildroot}%{_bindir} -D:fakeroot.sharedmime=%{buildroot}%{_datadir}/.. -D:fakeroot.gsv=%{buildroot}%{_prefix}
+nant -f:default.build install -D:install.prefix=%{_prefix} -D:install.destdir=%{buildroot}
 
+#Locate pc file into correct libdir
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
-test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgconfig/* $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
+test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT%{_prefix}/lib/pkgconfig/* $RPM_BUILD_ROOT%{_libdir}/pkgconfig/
 
 
 %post
@@ -65,23 +72,20 @@ fi
 %files 
 %doc notice.txt readme.txt docs/BooManifesto.sxw
 %license license.txt
-%{_monodir}/boo*/
-%exclude %{_monodir}/Boo.NAnt.Tasks.dll
-%dir %{_monodir}/boo
+%{_prefix}/lib/boo/*
 %{_monodir}/boo/*.dll
-%{_monogacdir}/Boo*/
+%{_monogacdir}/*
 %{_bindir}/boo*
-%exclude %{_datadir}/gtksourceview-1.0/language-specs/boo.lang
+%{_datadir}/gtksourceview-2.0/language-specs/boo.lang
 %{_datadir}/mime/packages/boo*
 %{_datadir}/mime-info/boo*
 
 %files devel
 %{_libdir}/pkgconfig/boo.pc
-%{_monodir}/boo/Boo.NAnt.Tasks.dll
 
 %changelog
 * Mon May 18 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 0.9.4.9-12
-- Rebuild for mono 4
+- Fix for build for mono 4
 - Use mono macros
 
 * Mon Sep 08 2014 Rex Dieter <rdieter@fedoraproject.org> 0.9.4.9-11
