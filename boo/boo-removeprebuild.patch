@@ -1,0 +1,16 @@
+diff -uraN boo-0.9.4.9.orig/default.build boo-0.9.4.9/default.build
+--- boo-0.9.4.9.orig/default.build
++++ boo-0.9.4.9/default.build
+@@ -612,12 +612,6 @@
+ 			</exec>
+ 		</do>
+ 		</foreach>
+-		
+-		<copy todir="${fakeroot.boolib}/pt">
+-			<fileset basedir="${build.dir}/pt">
+-				<include name="*"/>
+-			</fileset>
+-		</copy>
+ 
+ 		<copy todir="${fakeroot.bindir}">
+ 			<fileset basedir="${build.dir}">
