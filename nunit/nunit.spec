@@ -1,18 +1,18 @@
 %global debug_package %{nil}
 
 Name:           nunit
-Version:        2.6.3
-Release:        6%{?dist}
+Version:        2.6.4
+Release:        1%{?dist}
 Summary:        Unit test framework for CLI
-License:        MIT
+License:        MIT with advertising
 Group:          Development/Libraries
 Url:            http://www.nunit.org/
-Source0:        http://launchpad.net/nunitv2/trunk/%{version}/+download/NUnit-%{version}-src.zip
+Source0:        https://github.com/nunit/nunitv2/archive/%{version}.tar.gz
 Source1:        nunit.pc
 Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
 BuildRequires:  mono-devel libgdiplus-devel
-ExclusiveArch:  %{mono_arches}
+BuildArchitectures: noarch
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -22,6 +22,14 @@ text or XML.
 
 NUnit targets the CLI (Common Language Infrastructure) and supports Mono and
 the Microsoft .NET Framework.
+
+%package docs
+Summary:	Documentation package for NUnit
+Group:	Documentation
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description docs
+Documentation for NUnit
 
 %package        devel
 Summary:        Development files for NUnit
@@ -77,10 +85,18 @@ done
 %{_monodir}/nunit
 %{_bindir}/*
 
+%files doc
+%doc doc/*
+
 %files devel
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Mon Jun 22 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-1
+- upgrade to 2.6.4
+- fix the license
+- fix some rpmlint warnings and errors
+
 * Thu Jun 04 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.3-6
 - do not replace mono-nunit. fix some rpmlint warnings and errors
 
