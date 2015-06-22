@@ -12,7 +12,6 @@ Source1:        nunit.pc
 Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
 BuildRequires:  mono-devel libgdiplus-devel
-BuildArch:      noarch
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -24,9 +23,9 @@ NUnit targets the CLI (Common Language Infrastructure) and supports Mono and
 the Microsoft .NET Framework.
 
 %package docs
-Summary:	Documentation package for NUnit
-Group:	Documentation
-Requires:	%{name} = %{version}-%{release}
+Summary:        Documentation package for NUnit
+Group:          Documentation
+Requires:       %{name} = %{version}-%{release}
 
 %description docs
 Documentation for NUnit
@@ -76,7 +75,7 @@ xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe
 find %{_builddir}/%{?buildsubdir}/bin -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_monodir}/nunit/" \;
 find %{_builddir}/%{?buildsubdir}/bin -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_monodir}/nunit/" \;
 for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
-    gacutil -i %{buildroot}%{_monodir}/nunit/$i -package nunit -root %{buildroot}%{_prefix}/lib
+    gacutil -i %{buildroot}%{_monodir}/nunit/$i -package nunit -root %{buildroot}%{_monodir}/../
 done
 
 %files
