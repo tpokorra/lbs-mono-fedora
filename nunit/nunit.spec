@@ -12,7 +12,7 @@ Source1:        nunit.pc
 Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
 BuildRequires:  mono-devel libgdiplus-devel
-BuildArchitectures: noarch
+BuildArch:      noarch
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -26,7 +26,7 @@ the Microsoft .NET Framework.
 %package docs
 Summary:	Documentation package for NUnit
 Group:	Documentation
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description docs
 Documentation for NUnit
@@ -34,14 +34,14 @@ Documentation for NUnit
 %package        devel
 Summary:        Development files for NUnit
 Group:          Development/Libraries
-Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       %{name} = %{version}-%{release}
 Requires:       pkgconfig
 
 %description devel
 Development files for %{name}.
 
 %prep
-%setup -qn NUnit-%{version}
+%setup -qn nunitv2-%{version}
 
 %build
 
@@ -85,7 +85,7 @@ done
 %{_monodir}/nunit
 %{_bindir}/*
 
-%files doc
+%files docs
 %doc doc/*
 
 %files devel
