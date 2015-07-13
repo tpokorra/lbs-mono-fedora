@@ -2,7 +2,7 @@
 
 Name:           nunit
 Version:        2.6.4
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT with advertising
 Group:          Development/Libraries
@@ -23,12 +23,12 @@ text or XML.
 NUnit targets the CLI (Common Language Infrastructure) and supports Mono and
 the Microsoft .NET Framework.
 
-%package docs
+%package doc
 Summary:        Documentation package for NUnit
 Group:          Documentation
 Requires:       %{name} = %{version}-%{release}
 
-%description docs
+%description doc
 Documentation for NUnit
 
 %package        devel
@@ -80,7 +80,7 @@ find %{_builddir}/%{?buildsubdir}/bin -name \*.exe -exec %{__install} \-m0755 "{
 for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
     gacutil -i %{buildroot}%{_monodir}/nunit/$i -package nunit -root %{buildroot}%{_monodir}/../
 done
-%{__install} -m0644 %{SOURCE4} %{buildroot}/%{_datadir}/applications
+desktop-file-install --dir=%{buildroot}/%{_datadir}/applications %{SOURCE4}
 cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nunit.ico
 
 %files
@@ -91,15 +91,30 @@ cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nuni
 %{_datadir}/applications/nunit.desktop
 %{_datadir}/icons/NUnit/nunit.ico
 
-%files docs
+%files doc
+$license doc/license.html
 %doc doc/*
 
 %files devel
 %{_libdir}/pkgconfig/nunit.pc
 
+%post
+/bin/touch --no-create %{_datadir}/icons/NUnit &>/dev/null || :
+/usr/bin/update-desktop-database &> /dev/null || :
+
+%postun
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons/NUnit &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/NUnit &>/dev/null || :
+fi
+/usr/bin/update-desktop-database &> /dev/null || :
+
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/NUnit &>/dev/null || :
+
 %changelog
-* Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-3
-- fix Requires for devel package
+* Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-4
+- fix Requires for devel package, and fixing other issues
 
 * Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-2
 - include a desktop file and install the icon
