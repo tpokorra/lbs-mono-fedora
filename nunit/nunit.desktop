@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=NUnit
+GenericName=GUI for Unit tests
+Comment=A unit-testing framework for all .Net languages
+Exec=nunit-gui26 %F
+TryExec=nunit-gui26
+Icon=/usr/share/icons/NUnit/nunit.ico
+StartupNotify=true
+Terminal=false
+Type=Application
+MimeType=application/octet-stream;
+Categories=Development;IDE;
+X-Desktop-File-Install-Version=0.22
+

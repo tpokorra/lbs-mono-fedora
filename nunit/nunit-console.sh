@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec /usr/bin/mono /usr/lib/nunit/2.6/nunit-console.exe "$@"
+exec /usr/bin/mono /usr/lib/mono/nunit/nunit-console.exe "$@"

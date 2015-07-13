@@ -2,7 +2,7 @@
 
 Name:           nunit
 Version:        2.6.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT with advertising
 Group:          Development/Libraries
@@ -11,6 +11,7 @@ Source0:        https://github.com/nunit/nunitv2/archive/%{version}.tar.gz
 Source1:        nunit.pc
 Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
+Source4:        nunit.desktop
 BuildRequires:  mono-devel libgdiplus-devel
 
 %description
@@ -67,6 +68,8 @@ xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe
 %{__mkdir_p} %{buildroot}%{_monodir}/nunit
 %{__mkdir_p} %{buildroot}%{_libdir}/pkgconfig
 %{__mkdir_p} %{buildroot}%{_bindir}
+%{__mkdir_p} %{buildroot}%{_datadir}/applications
+%{__mkdir_p} %{buildroot}%{_datadir}/icons/NUnit
 %{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
 %{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`26
 %{__install} -m0755 %{SOURCE3} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE3}`26
@@ -77,12 +80,16 @@ find %{_builddir}/%{?buildsubdir}/bin -name \*.exe -exec %{__install} \-m0755 "{
 for i in nunit-console-runner.dll nunit.core.dll nunit.core.interfaces.dll nunit.framework.dll nunit.mocks.dll nunit.util.dll ; do
     gacutil -i %{buildroot}%{_monodir}/nunit/$i -package nunit -root %{buildroot}%{_monodir}/../
 done
+%{__install} -m0644 %{SOURCE4} %{buildroot}/%{_datadir}/applications
+cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nunit.ico
 
 %files
 %license license.txt
 %{_monogacdir}/nunit*
 %{_monodir}/nunit
 %{_bindir}/*
+%{_datadir}/applications/nunit.desktop
+%{_datadir}/icons/NUnit/nunit.ico
 
 %files docs
 %doc doc/*
@@ -91,6 +98,9 @@ done
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-2
+- include a desktop file and install the icon
+
 * Mon Jun 22 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-1
 - upgrade to 2.6.4
 - fix the license
