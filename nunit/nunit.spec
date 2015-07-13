@@ -2,7 +2,7 @@
 
 Name:           nunit
 Version:        2.6.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT with advertising
 Group:          Development/Libraries
@@ -34,7 +34,7 @@ Documentation for NUnit
 %package        devel
 Summary:        Development files for NUnit
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       pkgconfig
 
 %description devel
@@ -98,6 +98,9 @@ cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nuni
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-3
+- fix Requires for devel package
+
 * Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-2
 - include a desktop file and install the icon
 
