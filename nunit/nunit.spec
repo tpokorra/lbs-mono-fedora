@@ -2,7 +2,7 @@
 
 Name:           nunit
 Version:        2.6.4
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT with advertising
 Group:          Development/Libraries
@@ -89,7 +89,7 @@ cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nuni
 %{_monodir}/nunit
 %{_bindir}/*
 %{_datadir}/applications/nunit.desktop
-%{_datadir}/icons/NUnit/nunit.ico
+%{_datadir}/icons/NUnit
 
 %files doc
 %license doc/license.html
@@ -113,8 +113,8 @@ fi
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/NUnit &>/dev/null || :
 
 %changelog
-* Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-6
-- require desktop-file-utils for building
+* Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-7
+- require desktop-file-utils for building and make sure we own the icons/NUnit directory
 
 * Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-5
 - fix Requires for devel package, and fixing other issues
