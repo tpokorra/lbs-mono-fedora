@@ -2,7 +2,7 @@
 
 Name:           nunit
 Version:        2.6.4
-Release:        4%{?dist}
+Release:        6%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT with advertising
 Group:          Development/Libraries
@@ -12,7 +12,7 @@ Source1:        nunit.pc
 Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
 Source4:        nunit.desktop
-BuildRequires:  mono-devel libgdiplus-devel
+BuildRequires:  mono-devel libgdiplus-devel desktop-file-utils
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -92,7 +92,7 @@ cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nuni
 %{_datadir}/icons/NUnit/nunit.ico
 
 %files doc
-$license doc/license.html
+%license doc/license.html
 %doc doc/*
 
 %files devel
@@ -113,7 +113,10 @@ fi
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/NUnit &>/dev/null || :
 
 %changelog
-* Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-4
+* Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-6
+- require desktop-file-utils for building
+
+* Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-5
 - fix Requires for devel package, and fixing other issues
 
 * Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-2
