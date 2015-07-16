@@ -2,13 +2,13 @@
 
 Name:           monodevelop
 Version:        5.9.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
-Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{version}.2.tar.bz2
+Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{version}.5.tar.bz2
 Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-nunit-unbundle.patch
@@ -120,6 +120,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Thu Jul 16 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.9.4-2
+- Update tarball to 5.9.4.5, Cycle 5 – Service Release 2
+- Do not depend on specific NUnit version
+
 * Fri Jun 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.4-1
 - Update tarball to 5.9.4.2
 

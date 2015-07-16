@@ -16,10 +16,10 @@
 -    <Reference Include="nunit.framework">
 -      <HintPath>..\..\external\mdtestharness\nunit.framework.dll</HintPath>
 -    </Reference>
-+    <Reference Include="nunit-console-runner, Version=2.6.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77"/>
-+    <Reference Include="nunit.core, Version=2.6.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
-+    <Reference Include="nunit.core.interfaces, Version=2.6.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
-+    <Reference Include="nunit.framework, Version=2.6.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
++    <Reference Include="nunit-console-runner"/>
++    <Reference Include="nunit.core" />
++    <Reference Include="nunit.core.interfaces" />
++    <Reference Include="nunit.framework" />
    </ItemGroup>
    <ItemGroup>
      <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,16 +65,16 @@
 -    </Reference>
 -    <Reference Include="nunit.util">
 -      <HintPath>..\..\..\packages\NUnit.Runners.2.6.3\tools\lib\nunit.util.dll</HintPath>
-+    <Reference Include="nunit.framework, Version=2.6.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
++    <Reference Include="nunit.framework">
 +      <Private>True</Private>
 +    </Reference>
-+    <Reference Include="nunit.core, Version=2.6.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
++    <Reference Include="nunit.core">
 +      <Private>True</Private>
 +    </Reference>
-+    <Reference Include="nunit.core.interfaces, Version=2.6.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
++    <Reference Include="nunit.core.interfaces">
 +      <Private>True</Private>
 +    </Reference>
-+    <Reference Include="nunit.util, Version=2.6.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
++    <Reference Include="nunit.util">
 +      <Private>True</Private>
      </Reference>
    </ItemGroup>
@@ -90,7 +90,7 @@
 -    <Reference Include="nunit.framework">
 -      <HintPath>..\..\cecil\Test\libs\nunit-2.5.10\nunit.framework.dll</HintPath>
 -    </Reference>
-+    <Reference Include="nunit.framework, Version=2.6.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
++    <Reference Include="nunit.framework"/>
    </ItemGroup>
    <ItemGroup>
      <Compile Include="..\ICSharpCode.NRefactory\Properties\GlobalAssemblyInfo.cs">
