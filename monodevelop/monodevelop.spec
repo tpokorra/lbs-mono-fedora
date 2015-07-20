@@ -2,13 +2,13 @@
 
 Name:           monodevelop
 Version:        5.9.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
-Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{version}.2.tar.bz2
+Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{version}.5.tar.bz2
 Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-nunit-unbundle.patch
@@ -19,7 +19,7 @@ BuildRequires:  nunit-devel >= 2.6.3
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
-BuildRequires:  nuget
+BuildRequires:  nuget-devel
 BuildRequires:  dos2unix
 Requires:       mono-core >= 3.0.4
 Requires:       mono-addins >= 0.6
@@ -89,29 +89,73 @@ desktop-file-install \
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgconfig/* $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 
+# Register as an application to be visible in the software center
+#
+# NOTE: It would be *awesome* if this file was maintained by the upstream
+# project, translated and installed into the right place during `make install`.
+#
+# See http://www.freedesktop.org/software/appstream/docs/ for more details.
+#
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/appdata
+cat > $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014 Richard Hughes <richard@hughsie.com> -->
+<!--
+BugReportURL: https://bugzilla.xamarin.com/show_bug.cgi?id=23288
+SentUpstream: 2014-09-23
+-->
+<application>
+  <id type="desktop">monodevelop.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <description>
+    <p>
+      MonoDevelop is a cross-platform IDE primarily designed for C# and other
+      .NET languages.
+      MonoDevelop enables developers to quickly write desktop and ASP.NET Web
+      applications on Linux, Windows and Mac OSX.
+    </p>
+    <p>
+      MonoDevelop makes it easy for developers to port .NET applications created
+      with Visual Studio to Linux and Mac OSX maintaining a single code base for
+      all platforms.
+    </p>
+  </description>
+  <url type="homepage">http://monodevelop.com/</url>
+  <screenshots>
+    <screenshot type="default">https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/monodevelop/a.png</screenshot>
+  </screenshots>
+  <!-- FIXME: change this to an upstream email address for spec updates
+  <updatecontact>someone_who_cares@upstream_project.org</updatecontact>
+   -->
+</application>
+EOF
+
 %find_lang %{name}
 
 %post
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-update-mime-database %{_datadir}/mime &> /dev/null || :
+touch --no-create %{_datadir}/mime/packages &> /dev/null || :
 update-desktop-database &> /dev/null || :
 
 %postun
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+    touch --no-create %{_datadir}/mime/packages &> /dev/null || :
+    update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 fi
-update-mime-database %{_datadir}/mime &> /dev/null || :
 update-desktop-database &> /dev/null || :
 
 %posttrans
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog COPYING README
 %{_bindir}/m*
 %{_prefix}/lib/monodevelop
 %{_mandir}/man1/m*
+%{_datadir}/appdata/*.appdata.xml
 %{_datadir}/applications/*.desktop
 %{_datadir}/icons/hicolor/*/*/*
 %{_datadir}/mime/packages/monodevelop.xml
@@ -120,6 +164,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Fri Jul 17 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.4-2
+- Fix nuget depencendy
+- Update tarball to 5.9.4.5
+
 * Fri Jun 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.4-1
 - Update tarball to 5.9.4.2
 
@@ -143,23 +191,20 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 * Tue Apr 14 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.7.0.660-1
 - Build latest release 5.7
 
-* Fri Jan 09 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.8-2
-- Add mozroots intented fix nuget restore
+* Thu Mar 26 2015 Richard Hughes <rhughes@redhat.com> - 2.8.8.4-9
+- Add an AppData file for the software center
 
-* Thu Jan 08 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.8-1
-- Update to 5.8 from jenkins
+* Thu Oct 02 2014 Rex Dieter <rdieter@fedoraproject.org> 2.8.8.4-8
+- update mime scriptlets
 
-* Fri Oct 10 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.5-1
-- Update to 5.5.0.227
+* Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.8.4-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
-* Mon Jun 23 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.0.1-1
-- Update to 5.0.1
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.8.4-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
-* Tue Jan 28 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2.2-1
-- Update to 4.2.2
-
-* Sat Aug 03 2013 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2-1
-- Update to upstream
+* Mon May 26 2014 Brent Baude <baude@us.ibm.com> - 2.8.8.4-5
+- Chaning ppc64 arch to power64 macro
 
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.8.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
