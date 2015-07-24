@@ -1,8 +1,5 @@
 # rpm does not currently pull debuginfo out of mono packages
 %global debug_package %{nil}
-%if 0%{?el6}
-%global mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
-%endif
 
 Summary:        MonoDevelop Database Add-in
 Name:           monodevelop-database

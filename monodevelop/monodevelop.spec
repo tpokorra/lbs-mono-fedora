@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 
 Name:           monodevelop
-Version:        5.9.4
+Version:        5.9.5
 Release:        2%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
@@ -164,9 +164,9 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
-* Fri Jul 17 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.4-2
-- Fix nuget depencendy
-- Update tarball to 5.9.4.5
+* Thu Jul 16 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.9.4-2
+- Update tarball to 5.9.4.5, Cycle 5 – Service Release 2
+- Do not depend on specific NUnit version
 
 * Fri Jun 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.4-1
 - Update tarball to 5.9.4.2
@@ -191,20 +191,23 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 * Tue Apr 14 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.7.0.660-1
 - Build latest release 5.7
 
-* Thu Mar 26 2015 Richard Hughes <rhughes@redhat.com> - 2.8.8.4-9
-- Add an AppData file for the software center
+* Fri Jan 09 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.8-2
+- Add mozroots intented fix nuget restore
 
-* Thu Oct 02 2014 Rex Dieter <rdieter@fedoraproject.org> 2.8.8.4-8
-- update mime scriptlets
+* Thu Jan 08 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.8-1
+- Update to 5.8 from jenkins
 
-* Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.8.4-7
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+* Fri Oct 10 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.5-1
+- Update to 5.5.0.227
 
-* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.8.4-6
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+* Mon Jun 23 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.0.1-1
+- Update to 5.0.1
 
-* Mon May 26 2014 Brent Baude <baude@us.ibm.com> - 2.8.8.4-5
-- Chaning ppc64 arch to power64 macro
+* Tue Jan 28 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2.2-1
+- Update to 4.2.2
+
+* Sat Aug 03 2013 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2-1
+- Update to upstream
 
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.8.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild

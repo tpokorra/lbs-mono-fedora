@@ -1,8 +1,3 @@
-%if 0%{?rhel}%{?el7}
-%global _monodir %{_prefix}/lib/mono
-%global _monogacdir %{_prefix}/lib/mono/gac
-%endif
-
 %global debug_package %{nil}
 %global _docdir_fmt %{name}
 
