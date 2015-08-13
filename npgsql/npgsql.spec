@@ -9,17 +9,18 @@
 %endif
 
 Name:       npgsql
-Version:    2.2.3
-Release:    2%{?dist}
+Version:    3.0.0
+Release:    1%{?dist}
 Summary:    A .Net Data Provider for PostgreSQL
 
 Group:      Development/Languages
 License:    MIT
 URL:        http://npgsql.projects.pgfoundry.org/
-Source0:    http://pgfoundry.org/frs/download.php/3793/Npgsql-%{version}-src.zip
+Source0:    https://github.com/%{name}/%{name}/archive/v3.0.0.tar.gz#/%{name}-%{version}.tar.gz
 Source1:    npgsql.pc
 
 BuildRequires:  mono-devel
+BuildRequires:  nuget
 
 ExclusiveArch: %{mono_arches}
 
@@ -37,10 +38,11 @@ Requires:       pkgconfig
 Development files for %{name}.
 
 %prep
-%setup -q
+%setup -qn %{name}-%{version}
+nuget restore Npgsql2015.sln
 
 %build
-xbuild /property:Configuration=Debug-net45 /tv:4.0 Npgsql/Npgsql.csproj
+xbuild /tv:4.0 src/Npgsql/Npgsql.csproj
 
 %install
 %{__mkdir_p} %{buildroot}/%{_monogacdir}/
@@ -48,19 +50,24 @@ xbuild /property:Configuration=Debug-net45 /tv:4.0 Npgsql/Npgsql.csproj
 %{__mkdir_p} %{buildroot}/%{_libdir}/pkgconfig
 
 install -p -m0644 %SOURCE1 %{buildroot}%{_libdir}/pkgconfig/
-%{__install} -m0755 Npgsql/bin/Debug-net45/Npgsql.dll %{buildroot}%{_monodir}/npgsql/
+%{__install} -m0755 src/Npgsql/bin/Debug/Npgsql.dll %{buildroot}%{_monodir}/npgsql/
 
 gacutil -i %{buildroot}%{_monodir}/npgsql/Npgsql.dll -f -package npgsql -root %{buildroot}/%{_prefix}/lib
 
 %files
 %doc README.md
+%license LICENSE.txt
 %{_monogacdir}/*
+%dir %{_monodir}/npgsql
 %{_monodir}/npgsql/Npgsql.dll
 
 %files devel
 %{_libdir}/pkgconfig/npgsql.pc
 
 %changelog
+* Thu Aug 13 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 3.0.0-1
+- Update to 3.0.0
+
 * Wed May 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.2.3-2
 - Use global insted define
 - Use tv xbuild parameter insted sed to build with mono 4

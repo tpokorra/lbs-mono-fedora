@@ -4,5 +4,5 @@ libdir=${exec_prefix}/lib
 
 Name: npgsql
 Description: npgsql is a fully-managed ADO.NET driver for PostgreSQL.
-Version: 2.2.3
+Version: 3.0.0
 Libs: -r:${libdir}/mono/npgsql/Npgsql.dll
