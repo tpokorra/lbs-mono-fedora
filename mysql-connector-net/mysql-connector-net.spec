@@ -9,20 +9,20 @@
 %endif
 
 Name:           mysql-connector-net
-Version:        6.9.6
-Release:        3%{?dist}
+Version:        6.9.7
+Release:        1%{?dist}
 Summary:        Mono ADO.NET driver for MySQL
 
 Group:          Development/Languages
-License:        GPLv2
+# The entire source code is GPLv2 except Source/MySql.Data/zlib/ which is BSD
+License:        GPLv2 and BSD
 URL:            http://dev.mysql.com/downloads/connector/net/
 Source0:        http://cdn.mysql.com/Downloads/Connector-Net/%{name}-%{version}-src.zip
 Source1:        mysql-connector-net.pc
-Patch0:         mysql-connector-net-mono.patch
 
-BuildRequires:  mono-devel dos2unix
+BuildRequires:  mono-devel >= 4.0
 
-Requires:       mono-data
+Requires:       mono-data >= 4.0
 # Mono only available on these:
 ExclusiveArch: %{mono_arches}
 
@@ -40,11 +40,9 @@ Development files for %{name}.
 
 %prep
 %setup -q -c
-dos2unix Source/MySql.Data/MySql.Data.csproj
-%patch0 -p1
 
 %build
-xbuild /property:Configuration=Debug Source/MySql.Data/MySql.Data.csproj
+xbuild /property:Configuration=Release /property:VisualStudioVersion=11.0 Source/MySql.Data/MySql.Data.csproj
 
 %install
 %{__mkdir_p} %{buildroot}/%{_libdir}/pkgconfig
@@ -52,7 +50,7 @@ xbuild /property:Configuration=Debug Source/MySql.Data/MySql.Data.csproj
 %{__mkdir_p} %{buildroot}/%{_monodir}/mysql-connector-net/
 
 install -p -m0644 %SOURCE1 %{buildroot}%{_libdir}/pkgconfig/
-%{__install} -m0755 Source/MySql.Data/bin/v4.5/Debug/MySql.Data.dll %{buildroot}%{_monodir}/mysql-connector-net/
+%{__install} -m0755 Source/MySql.Data/bin/v4.5/Release/MySql.Data.dll %{buildroot}%{_monodir}/mysql-connector-net/
 
 gacutil -i %{buildroot}%{_monodir}/mysql-connector-net/MySql.Data.dll -f -package mysql-connector-net -root %{buildroot}/%{_prefix}/lib
 
@@ -66,6 +64,11 @@ gacutil -i %{buildroot}%{_monodir}/mysql-connector-net/MySql.Data.dll -f -packag
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Oct 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 6.9.7-1
+- Update to 6.9.7
+- Fix license
+- Use xbuild property parameter to build for mono 4
+
 * Mon May 18 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 6.9.6-3
 - Use global insted define
 
