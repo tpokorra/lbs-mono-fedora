@@ -1,18 +1,15 @@
 %global debug_package %{nil}
-%if 0%{?el6}
-%global mono_arches %ix86 x86_64 ia64 %{arm} sparcv9 alpha s390x ppc ppc64
-%endif
 
 Name:           nuget
-Version:        2.8.3
-Release:        1
-Summary:        Package manager for NuGet repositories
-License:        MIT
+Version:        2.8.5
+Release:        2%{?dist}
+Summary:        Package manager for .Net/Mono development platform
+License:        ASL 2.0
 Group:          Development/Libraries
 Url:            http://nuget.org/
 
-%global tarballversion %{version}+md58+dhx1
-Source0:        http://download.mono-project.com/sources/%{name}/%{name}-%{tarballversion}.tar.bz2
+%global tarballversion %{version}+md59+dhx1.orig
+Source0:        http://download.mono-project.com/sources/%{name}/%{name}_%{tarballversion}.tar.bz2
 Source1:        nuget-core.pc
 Source2:        nuget.sh
 Patch0:         nuget-fix_xdt_hintpath
@@ -26,6 +23,13 @@ development platform including .NET. The NuGet client
 tools provide the ability to produce and consume
 packages. The NuGet Gallery is the central package
 repository used by all package authors and consumers.
+
+%package        devel
+Summary:        Development files for %{name}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description devel
+Development package for %{name}
 
 %prep
 %setup -qn nuget-git
@@ -45,23 +49,36 @@ xbuild src/CommandLine/CommandLine.csproj /p:Configuration="Mono Release"
 
 %install
 %{?env_options}
-%{__mkdir_p} %{buildroot}%{_prefix}/lib/nuget
-%{__mkdir_p} %{buildroot}%{_datadir}/pkgconfig
+%{__mkdir_p} %{buildroot}%{_monodir}/nuget
+%{__mkdir_p} %{buildroot}%{_libdir}/pkgconfig
 %{__mkdir_p} %{buildroot}%{_bindir}
-%{__install} -m0644 %{SOURCE1} %{buildroot}%{_datadir}/pkgconfig/
+%{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
 %{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`
 sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
-%{__install} -m0755 src/CommandLine/bin/Release/NuGet.Core.dll %{buildroot}%{_prefix}/lib/nuget/
-%{__install} -m0755 xdt/XmlTransform/bin/Debug/Microsoft.Web.XmlTransform.dll %{buildroot}%{_prefix}/lib/nuget/
-%{__install} -m0755 src/CommandLine/bin/Release/NuGet.exe %{buildroot}%{_prefix}/lib/nuget/
+%{__install} -m0755 src/CommandLine/bin/Release/NuGet.Core.dll %{buildroot}%{_monodir}/nuget/
+%{__install} -m0755 xdt/XmlTransform/bin/Debug/Microsoft.Web.XmlTransform.dll %{buildroot}%{_monodir}/nuget/
+%{__install} -m0755 src/CommandLine/bin/Release/NuGet.exe %{buildroot}%{_monodir}/nuget/
 
 %files
-%_prefix/lib/nuget
-%_datadir/pkgconfig/nuget-core.pc
-%_bindir/*
+%{license} LICENSE.txt
+%{_monodir}/nuget
+%{_bindir}/*
+
+%files devel
+%{_libdir}/pkgconfig/nuget-core.pc
 
 %changelog
-* Wed Jun 02 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.3-3
+* Mon Jul 06 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.5-2
+- Split pc file into devel subpackage
+- Use license macro
+- Move pc file to _libdir instead datadir
+
+* Fri Jul 03 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.5-1
+- Update to 2.8.5
+- Move nuget into monodir
+- Fix licence
+
+* Wed Jun 03 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.3-3
 - Fix empty debug_package
 
 * Wed May 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.3-2

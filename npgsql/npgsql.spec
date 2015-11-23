@@ -9,14 +9,14 @@
 %endif
 
 Name:       npgsql
-Version:    2.2.3
-Release:    2%{?dist}
+Version:    2.2.6
+Release:    1%{?dist}
 Summary:    A .Net Data Provider for PostgreSQL
 
 Group:      Development/Languages
 License:    MIT
 URL:        http://npgsql.projects.pgfoundry.org/
-Source0:    http://pgfoundry.org/frs/download.php/3793/Npgsql-%{version}-src.zip
+Source0:    https://github.com/%{name}/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Source1:    npgsql.pc
 
 BuildRequires:  mono-devel
@@ -37,7 +37,7 @@ Requires:       pkgconfig
 Development files for %{name}.
 
 %prep
-%setup -q
+%setup -qn %{name}-%{version}
 
 %build
 xbuild /property:Configuration=Debug-net45 /tv:4.0 Npgsql/Npgsql.csproj
@@ -54,13 +54,18 @@ gacutil -i %{buildroot}%{_monodir}/npgsql/Npgsql.dll -f -package npgsql -root %{
 
 %files
 %doc README.md
+%license LICENSE.txt
 %{_monogacdir}/*
+%dir %{_monodir}/npgsql
 %{_monodir}/npgsql/Npgsql.dll
 
 %files devel
 %{_libdir}/pkgconfig/npgsql.pc
 
 %changelog
+* Thu Aug 27 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.2.6-1
+- Update to 2.2.6
+
 * Wed May 20 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.2.3-2
 - Use global insted define
 - Use tv xbuild parameter insted sed to build with mono 4
