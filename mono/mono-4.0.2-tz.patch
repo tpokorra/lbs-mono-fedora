@@ -1,0 +1,12 @@
+diff -up mono-4.0.1/mcs/class/corlib/System/TimeZoneInfo.cs.than mono-4.0.1/mcs/class/corlib/System/TimeZoneInfo.cs
+--- mono-4.0.1/mcs/class/corlib/System/TimeZoneInfo.cs.than	2015-07-06 23:48:54.606585145 +0200
++++ mono-4.0.1/mcs/class/corlib/System/TimeZoneInfo.cs	2015-07-07 01:23:43.226790465 +0200
+@@ -479,7 +479,7 @@ namespace System
+ 			try {
+ 				return ParseTZBuffer (id, buffer, length);
+ 			} catch (Exception e) {
+-				throw new InvalidTimeZoneException (e.Message);
++				return Utc;
+ 			}
+ 		}
+ #endif

@@ -1,0 +1,12 @@
+diff -up mono-4.0.4/mcs/class/corlib/System/TimeZoneInfo.cs.than mono-4.0.4/mcs/class/corlib/System/TimeZoneInfo.cs
+--- mono-4.0.4/mcs/class/corlib/System/TimeZoneInfo.cs.than	2015-10-29 14:22:20.730843437 +0100
++++ mono-4.0.4/mcs/class/corlib/System/TimeZoneInfo.cs	2015-10-29 14:24:07.055682653 +0100
+@@ -1137,7 +1137,7 @@ namespace System
+ 			return (((i >> 24) & 0xff)
+ 				| ((i >> 8) & 0xff00)
+ 				| ((i << 8) & 0xff0000)
+-				| ((i << 24)));
++				| (((i & 0xff) << 24)));
+ 		}
+ 
+ 		static int ReadBigEndianInt32 (byte [] buffer, int start)
