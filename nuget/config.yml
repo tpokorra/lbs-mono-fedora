@@ -1,0 +1,3 @@
+lbs:
+  source:
+    download: ["http://origin-download.mono-project.com/repo/debian/pool/main/n/nuget/nuget_2.8.7+md510+dhx1.orig.tar.bz2"]

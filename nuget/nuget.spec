@@ -1,14 +1,14 @@
 %global debug_package %{nil}
 
 Name:           nuget
-Version:        2.8.5
-Release:        2%{?dist}
+Version:        2.8.7
+Release:        0%{?dist}
 Summary:        Package manager for .Net/Mono development platform
 License:        ASL 2.0
 Group:          Development/Libraries
 Url:            http://nuget.org/
 
-%global tarballversion %{version}+md59+dhx1.orig
+%global tarballversion %{version}+md510+dhx1.orig
 Source0:        http://download.mono-project.com/sources/%{name}/%{name}_%{tarballversion}.tar.bz2
 Source1:        nuget-core.pc
 Source2:        nuget.sh
@@ -68,6 +68,9 @@ sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
 %{_libdir}/pkgconfig/nuget-core.pc
 
 %changelog
+* Thu Nov 26 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.8.7-0
+- upgrade to 2.8.7 for MonoDevelop 5.10
+
 * Mon Jul 06 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.8.5-2
 - Split pc file into devel subpackage
 - Use license macro
