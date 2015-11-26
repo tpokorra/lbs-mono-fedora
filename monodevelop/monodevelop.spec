@@ -1,14 +1,14 @@
 %global debug_package %{nil}
 
 Name:           monodevelop
-Version:        5.9.5
-Release:        2%{?dist}
+Version:        5.9.7
+Release:        1%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
-Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{version}.5.tar.bz2
+Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{version}.9.tar.bz2
 Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-nunit-unbundle.patch
@@ -164,9 +164,24 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
-* Thu Jul 16 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.9.4-2
-- Update tarball to 5.9.4.5, Cycle 5 – Service Release 2
-- Do not depend on specific NUnit version
+* Thu Nov 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.7-1
+- Update to 5.9.7.9
+
+* Thu Sep 24 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.6-2
+- Update to 5.9.6.23 Cycle 5 – Service Release 4
+
+* Fri Sep 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.6-1
+- Update to 5.9.6.20 Cycle 5 – Service Release 4
+
+* Tue Aug 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.5-2
+- Fix upstream error generating 5.9.5.9 tarball that use old version directory.
+
+* Tue Aug 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.5-1
+- Update tarball to 5.9.5.9
+
+* Fri Jul 17 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.4-2
+- Fix nuget depencendy
+- Update tarball to 5.9.4.5
 
 * Fri Jun 05 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.4-1
 - Update tarball to 5.9.4.2
@@ -191,23 +206,20 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 * Tue Apr 14 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.7.0.660-1
 - Build latest release 5.7
 
-* Fri Jan 09 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.8-2
-- Add mozroots intented fix nuget restore
+* Thu Mar 26 2015 Richard Hughes <rhughes@redhat.com> - 2.8.8.4-9
+- Add an AppData file for the software center
 
-* Thu Jan 08 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.8-1
-- Update to 5.8 from jenkins
+* Thu Oct 02 2014 Rex Dieter <rdieter@fedoraproject.org> 2.8.8.4-8
+- update mime scriptlets
 
-* Fri Oct 10 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.5-1
-- Update to 5.5.0.227
+* Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.8.4-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
-* Mon Jun 23 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.0.1-1
-- Update to 5.0.1
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.8.4-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
-* Tue Jan 28 2014 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2.2-1
-- Update to 4.2.2
-
-* Sat Aug 03 2013 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2-1
-- Update to upstream
+* Mon May 26 2014 Brent Baude <baude@us.ibm.com> - 2.8.8.4-5
+- Chaning ppc64 arch to power64 macro
 
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.8.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
