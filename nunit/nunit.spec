@@ -2,7 +2,7 @@
 
 Name:           nunit
 Version:        2.6.4
-Release:        7%{?dist}
+Release:        11%{?dist}
 Summary:        Unit test framework for CLI
 License:        MIT with advertising
 Group:          Development/Libraries
@@ -13,6 +13,10 @@ Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
 Source4:        nunit.desktop
 BuildRequires:  mono-devel libgdiplus-devel desktop-file-utils
+ExclusiveArch:  %{mono_arches}
+Provides:       mono-nunit = 4.0.2-5
+Obsoletes:      mono-nunit < 4.0.2-6
+Obsoletes:      nunit-runner
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -22,6 +26,13 @@ text or XML.
 
 NUnit targets the CLI (Common Language Infrastructure) and supports Mono and
 the Microsoft .NET Framework.
+
+%package gui
+Summary:        Tools for run NUnit test
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description gui
+Desktop application for run NUnit test
 
 %package doc
 Summary:        Documentation package for NUnit
@@ -36,6 +47,8 @@ Summary:        Development files for NUnit
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       pkgconfig
+Provides:       mono-nunit-devel = 4.0.2-5
+Obsoletes:      mono-nunit-devel < 4.0.2-6
 
 %description devel
 Development files for %{name}.
@@ -85,9 +98,14 @@ cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nuni
 
 %files
 %license license.txt
+%{_bindir}/nunit-console*
+%{_monodir}/nunit/nunit-console.exe*
 %{_monogacdir}/nunit*
-%{_monodir}/nunit
-%{_bindir}/*
+%{_monodir}/nunit/*.dll
+
+%files gui
+%{_bindir}/nunit-gui*
+%{_monodir}/nunit/nunit.exe*
 %{_datadir}/applications/nunit.desktop
 %{_datadir}/icons/NUnit
 
@@ -98,21 +116,33 @@ cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nuni
 %files devel
 %{_libdir}/pkgconfig/nunit.pc
 
-%post
+%post gui
 /bin/touch --no-create %{_datadir}/icons/NUnit &>/dev/null || :
 /usr/bin/update-desktop-database &> /dev/null || :
 
-%postun
+%postun gui
 if [ $1 -eq 0 ] ; then
     /bin/touch --no-create %{_datadir}/icons/NUnit &>/dev/null
     /usr/bin/gtk-update-icon-cache %{_datadir}/icons/NUnit &>/dev/null || :
 fi
 /usr/bin/update-desktop-database &> /dev/null || :
 
-%posttrans
+%posttrans gui
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/NUnit &>/dev/null || :
 
 %changelog
+* Tue Nov 10 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.6.4-11
+- Replace nunit-runner with nunit-gui with only desktop frontend
+
+* Sun Nov 01 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.6.4-10
+- Split runner tool in subpackage
+
+* Tue Aug 04 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-9
+- obsoleting mono-nunit and mono-nunit-devel (bug 1247825)
+
+* Fri Jul 17 2015 Dan Horák <dan[at]danny.cz> - 2.6.4-8
+- set ExclusiveArch
+
 * Mon Jul 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-7
 - require desktop-file-utils for building and make sure we own the icons/NUnit directory
 

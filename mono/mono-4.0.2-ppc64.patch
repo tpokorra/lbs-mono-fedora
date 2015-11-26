@@ -1,0 +1,94 @@
+diff -up mono-4.0.2/mono/mini/mini-ppc.c.than mono-4.0.2/mono/mini/mini-ppc.c
+--- mono-4.0.2/mono/mini/mini-ppc.c.than	2015-07-07 18:40:56.066059552 +0200
++++ mono-4.0.2/mono/mini/mini-ppc.c	2015-07-07 18:50:44.867880449 +0200
+@@ -2147,11 +2147,7 @@ mono_arch_decompose_opts (MonoCompile *c
+ {
+ 	switch (ins->opcode) {
+ 	case OP_ICONV_TO_R_UN: {
+-#if G_BYTE_ORDER == G_BIG_ENDIAN
+ 		static const guint64 adjust_val = 0x4330000000000000ULL;
+-#else
+-		static const guint64 adjust_val = 0x0000000000003043ULL;
+-#endif
+ 		int msw_reg = mono_alloc_ireg (cfg);
+ 		int adj_reg = mono_alloc_freg (cfg);
+ 		int tmp_reg = mono_alloc_freg (cfg);
+@@ -2162,8 +2158,14 @@ mono_arch_decompose_opts (MonoCompile *c
+ 			basereg = mono_alloc_ireg (cfg);
+ 			MONO_EMIT_NEW_BIALU_IMM (cfg, OP_IADD_IMM, basereg, cfg->frame_reg, offset);
+ 		}
++#if G_BYTE_ORDER == G_BIG_ENDIAN
+ 		MONO_EMIT_NEW_STORE_MEMBASE (cfg, OP_STOREI4_MEMBASE_REG, basereg, offset, msw_reg);
+ 		MONO_EMIT_NEW_STORE_MEMBASE (cfg, OP_STOREI4_MEMBASE_REG, basereg, offset + 4, ins->sreg1);
++#else
++		// For little endian the words are reversed
++		MONO_EMIT_NEW_STORE_MEMBASE (cfg, OP_STOREI4_MEMBASE_REG, basereg, offset + 4, msw_reg);
++		MONO_EMIT_NEW_STORE_MEMBASE (cfg, OP_STOREI4_MEMBASE_REG, basereg, offset, ins->sreg1);
++#endif
+ 		MONO_EMIT_NEW_LOAD_R8 (cfg, adj_reg, &adjust_val);
+ 		MONO_EMIT_NEW_LOAD_MEMBASE_OP (cfg, OP_LOADR8_MEMBASE, tmp_reg, basereg, offset);
+ 		MONO_EMIT_NEW_BIALU (cfg, OP_FSUB, ins->dreg, tmp_reg, adj_reg);
+@@ -2213,7 +2215,11 @@ mono_arch_decompose_opts (MonoCompile *c
+ 			MONO_EMIT_NEW_BIALU_IMM (cfg, OP_IADD_IMM, basereg, cfg->frame_reg, offset);
+ 		}
+ 		MONO_EMIT_NEW_STORE_MEMBASE (cfg, OP_STORER8_MEMBASE_REG, basereg, offset, ins->sreg1);
++#if G_BYTE_ORDER == G_BIG_ENDIAN
+ 		MONO_EMIT_NEW_LOAD_MEMBASE_OP (cfg, OP_LOADI4_MEMBASE, msw_reg, basereg, offset);
++#else
++		MONO_EMIT_NEW_LOAD_MEMBASE_OP (cfg, OP_LOADI4_MEMBASE, msw_reg, basereg, offset+4);
++#endif
+ 		MONO_EMIT_NEW_UNALU (cfg, OP_CHECK_FINITE, -1, msw_reg);
+ 		MONO_EMIT_NEW_UNALU (cfg, OP_FMOVE, ins->dreg, ins->sreg1);
+ 		ins->opcode = OP_NOP;
+diff -up mono-4.0.2/mono/mini/mini-ppc.h.than mono-4.0.2/mono/mini/mini-ppc.h
+--- mono-4.0.2/mono/mini/mini-ppc.h.than	2015-07-07 18:50:55.337912865 +0200
++++ mono-4.0.2/mono/mini/mini-ppc.h	2015-07-07 18:51:20.637991106 +0200
+@@ -145,6 +145,7 @@ typedef struct MonoCompileArch {
+ #define PPC_LAST_FPARG_REG ppc_f13
+ #define PPC_PASS_STRUCTS_BY_VALUE 1
+ #define PPC_THREAD_PTR_REG ppc_r13
++#define MONO_ARCH_HAVE_SIGCTX_TO_MONOCTX 1
+ #else
+ #define PPC_RET_ADDR_OFFSET 4
+ #define PPC_STACK_PARAM_OFFSET 8
+diff -up mono-4.0.2/mono/tests/Makefile.am.than mono-4.0.2/mono/tests/Makefile.am
+--- mono-4.0.2/mono/tests/Makefile.am.than	2015-07-07 18:51:39.508049497 +0200
++++ mono-4.0.2/mono/tests/Makefile.am	2015-07-07 18:52:18.098168853 +0200
+@@ -454,6 +454,12 @@ if POWERPC
+ PLATFORM_DISABLED_TESTS=finalizer-abort.exe finalizer-exception.exe finalizer-exit.exe
+ endif
+ 
++
++if POWERPC64
++# These tests hang
++PLATFORM_DISABLED_TESTS=monitor.exe finalizer-abort.exe finalizer-exception.exe finalizer-exit.exe
++endif
++
+ if ARM
+ PLATFORM_DISABLED_TESTS=filter-stack.exe
+ endif
+diff -up mono-4.0.2/mono/metadata/sgen-archdep.h.than mono-4.0.2/mono/metadata/sgen-archdep.h
+--- mono-4.0.2/mono/metadata/sgen-archdep.h.than	2015-07-07 19:02:32.370056671 +0200
++++ mono-4.0.2/mono/metadata/sgen-archdep.h	2015-07-07 19:03:19.740200462 +0200
+@@ -89,7 +89,7 @@
+ 
+ /* MS_BLOCK_SIZE must be a multiple of the system pagesize, which for some
+    archs is 64k.  */
+-#if defined(TARGET_POWERPC64) && _CALL_ELF == 2
++#if defined(TARGET_POWERPC64)
+ #define ARCH_MIN_MS_BLOCK_SIZE	(64*1024)
+ #define ARCH_MIN_MS_BLOCK_SIZE_SHIFT	16
+ #endif
+diff -up mono-4.0.2/mono/mini/tramp-ppc.c.than mono-4.0.2/mono/mini/tramp-ppc.c
+--- mono-4.0.2/mono/mini/tramp-ppc.c.than	2015-07-07 19:04:29.860413420 +0200
++++ mono-4.0.2/mono/mini/tramp-ppc.c	2015-07-07 19:05:47.230648113 +0200
+@@ -691,6 +691,9 @@ mono_arch_get_nullified_class_init_tramp
+ 	if (info)
+ 		*info = mono_tramp_info_create ("nullified_class_init_trampoline", buf, code - buf, NULL, NULL);
+ 
++    	/* It is expected to be a function descriptor on power pre-v2 ABI */
++    	buf = mono_create_ftnptr (mono_domain_get (), buf);
++
+ 	return buf;
+ }
+ 

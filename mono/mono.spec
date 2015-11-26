@@ -1,4 +1,4 @@
-%ifarch ppc64 ppc64le s390x
+farch ppc64le s390x
 # workaround bugs #1224945, #1228570
 %undefine _hardened_build
 %endif
@@ -17,7 +17,7 @@
 
 Name:           mono
 Version:        4.2.1
-Release:        4%{?dist}
+Release:        1%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -39,11 +39,6 @@ BuildRequires:  libgdiplus-devel >= 2.10
 BuildRequires:  pkgconfig
 BuildRequires:  valgrind-devel
 BuildRequires:  zlib-devel
-
-# http://www.mono-project.com/docs/about-mono/releases/4.0.0/#npgsql
-Obsoletes:      mono-data-postgresql
-# http://www.mono-project.com/docs/about-mono/releases/4.0.0/#entityframework
-Obsoletes:      mono-entityframework
 
 # Yes, mono actually depends on itself, because
 # we deleted the bootstrapping binaries. If you
@@ -271,9 +266,6 @@ Development file for monodoc
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-
-# modifications for Mono 4
-sed -i "s#mono/2.0#mono/4.5#g" data/mono-nunit.pc.in
 
 # Add undeclared Arg
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
@@ -740,19 +732,14 @@ rm -f %{buildroot}%{_libdir}/pkgconfig/mono-nunit.pc
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
-* Thu Nov 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2.1-4
-- Update to 4.2.1.102 Cycle 6 – RC2
+* Tue Nov 17 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2.1-1
+- Update to 4.2.1.102 Cycle 6
 
-* Mon Nov 02 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2.1-3
-- Update to 4.2.1.91 Cycle 6 – RC1 / Alpha 6
+* Thu Nov 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.0.5-1
+- Update to 4.0.5.1 Cycle 5 – Service Release 5
 
-* Wed Oct 07 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2.1-2
-- Update to 4.2.1.60 Cycle 6 – RC0 / Alpha 5
-
-* Wed Sep 30 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2.1-1
-- Update to 4.2.1.36 Cycle 6 – 3rd Alpha Preview
-- Remove mono-4.0.2-s390x.patch
-- Remove mono-4.0.2-ppc64.patch
+* Thu Oct 29 2015 Than Ngo <than@redhat.com> - 4.0.4-2
+- backport the patch to fix exception when reading from timezone file
 
 * Fri Sep 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.0.4-1
 - Update to 4.0.4.1 Cycle 5 – Service Release 4

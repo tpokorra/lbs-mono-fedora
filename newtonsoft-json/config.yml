@@ -1,0 +1,3 @@
+lbs:
+  source:
+    download: ["https://github.com/JamesNK/newtonsoft.json/archive/7.0.1.tar.gz#/newtonsoft-json-7.0.1.tar.gz"]
