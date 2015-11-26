@@ -24,10 +24,3 @@ Index: xamarin-pkg-nuget/src/Core/Core.csproj
      </Reference>
      <Reference Include="System" />
      <Reference Include="System.ComponentModel.DataAnnotations" />
-@@ -321,4 +321,4 @@
-   <Target Name="AfterBuild">
-   </Target>
-   -->
--</Project>
-\ No newline at end of file
-+</Project>

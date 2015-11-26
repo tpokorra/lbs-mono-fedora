@@ -33,6 +33,7 @@ Development package for %{name}
 
 %prep
 %setup -qn nuget-git
+sed -i "s/\r//g" src/Core/Core.csproj
 %patch0 -p1
 
 # fix compile with Mono4
