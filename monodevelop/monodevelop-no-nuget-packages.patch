@@ -1,0 +1,10 @@
+--- a/Makefile.in	2015-11-26 06:19:40.073232455 +0100
++++ b/Makefile.in	2015-11-26 06:20:03.329231309 +0100
+@@ -1065,7 +1065,7 @@
+ 
+ all: vcrevision
+ 
+-all-local: vcrevision restore-packages sln_build
++all-local: vcrevision sln_build
+ 
+ clean: clean-local
