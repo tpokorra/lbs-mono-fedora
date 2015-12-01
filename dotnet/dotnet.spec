@@ -1,3 +1,4 @@
+%define gitrevision f1f3d1e2d33ef87a261faccfa9ad612edd696a64
 Name:           dotnet
 Version:        1.0.0
 Release:        1%{?dist}
@@ -6,7 +7,8 @@ Summary:        .NET Core is a general purpose managed framework
 Group:          Development/Languages
 License:        MIT
 URL:            https://dotnet.github.io/
-Source0:        https://github.com/dotnet/core/archive/v%{version}-rc1.tar.gz
+#Source0:        https://github.com/dotnet/core/archive/v%{version}-rc1.tar.gz
+Source0:        https://github.com/dotnet/coreclr/archive/%{gitrevision}.tar.gz
 
 BuildRequires:  which
 BuildRequires:  make
@@ -29,7 +31,8 @@ BuildRequires:  mono-devel
 You can create .NET Core apps that run on multiple OSes and CPUs.
 
 %prep
-%setup -q -n coreclr-%{version}-rc1
+#%setup -q -n coreclr-%{version}-rc1
+%setup -q -n coreclr-%{gitrevision}
 
 %build
 
