@@ -1,6 +1,6 @@
 Name:           keepass
-Version:        2.27
-Release:        3%{?dist}
+Version:        2.30
+Release:        4%{?dist}
 Summary:        Password manager
 
 License:        GPLv2+
@@ -20,10 +20,20 @@ Patch1:         keepass-fix-XSL-search-path.patch
 # Locate locally-installed help files:
 Patch2:         keepass-enable-local-help.patch
 
-ExcludeArch:    armv7hl
-# need mono-web for System.Runtime.Serialization.Formatters.Soap
-BuildRequires:  mono-devel mono-winforms mono-web libgdiplus-devel archmage desktop-file-utils python-devel
+ExclusiveArch:  %{mono_arches}
+BuildRequires:  ImageMagick
+BuildRequires:  archmage
+BuildRequires:  desktop-file-utils
+BuildRequires:  libgdiplus-devel
+BuildRequires:  mono-devel
+BuildRequires:  mono-winforms
+BuildRequires:  mono-web
+BuildRequires:  python-devel
+BuildRequires:  xorg-x11-server-Xvfb
 Requires:       xdotool xsel hicolor-icon-theme
+
+# Workaround for 1251756:
+Requires:       libgdiplus-devel
 
 
 # The debuginfo package would be empty if created.
@@ -41,11 +51,18 @@ to unlock the whole database.
 %prep
 %autosetup -p1
 
+# Work around libpng bug (https://bugzilla.redhat.com/show_bug.cgi?id=1276843):
+find -name \*.png -print0 | xargs -0 mogrify -define png:format=png32
+
 
 %build
 ( cd Build && sh PrepMonoDev.sh )
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
+xbuild /target:KeePass /property:Configuration=Release
+for subdir in Images_App_HighRes Images_Client_16 Images_Client_HighRes; do
+    xvfb-run -a mono Build/KeePass/Release/KeePass.exe -d:`pwd`/Ext/$subdir --makexspfile `pwd`/KeePass/Resources/Data/$subdir.bin
+done
 xbuild /target:KeePass /property:Configuration=Release
 %{__python2} -c 'import archmod.CHM; archmod.CHM.CHMDir("Docs").process_templates("Docs/Chm")'
 
@@ -87,15 +104,17 @@ cp -pr Docs/Chm %{buildroot}/%{_docdir}/%{name}/
 
 %postun
 /usr/bin/update-desktop-database &> /dev/null || :
-/usr/bin/update-mime-database %{_datadir}/mime &> /dev/null || :
 if [ $1 -eq 0 ] ; then
     /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+    /bin/touch --no-create %{_datadir}/mime/packages &> /dev/null || :
+    /usr/bin/update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 fi
 
 
 %posttrans
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+/usr/bin/update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 
 %package doc
@@ -111,11 +130,34 @@ Documentation for KeePass, a free open source password manager.
 
 
 %changelog
-* Wed Apr 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.27-3
-- Fixes for sed commands to update csproj files for Mono 4
+* Sun Nov 22 2015 Peter Oliver <rpm@mavit.org.uk> - 2.30-4
+- Ensure .png files are repacked into .bin files at build time.
+- Work around missing icons.  Fixes #1276843.
 
-* Mon Apr 13 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.27-2
-- Build with and for Mono 4
+* Fri Oct 23 2015 Peter Oliver <rpm@mavit.org.uk> - 2.30-3
+- Set StartupWMClass, so that desktops can match the .desktop file with the windows mapped by the application.  Fixes #1266312.
+
+* Sun Aug  9 2015 Peter Oliver <rpm@mavit.org.uk> - 2.30-2
+- Add workaround for #1251756.
+
+* Sun Aug  9 2015 Peter Oliver <rpm@mavit.org.uk> - 2.30-1
+- Update to 2.30.  Fixes #1222120.
+
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.29-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
+* Tue May 19 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.29-1
+- Update to 2.29
+- Rebuild (mono4)
+
+* Sat Oct 04 2014 Dan Horák <dan[at]danny.cz> - 2.27-4
+- switch to ExclusiveArch, but seems FTBFS even on x86_64
+
+* Mon Aug 18 2014 Rex Dieter <rdieter@fedoraproject.org> 2.27-3
+- update mime scriptlets
+
+* Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.27-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
 * Fri Jul 18 2014 Peter Oliver <rpm@mavit.org.uk> - 2.27-1
 - Update to version 2.27.

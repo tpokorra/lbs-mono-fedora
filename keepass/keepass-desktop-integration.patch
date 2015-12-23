@@ -43,7 +43,7 @@ diff -uNr keepass-2.26/dist/keepass.desktop keepass/dist/keepass.desktop
 +Icon=keepass
 +Terminal=false
 +Type=Application
-+StartupNotify=false
++StartupWMClass=keepass2
 +Categories=Utility;
 +MimeType=application/x-keepass2;
 diff -uNr keepass-2.26/dist/keepass.xml keepass/dist/keepass.xml
