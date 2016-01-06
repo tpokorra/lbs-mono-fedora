@@ -1,4 +1,4 @@
-%define gitrevision f1f3d1e2d33ef87a261faccfa9ad612edd696a64
+%define gitrevision 03bb9a00a68efac5f1637f53ea0099a2dea47117
 Name:           dotnet
 Version:        1.0.0
 Release:        1%{?dist}
@@ -61,5 +61,5 @@ You can create .NET Core apps that run on multiple OSes and CPUs.
 
 
 %changelog
-* Tue Dec 01 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 1.0.0-1
-- initial package for .NET Core RC1
+* Wed Jan 06 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 1.0.0-1
+- initial package for .NET Core (from git master)
