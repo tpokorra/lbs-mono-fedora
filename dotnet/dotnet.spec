@@ -40,11 +40,11 @@ You can create .NET Core apps that run on multiple OSes and CPUs.
 %install
 
 mkdir -p %{buildroot}%{_bindir}
-for f in corerun coreconsole crossgen ilasm ildasm; do cp ${deliverydir}/$f %{buildroot}%{_bindir}; done
+for f in corerun coreconsole crossgen ilasm ildasm; do cp %{deliverydir}/$f %{buildroot}%{_bindir}; done
 mkdir -p %{buildroot}%{_libdir}
-cp ${deliverydir}/*.so %{buildroot}%{_libdir}
+cp %{deliverydir}/*.so %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_includedir}
-cp ${deliverydir}/inc/*.h %{buildroot}%{_includedir}
+cp %{deliverydir}/inc/*.h %{buildroot}%{_includedir}
 
 %post -p /sbin/ldconfig
 
