@@ -1,0 +1,12 @@
+--- a/external/referencesource/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs	2015-11-18 15:41:38.319153821 +0100
++++ b/external/referencesource/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs	2015-11-18 15:42:31.031005448 +0100
+@@ -36,7 +36,7 @@
+ 
+         internal string HelpGeneratorPath
+         {
+-            get { return Path.Combine(this.actualPath, this.Href); }
++            get { return this.actualPath == null?Path.Combine("/etc/mono/4.5/", this.Href):Path.Combine(this.actualPath, this.Href); }
+         }
+ 
+         [ConfigurationProperty("href", IsRequired = true)]
+
