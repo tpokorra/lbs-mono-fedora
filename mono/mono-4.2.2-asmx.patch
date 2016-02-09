@@ -10,8 +10,8 @@ if MONO_BROKEN_CONFIGURATION_DLL is defined, make sure that actualPath always ge
 
 diff --git a/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs b/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs
 index c1e6007..e03a305 100644
---- a/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs
-+++ b/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs
+--- a/external/referencesource/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs
++++ b/external/referencesource/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs
 @@ -75,6 +75,7 @@ protected override void DeserializeElement(XmlReader reader, bool serializeColle
  			try {
  				var hack = this.EvaluationContext;
