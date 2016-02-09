@@ -86,10 +86,8 @@ find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="
 %build
 %configure --enable-git --disable-update-mimedb --disable-update-desktopdb
 
-cd ./external/libgit2sharp/Lib/CustomBuildTasks
-xbuild CustomBuildTasks.csproj
-mv bin/Debug/* .
-cd ../../../../
+#Custom Task for build libgit2sharp
+xbuild /property:OutputPath=. external/libgit2sharp/Lib/CustomBuildTasks/CustomBuildTasks.csproj
 
 make %{?_smp_mflags}
 

@@ -1,4 +1,4 @@
-%ifarch ppc64 ppc64le s390x
+farch ppc64le s390x
 # workaround bugs #1224945, #1228570
 %undefine _hardened_build
 %endif
