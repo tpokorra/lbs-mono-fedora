@@ -1,0 +1,43 @@
+From 6aa7d30d96f1a14845f617ca30508161fa57eaf8 Mon Sep 17 00:00:00 2001
+From: Zoltan Varga <vargaz@gmail.com>
+Date: Fri, 1 Jan 2016 23:03:48 -0500
+Subject: [PATCH] [sgen] Avoid asserting if the tls offsets used by the managed
+ allocators cannot be determined. This can happen when using shared libraries
+ on linux. Fixes #30594.
+
+---
+ mono/metadata/sgen-mono.c | 6 ++++++
+ mono/sgen/sgen-alloc.c    | 3 ---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/mono/metadata/sgen-mono.c b/mono/metadata/sgen-mono.c
+index f6ae431..8d3b7c1 100644
+--- a/mono/metadata/sgen-mono.c
++++ b/mono/metadata/sgen-mono.c
+@@ -2980,6 +2980,12 @@ mono_gc_base_init (void)
+ 
+ 	if (nursery_canaries_enabled ())
+ 		sgen_set_use_managed_allocator (FALSE);
++
++#if defined(HAVE_KW_THREAD)
++	/* This can happen with using libmonosgen.so */
++	if (mono_tls_key_get_offset (TLS_KEY_SGEN_TLAB_NEXT_ADDR) == -1)
++		sgen_set_use_managed_allocator (FALSE);
++#endif
+ }
+ 
+ void
+diff --git a/mono/sgen/sgen-alloc.c b/mono/sgen/sgen-alloc.c
+index 0832bc1..ca9d645 100644
+--- a/mono/sgen/sgen-alloc.c
++++ b/mono/sgen/sgen-alloc.c
+@@ -554,9 +554,6 @@ sgen_init_allocator (void)
+ 
+ 	mono_tls_key_set_offset (TLS_KEY_SGEN_TLAB_NEXT_ADDR, tlab_next_addr_offset);
+ 	mono_tls_key_set_offset (TLS_KEY_SGEN_TLAB_TEMP_END, tlab_temp_end_offset);
+-
+-	g_assert (tlab_next_addr_offset != -1);
+-	g_assert (tlab_temp_end_offset != -1);
+ #endif
+ 
+ #ifdef HEAVY_STATISTICS

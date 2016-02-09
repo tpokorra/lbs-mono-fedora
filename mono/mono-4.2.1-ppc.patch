@@ -1,0 +1,51 @@
+diff -up mono-4.2.1/mcs/build/library.make.than mono-4.2.1/mcs/build/library.make
+diff -up mono-4.2.1/mcs/class/corlib/System/TimeZoneInfo.cs.than mono-4.2.1/mcs/class/corlib/System/TimeZoneInfo.cs
+--- mono-4.2.1/mcs/class/corlib/System/TimeZoneInfo.cs.than	2015-11-12 04:00:29.000000000 -0500
++++ mono-4.2.1/mcs/class/corlib/System/TimeZoneInfo.cs	2016-01-18 10:28:29.532781004 -0500
+@@ -1150,7 +1150,7 @@ namespace System
+ 			try {
+ 				return ParseTZBuffer (id, buffer, length);
+ 			} catch (Exception e) {
+-				throw new InvalidTimeZoneException (e.Message);
++				return Utc; //throw new InvalidTimeZoneException (e.Message);
+ 			}
+ 		}
+ 
+@@ -1175,7 +1175,7 @@ namespace System
+ 			return (((i >> 24) & 0xff)
+ 				| ((i >> 8) & 0xff00)
+ 				| ((i << 8) & 0xff0000)
+-				| ((i << 24)));
++				| (((i & 0xff) << 24)));
+ 		}
+ 
+ 		static int ReadBigEndianInt32 (byte [] buffer, int start)
+diff -up mono-4.2.1/mcs/class/System.Web/Makefile.than mono-4.2.1/mcs/class/System.Web/Makefile
+diff -up mono-4.2.1/mono/mini/tramp-ppc.c.than mono-4.2.1/mono/mini/tramp-ppc.c
+--- mono-4.2.1/mono/mini/tramp-ppc.c.than	2015-11-12 04:00:29.000000000 -0500
++++ mono-4.2.1/mono/mini/tramp-ppc.c	2016-01-18 12:05:38.902781004 -0500
+@@ -625,8 +625,12 @@ mono_arch_get_nullified_class_init_tramp
+ 
+ 	g_assert (code - buf <= tramp_size);
+ 
++	if (info)
+ 	*info = mono_tramp_info_create ("nullified_class_init_trampoline", buf, code - buf, NULL, NULL);
+ 
++	/* It is expected to be a function descriptor on power pre-v2 ABI */
++	buf = mono_create_ftnptr (mono_domain_get (), buf);
++
+ 	return buf;
+ }
+ 
+diff -up mono-4.2.1/mono/sgen/sgen-archdep.h.than mono-4.2.1/mono/sgen/sgen-archdep.h
+--- mono-4.2.1/mono/sgen/sgen-archdep.h.than	2015-11-12 04:00:29.000000000 -0500
++++ mono-4.2.1/mono/sgen/sgen-archdep.h	2016-01-18 10:28:29.532781004 -0500
+@@ -89,7 +89,7 @@
+ 
+ /* MS_BLOCK_SIZE must be a multiple of the system pagesize, which for some
+    archs is 64k.  */
+-#if defined(TARGET_POWERPC64) && _CALL_ELF == 2
++#if defined(TARGET_POWERPC64)
+ #define ARCH_MIN_MS_BLOCK_SIZE	(64*1024)
+ #define ARCH_MIN_MS_BLOCK_SIZE_SHIFT	16
+ #endif
