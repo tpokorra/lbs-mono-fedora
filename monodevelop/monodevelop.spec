@@ -1,12 +1,11 @@
 %global debug_package %{nil}
-
-%define version 5.10.0
-%define tarballpath 5.10
-%define fileversion 5.10.0.871
+%global version 5.10.0
+%global tarballpath 5.10
+%global fileversion 5.10.0.871
 
 Name:           monodevelop
 Version:        %{version}
-Release:        6%{?dist}
+Release:        3%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
@@ -66,7 +65,7 @@ Development files for %{name}.
 %patch3 -p1
 
 for f in tests/TestRunner/TestRunner.csproj tests/UserInterfaceTests/UserInterfaceTests.csproj src/addins/NUnit/NUnitRunner/NUnitRunner.csproj src/addins/NUnit/MonoDevelop.NUnit.csproj external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
-do 
+do
   echo $f
   sed -i "s#<HintPath>.*nunit\..*</HintPath>##g" $f
 done
@@ -77,8 +76,8 @@ sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json<
 find -name '*.dll' -exec rm -f {} \;
 
 #Fixes for Mono 4
-sed -i "s#gmcs#mcs#g" configure
-sed -i "s#gmcs#mcs#g" configure.in
+sed -i "s#gmcs#mcs#g; s#dmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g; s#dmcs#mcs#g" configure.in
 sed -i "s#mono-nunit#nunit#g" configure.in
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
@@ -182,8 +181,14 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
-* Thu Nov 26 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.10.0-6
-- Update to 5.10.0.871 Cycle 6
+* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 5.10.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
+* Mon Jan 04 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.10.0-2
+- do not use dmcs but mcs only to build MonoDevelop (related to #1294967)
+
+* Sat Jan 02 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.10.0-1
+- Update to 5.10.0.871
 
 * Thu Nov 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.7-1
 - Update to 5.9.7.9
