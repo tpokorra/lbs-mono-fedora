@@ -1,0 +1,30 @@
+From 054efb814f0498927d8046fc015a4926968d51b1 Mon Sep 17 00:00:00 2001
+From: Timotheus Pokorra <timotheus.pokorra@gmail.com>
+Date: Mon, 8 Feb 2016 21:55:36 +0100
+Subject: [PATCH] fixing display of asmx help page (#37137)
+
+if MONO_BROKEN_CONFIGURATION_DLL is defined, make sure that actualPath always gets set
+---
+ .../System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs       | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs b/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs
+index c1e6007..e03a305 100644
+--- a/external/referencesource/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs
++++ b/external/referencesource/System.Web.Services/System/Web/Services/Configuration/WsdlHelpGeneratorElement.cs
+@@ -75,6 +75,7 @@ protected override void DeserializeElement(XmlReader reader, bool serializeColle
+ 			try {
+ 				var hack = this.EvaluationContext;
+ 			} catch (ConfigurationErrorsException) {
++				this.actualPath = GetConfigurationDirectory();
+ 				return;
+ 			}
+ #endif
+@@ -127,6 +128,7 @@ protected override void Reset(ConfigurationElement parentElement)
+ 				var hack = this.EvaluationContext;
+ 			} catch (ConfigurationErrorsException) {
+ 				base.Reset(parentElement);
++				this.actualPath = GetConfigurationDirectory();
+ 				return;
+ 			}
+ #endif
