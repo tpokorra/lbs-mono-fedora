@@ -17,7 +17,7 @@
 
 Name:           mono
 Version:        4.3.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -30,11 +30,10 @@ Source0:        http://download.mono-project.com/sources/mono/mono-%{version}.46
 # You should not regenerate this unless you have a really, really, really good reason.
 Source1:        mono.snk
 Patch0:         mono-4.0.0-ignore-reference-assemblies.patch
-#Patch1:         mono-4.2.0-tlab_next_addr_offset.patch
-Patch2:         mono-4.0.0-libgdiplusconfig.patch
-Patch3:         mono-4.2.1-ppc.patch
-Patch4:         mono-4.2.1-s390.patch
-Patch5:         mono-4.2.2-asmx.patch
+Patch1:         mono-4.0.0-libgdiplusconfig.patch
+Patch2:         mono-4.2.1-ppc.patch
+Patch3:         mono-4.2.1-s390.patch
+Patch4:         mono-4.2.2-asmx.patch
 
 BuildRequires:  bison
 BuildRequires:  gcc-c++
@@ -275,7 +274,6 @@ Development file for monodoc
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 
 # Add undeclared Arg
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
@@ -405,7 +403,6 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %{_monogacdir}/Mono.Cecil
 %gac_dll cscompmgd
 %gac_dll Microsoft.VisualC
-%gac_dll Mono.C5
 %gac_dll Mono.Cairo
 %gac_dll Mono.CompilerServices.SymbolWriter
 %gac_dll Mono.CSharp
@@ -413,10 +410,15 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %gac_dll Mono.Management
 %gac_dll Mono.Posix
 %gac_dll Mono.Security
+%gac_dll Mono.Security.Providers.DotNet
+%gac_dll Mono.Security.Providers.NewSystemSource
+%gac_dll Mono.Security.Providers.NewTls
+%gac_dll Mono.Security.Providers.OldTls
 %gac_dll Mono.Simd
 %gac_dll System
 %gac_dll System.Configuration
 %gac_dll System.Core
+%gac_dll System.Numerics.Vectors
 %gac_dll System.Security
 %gac_dll System.Xml
 %gac_dll Mono.Tasklets
@@ -473,6 +475,7 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %{_sysconfdir}/pki/mono/
 %{_bindir}/mono-api-info
 %{_monodir}/4.5/mono-api-info.exe
+%{_monodir}/4.5/linkeranalyzer.exe*
 %mono_bin mono-symbolicate
 %gac_dll SMDiagnostics
 %mono_bin xbuild
