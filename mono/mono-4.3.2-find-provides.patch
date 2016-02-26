@@ -1,0 +1,12 @@
+--- a/scripts/mono-find-provides.in	2016-02-22 16:08:49.000000000 +0100
++++ b/scripts/mono-find-provides.in	2016-02-26 21:32:34.004474233 +0100
+@@ -16,7 +16,8 @@
+ 
+ # Only include files with /gac/ in path
+ #  (Allows packages to contain private assemblies that don't conflict with other packages)
+-monolist=($(printf "%s\n" "${monolist[@]}" | egrep "/gac/"))
++#quite a number of files are not in the gac, eg. System.IO, and Mono.Configuration.Crypto, and others
++#monolist=($(printf "%s\n" "${monolist[@]}" | egrep "/gac/"))
+ # Disabled... see ChangeLog
+ 
+ # Set the prefix, unless it is overriden (used when building mono rpms)

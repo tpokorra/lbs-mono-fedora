@@ -34,6 +34,7 @@ Patch1:         mono-4.0.0-libgdiplusconfig.patch
 Patch2:         mono-4.2.1-ppc.patch
 Patch3:         mono-4.2.1-s390.patch
 Patch4:         mono-4.2.2-asmx.patch
+Patch5:         mono-4.3.2-find-provides.patch
 
 BuildRequires:  bison
 BuildRequires:  gcc-c++
@@ -274,6 +275,7 @@ Development file for monodoc
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 # Add undeclared Arg
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
@@ -396,6 +398,8 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %{_mandir}/man1/mprof-report.1.gz
 %{_libdir}/libMonoPosixHelper.so*
 %dir %{_monodir}
+%dir %{_monodir}/4.5
+%dir %{_monodir}/4.5/Facades
 %dir %{_monodir}/gac
 %gac_dll Commons.Xml.Relaxng
 %gac_dll ICSharpCode.SharpZipLib
