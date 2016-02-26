@@ -1,6 +1,6 @@
---- a/mcs/class/reference-assemblies/Makefile	2016-02-23 08:28:25.755899731 +0100
-+++ b/mcs/class/reference-assemblies/Makefile	2016-02-23 08:28:54.603898383 +0100
-@@ -7,22 +7,6 @@
+--- a/mcs/class/reference-assemblies/Makefile	2016-02-26 08:41:51.406635084 +0100
++++ b/mcs/class/reference-assemblies/Makefile	2016-02-26 08:42:52.890632211 +0100
+@@ -7,22 +7,24 @@
  PROFILE_DIR=$(DESTDIR)$(mono_libdir)/mono
  
  install-local:
@@ -14,12 +14,26 @@
 -	$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.0/*.dll $(PROFILE_DIR)/4.0-api
 -	$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.5/*.dll $(PROFILE_DIR)/4.5-api
 -	$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.5/Facades/*.dll $(PROFILE_DIR)/4.5-api/Facades
--
--	# Unfortunately, a few programs (most notably NUnit) have hardcoded checks for <prefix>/lib/mono/4.0/mscorlib.dll,
--	# so we need to place something there or those tools break. We decided to symlink to the reference assembly for now.
--	# See https://bugzilla.xamarin.com/show_bug.cgi?id=38331
++	#$(MKINSTALLDIRS) $(PROFILE_DIR)/2.0-api
++	#$(MKINSTALLDIRS) $(PROFILE_DIR)/3.5-api
++	#$(MKINSTALLDIRS) $(PROFILE_DIR)/4.0-api
++	#$(MKINSTALLDIRS) $(PROFILE_DIR)/4.5-api
++	#$(MKINSTALLDIRS) $(PROFILE_DIR)/4.5-api/Facades
++	#$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v2.0/*.dll $(PROFILE_DIR)/2.0-api
++	#$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v3.5/*.dll $(PROFILE_DIR)/3.5-api
++	#$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.0/*.dll $(PROFILE_DIR)/4.0-api
++	#$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.5/*.dll $(PROFILE_DIR)/4.5-api
++	#$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.5/Facades/*.dll $(PROFILE_DIR)/4.5-api/Facades
++	$(MKINSTALLDIRS) $(PROFILE_DIR)/4.5
++	ln -sf 4.5 $(PROFILE_DIR)/4.5-api
+ 
+ 	# Unfortunately, a few programs (most notably NUnit) have hardcoded checks for <prefix>/lib/mono/4.0/mscorlib.dll,
+ 	# so we need to place something there or those tools break. We decided to symlink to the reference assembly for now.
+ 	# See https://bugzilla.xamarin.com/show_bug.cgi?id=38331
 -	$(MKINSTALLDIRS) $(PROFILE_DIR)/4.0
 -	ln -sf ../4.0-api/mscorlib.dll $(PROFILE_DIR)/4.0/mscorlib.dll
++	#$(MKINSTALLDIRS) $(PROFILE_DIR)/4.0
++	#ln -sf ../4.0-api/mscorlib.dll $(PROFILE_DIR)/4.0/mscorlib.dll
  
  DISTFILES = $(wildcard ../../../external/binary-reference-assemblies/v4.5/Facades/*.dll) $(wildcard ../../../external/binary-reference-assemblies/v4.5/*.dll) $(wildcard ../../../external/binary-reference-assemblies/v4.0/*.dll) $(wildcard ../../../external/binary-reference-assemblies/v3.5/*.dll) $(wildcard ../../../external/binary-reference-assemblies/v2.0/*.dll) Makefile
  

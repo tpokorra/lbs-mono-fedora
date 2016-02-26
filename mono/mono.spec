@@ -17,7 +17,7 @@
 
 Name:           mono
 Version:        4.3.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -270,7 +270,7 @@ Development file for monodoc
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-#%patch1 -p1
+%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
@@ -440,6 +440,7 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %config (noreplace) %{_sysconfdir}/mono/4.5/web.config
 %dir %{_sysconfdir}/mono/4.0
 %mono_bin ccrewrite
+%{_monodir}/4.5-api
 %{_monodir}/4.5/mscorlib.dll
 %{_monodir}/4.5/mscorlib.dll.mdb
 %gac_dll Microsoft.CSharp
@@ -752,8 +753,11 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
-* Tue Feb 23 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.3.2-1
-- update to Cycle 7 Alpha
+* Thu Feb 25 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.3.2-3
+- fix missing mscorlib
+
+* Wed Feb 24 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.3.2-1
+- update to 4.3.2.467 Cycle 7 Alpha
 
 * Tue Feb 09 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.2.2-3
 - add a patch so that the documentation for asmx is displayed again; fixing upstream bug #37137
