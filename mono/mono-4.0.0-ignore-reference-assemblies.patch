@@ -1,6 +1,6 @@
 --- a/mcs/class/reference-assemblies/Makefile	2016-02-26 08:41:51.406635084 +0100
 +++ b/mcs/class/reference-assemblies/Makefile	2016-02-26 08:42:52.890632211 +0100
-@@ -7,22 +7,24 @@
+@@ -7,22 +7,25 @@
  PROFILE_DIR=$(DESTDIR)$(mono_libdir)/mono
  
  install-local:
@@ -26,6 +26,7 @@
 +	#$(INSTALL_LIB) ../../../external/binary-reference-assemblies/v4.5/Facades/*.dll $(PROFILE_DIR)/4.5-api/Facades
 +	$(MKINSTALLDIRS) $(PROFILE_DIR)/4.5
 +	ln -sf 4.5 $(PROFILE_DIR)/4.5-api
++	ln -sf 4.5 $(PROFILE_DIR)/4.0-api
  
  	# Unfortunately, a few programs (most notably NUnit) have hardcoded checks for <prefix>/lib/mono/4.0/mscorlib.dll,
  	# so we need to place something there or those tools break. We decided to symlink to the reference assembly for now.

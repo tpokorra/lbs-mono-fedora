@@ -17,7 +17,7 @@
 
 Name:           mono
 Version:        4.3.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -444,6 +444,7 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %config (noreplace) %{_sysconfdir}/mono/4.5/web.config
 %dir %{_sysconfdir}/mono/4.0
 %mono_bin ccrewrite
+%{_monodir}/4.0-api
 %{_monodir}/4.5-api
 %{_monodir}/4.5/mscorlib.dll
 %{_monodir}/4.5/mscorlib.dll.mdb
@@ -757,7 +758,14 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
-* Thu Feb 25 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.3.2-3
+* Sat Feb 27 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.3.2-4
+- add symbolic link for 4.0-api to avoid having to replace TargetFramework 4.0 in csproj files
+
+* Fri Feb 26 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.3.2-3
+- fix RPM provides of assemblies that are not in the gac.
+- fix for building from csproj files: need a symbolic link for 4.5-api instead of reference assemblies
+
+* Thu Feb 25 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.3.2-2
 - fix missing mscorlib
 
 * Wed Feb 24 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.3.2-1
