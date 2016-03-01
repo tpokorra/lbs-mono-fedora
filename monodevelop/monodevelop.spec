@@ -1,11 +1,11 @@
 %global debug_package %{nil}
-%global version 5.10.0
-%global tarballpath 5.10
-%global fileversion 5.10.0.871
+%global version 6.0.0
+%global tarballpath 6.0
+%global fileversion 6.0.0.4520
 
 Name:           monodevelop
 Version:        %{version}
-Release:        3%{?dist}
+Release:        1%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
@@ -16,9 +16,11 @@ Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-nuget-unbundle.patch
 Patch3:         monodevelop-no-nuget-packages.patch
+Patch4:         monodevelop-6.0.0-drop-somepackages.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 2.6.3
+#BuildRequires:  nunit3-devel >= 3.0.0
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
@@ -63,8 +65,9 @@ Development files for %{name}.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
-for f in tests/TestRunner/TestRunner.csproj tests/UserInterfaceTests/UserInterfaceTests.csproj src/addins/NUnit/NUnitRunner/NUnitRunner.csproj src/addins/NUnit/MonoDevelop.NUnit.csproj external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
+for f in tests/TestRunner/TestRunner.csproj tests/UserInterfaceTests/UserInterfaceTests.csproj src/addins/MonoDevelop.UnitTesting.NUnit/NUnitRunner/NUnitRunner.csproj src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/NUnit3Runner.csproj external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
 do
   echo $f
   sed -i "s#<HintPath>.*nunit\..*</HintPath>##g" $f
@@ -75,6 +78,8 @@ sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json<
 # Delete shipped *.dll files
 find -name '*.dll' -exec rm -f {} \;
 
+# TODO: problem: missing System.Collections.Immutable. It comes in external/roslyn/Binaries/Release/System.Collections.Immutable.dll but we delete that...
+
 #Fixes for Mono 4
 sed -i "s#gmcs#mcs#g; s#dmcs#mcs#g" configure
 sed -i "s#gmcs#mcs#g; s#dmcs#mcs#g" configure.in
@@ -82,7 +87,24 @@ sed -i "s#mono-nunit#nunit#g" configure.in
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 
+# Makefile missing in 6.0.0 tarball
+sed -i "s|NUnitRunner \.|NUnitRunner NUnit3Runner .|g" src/addins/MonoDevelop.UnitTesting.NUnit/Makefile.am
+cp src/addins/MonoDevelop.UnitTesting.NUnit/NUnitRunner/Makefile.in src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/
+sed -i "s|NUnitRunner|NUnit3Runner|g" src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/Makefile.in
+echo "include \$(top_srcdir)/xbuild.include" > src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/Makefile.am
+
+# since I don't have NUnit3 package yet... drop support for NUnit3 for the moment...
+sed -i "s|NUnitRunner NUnit3Runner|NUnitRunner|g" src/addins/MonoDevelop.UnitTesting.NUnit/Makefile.am
+rm -Rf src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner
+sed -i "s|src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/Makefile|#NUnit3Runner|g" configure.in
+sed -i "s|src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/Makefile||g" configure
+
+#problem with RefactoringEssentials: missing Microsoft.Portable.CSharp.targets, and other issues
+#see also http://stackoverflow.com/questions/35245840/build-monodevelop-on-debian-jessie-using-mono-4-3-3 which suggests to install the PCL reference assemblies
+rm -Rf external/RefactoringEssentials
+
 %build
+
 %configure --enable-git --disable-update-mimedb --disable-update-desktopdb
 
 cd ./external/libgit2sharp/Lib/CustomBuildTasks
@@ -181,6 +203,9 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Tue Mar 01 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.0.0.4520
+- Update to 6.0.0.4520 Cycle 7 Alpha
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 5.10.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
