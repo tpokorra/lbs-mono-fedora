@@ -1,0 +1,8 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+
+Name: NUnit3
+Description: Testing framework for CLI
+Version: 3.0.1
+Libs: -r:${libdir}/mono/nunit3/nunit.core.dll -r:${libdir}/mono/nunit3/nunit.util.dll -r:${libdir}/mono/nunit3/nunit.framework.dll -r:${libdir}/mono/nunit3/nunit.core.interfaces.dll -r:${libdir}/mono/nunit3/nunit.mocks.dll -r:${libdir}/mono/nunit3/nunit-console-runner.dll
