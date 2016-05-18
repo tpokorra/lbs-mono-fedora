@@ -7,12 +7,8 @@
 %if 0%{?el6}
 %global mono_arches %ix86 x86_64 %{arm} sparcv9 alpha s390x ppc ppc64 ppc64le
 %endif
-# see https://lists.fedoraproject.org/pipermail/packaging/2011-May/007762.html
-%global _missing_build_ids_terminate_build 0
-%global debug_package %{nil}
-# see https://fedorahosted.org/fpc/ticket/395
-%global _monodir %{_prefix}/lib/mono
-%global _monogacdir %{_monodir}/gac
+# to resolve: "ERROR: No build ID note found"
+%undefine _missing_build_ids_terminate_build
 %endif
 
 Name:           mono
