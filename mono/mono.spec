@@ -3,10 +3,13 @@
 %undefine _hardened_build
 %endif
 %global bootstrap 0
-%if 0%{?rhel}%{?el6}%{?el7}
 %if 0%{?el6}
-%global mono_arches %ix86 x86_64 %{arm} sparcv9 alpha s390x ppc ppc64 ppc64le
+# see https://fedorahosted.org/fpc/ticket/395, it was added to el7
+%global mono_arches %{ix86} x86_64 sparc sparcv9 ia64 %{arm} alpha s390x ppc ppc64 ppc64le
+%global _monodir %{_prefix}/lib/mono
+%global _monogacdir %{_monodir}/gac
 %endif
+%if 0%{?rhel}%{?el6}%{?el7}
 # to resolve: "ERROR: No build ID note found"
 %undefine _missing_build_ids_terminate_build
 %endif
