@@ -1,7 +1,7 @@
 diff -up mono-4.2.1/mono/metadata/icall.c.than mono-4.2.1/mono/metadata/icall.c
 --- mono-4.2.1/mono/metadata/icall.c.than	2015-11-12 10:00:29.000000000 +0100
 +++ mono-4.2.1/mono/metadata/icall.c	2016-01-25 16:36:24.479028169 +0100
-@@ -822,14 +822,14 @@ ves_icall_System_Runtime_CompilerService
+@@ -816,14 +816,14 @@ ves_icall_System_Runtime_CompilerService
  	}
  
  #if G_BYTE_ORDER != G_LITTLE_ENDIAN
