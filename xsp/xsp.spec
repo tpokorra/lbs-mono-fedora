@@ -1,13 +1,13 @@
-Name:		xsp
-Version:	3.8
+Name:			xsp
+Version:	4.2
 Release:	1%{?dist}
 License:	MIT
-URL:		http://www.mono-project.com/Main_Page
+URL:			http://www.mono-project.com/Main_Page
 Summary:	A small web server that hosts ASP.NET
 Group:		System Environment/Daemons
 
 Source0:	http://download.mono-project.com/sources/%{name}/%{name}-%{version}.tar.gz
-BuildRequires:	mono-web-devel, mono-data, mono-devel, mono-data-sqlite, nunit-devel
+BuildRequires:	mono-web-devel, mono-data, mono-devel, mono-data-sqlite, mono-nunit-devel
 BuildRequires:	mono-data-oracle monodoc-devel
 BuildRequires:	autoconf automake libtool
 Requires:	mono-core
@@ -21,7 +21,7 @@ ExclusiveArch: %mono_arches
 XSP is a standalone web server written in C# that can be used to run ASP.NET 
 applications as well as a set of pages, controls and web services that you can 
 use to experience ASP.NET.
-	  
+
 %package devel
 Group: Development/Libraries
 Requires: %{name} = %{version}-%{release} pkgconfig
@@ -40,13 +40,8 @@ Files for testing the xsp server
 
 %prep
 %setup -q
-autoreconf -I build/m4/shamrock -I build/m4/shave
-sed -i "s#gmcs#mcs#g" configure
-sed -i "s#gmcs#mcs#g" configure.ac
-sed -i "s#mono/2.0#mono/4.5#g" configure
-sed -i "s#Mono 2.0#Mono 4.5#g" configure
-sed -i "s#mono/4.0#mono/4.5#g" configure
-sed -i "s#Mono 4.0#Mono 4.5#g" configure
+
+sed -i "s#dmcs#mcs#g" configure
 
 %build
 %configure --libdir=%{_prefix}/lib
@@ -54,39 +49,36 @@ make
 
 %install
 make DESTDIR=%{buildroot} install
-rm -f %{buildroot}%{_prefix}/lib/libfpm_helper.a
-rm -f %{buildroot}%{_prefix}/lib/libfpm_helper.la
-rm -f %{buildroot}%{_prefix}/lib/libfpm_helper.so
-rm -rf %{buildroot}%{_prefix}/lib/xsp/unittests
 
 mkdir -p $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgconfig/* $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
+
+# Remove libtool archives and static libs
+find %{buildroot} -type f -name "*.la" -delete
+find %{buildroot} -type f -name "*.a" -delete
 
 %files
 %doc NEWS README COPYING
 %{_bindir}/asp*
 %{_bindir}/dbsessmgr*
 %{_bindir}/mod-mono*
+%{_bindir}/mono-fpm
+%{_bindir}/shim
 %{_bindir}/xsp*
 %{_bindir}/fastcgi-mono-server*
-%{_bindir}/shim
-%{_bindir}/mono-fpm
 %{_prefix}/lib/xsp
-%{_prefix}/lib/mono/gac/Mono.WebServer*/
-%{_prefix}/lib/mono/gac/fastcgi-mono-server2
-%{_prefix}/lib/mono/gac/mod-mono-server*/
-%{_prefix}/lib/mono/gac/xsp*/
-%{_prefix}/lib/mono/gac/mono-fpm
-%{_prefix}/lib/mono/2.0/*.dll
-%{_prefix}/lib/mono/2.0/*.exe
+%{_monogacdir}/Mono.WebServer*/
+%{_monogacdir}/fastcgi-mono-server4
+%{_monogacdir}/mod-mono-server*/
+%{_monogacdir}/mono-fpm
+%{_monogacdir}/xsp*/
 %{_prefix}/lib/monodoc/sources/Mono.WebServer.*
 %{_prefix}/lib/monodoc/sources/Mono.FastCGI.*
-%{_prefix}/lib/mono/4.5/Mono.WebServer2.dll
-%{_prefix}/lib/mono/4.5/fastcgi-mono-server4.exe
-%{_prefix}/lib/mono/4.5/mod-mono-server4.exe
-%{_prefix}/lib/mono/4.5/xsp4.exe
-%{_prefix}/lib/mono/4.5/mono-fpm.exe
-%{_prefix}/lib/mono/gac/fastcgi-mono-server4
+%{_monodir}/4.?/Mono.WebServer2.dll
+%{_monodir}/4.?/fastcgi-mono-server4.exe
+%{_monodir}/4.?/mod-mono-server4.exe
+%{_monodir}/4.?/mono-fpm.exe
+%{_monodir}/4.?/xsp4.exe
 %{_prefix}/lib/libfpm_helper.so.0*
 %{_mandir}/man1/asp*
 %{_mandir}/man1/dbsessmgr*
@@ -96,12 +88,20 @@ test "%{_libdir}" = "%{_prefix}/lib" || mv $RPM_BUILD_ROOT/%{_prefix}/lib/pkgcon
 
 %files devel
 %{_libdir}/pkgconfig/xsp*
+%{_prefix}/lib/libfpm_helper.so
 
 %files tests
-%{_prefix}/lib/xsp/2.0
 %{_prefix}/lib/xsp/test
 
 %changelog
+* Fri Jan 29 2016 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2-1
+- Updated to 4.2
+- Use mono macros
+- Use mcs instead dmcs
+
+* Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.8-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Mon May 18 2015 Peter Robinson <pbrobinson@fedoraproject.org> 3.8-1
 - Update to 3.8
 - Rebuild (mono4)
