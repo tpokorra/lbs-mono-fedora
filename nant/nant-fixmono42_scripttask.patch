@@ -1,0 +1,11 @@
+--- a/src/NAnt.DotNet/Tasks/ScriptTask.cs	2015-11-18 10:07:11.286597953 +0100
++++ b/src/NAnt.DotNet/Tasks/ScriptTask.cs	2015-11-18 10:07:57.142991307 +0100
+@@ -394,7 +394,7 @@
+             
+             Log(Level.Debug, ResourceUtils.GetString("String_GeneratedCodeLooksLike") + "\n{0}", code);
+ 
+-            CompilerResults results = compiler.CompileAssemblyFromDom(options, compileUnit);
++            CompilerResults results = compiler.CompileAssemblyFromSource(options, code);
+ 
+             Assembly compiled = null;
+             if (results.Errors.Count > 0) {

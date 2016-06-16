@@ -5,7 +5,7 @@
 Summary: NAnt is a build tool for Mono and .NET
 Name: nant
 Version: 0.92
-Release: 1%{?dist}
+Release: 2%{?dist}
 Epoch: 1
 Source0: http://downloads.sourceforge.net/nant/%{name}-%{version}-src.tar.gz
 Patch1: nant-0.92-no_ndoc.patch
@@ -13,6 +13,7 @@ Patch2: nant-0.92-system_nunit.patch
 Patch3: nant-0.90-no_sharpcvslib.patch
 Patch4: nant-0.90-system_sharpziplib.patch
 Patch5: nant-0.92-system_log4net.patch
+Patch7: nant-fixmono42_scripttask.patch
 License: GPLv2+
 Group: Development/Tools
 Url: http://nant.sourceforge.net/
@@ -111,6 +112,8 @@ rm -rf lib/*
 %patch5 -p1 -b .system_log4net
 %endif
 
+%patch7 -p1
+
 #Fixes for Mono 4
 sed -i "s#gmcs#mcs#g" Makefile
 sed -i "s#TARGET=mono-2.0#TARGET=mono-4.0#g" Makefile
@@ -158,6 +161,9 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/nant.pc
 
 %changelog
+* Thu Jun 16 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> 0.92-2
+- add a fix for scripttask, https://github.com/nant/nant/issues/161
+
 * Fri May 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> 0.92-1
 - upgrade to NAnt 0.92, build for Mono 4
 
