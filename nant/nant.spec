@@ -19,7 +19,7 @@ Group: Development/Tools
 Url: http://nant.sourceforge.net/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: mono-devel
-BuildRequires: mono-nunit-devel
+BuildRequires: nunit-devel
 %if 0%{bootstrap}
 # Nothing here if we're bootstrapping
 %else
