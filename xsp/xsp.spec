@@ -7,7 +7,7 @@ Summary:	A small web server that hosts ASP.NET
 Group:		System Environment/Daemons
 
 Source0:	http://download.mono-project.com/sources/%{name}/%{name}-%{version}.tar.gz
-BuildRequires:	mono-web-devel, mono-data, mono-devel, mono-data-sqlite, mono-nunit-devel
+BuildRequires:	mono-web-devel, mono-data, mono-devel, mono-data-sqlite, nunit-devel
 BuildRequires:	mono-data-oracle monodoc-devel
 BuildRequires:	autoconf automake libtool
 Requires:	mono-core
