@@ -1,10 +1,21 @@
 %global debug_package %{nil}
 
+%if 0%{?el6}
+# see https://fedorahosted.org/fpc/ticket/395, it was added to el7
+%global mono_arches %{ix86} x86_64 sparc sparcv9 ia64 %{arm} alpha s390x ppc ppc64 ppc64le
+%global _monodir %{_prefix}/lib/mono
+%global _monogacdir %{_monodir}/gac
+%endif
+
 Name:           nunit
 Version:        2.6.4
 Release:        11%{?dist}
 Summary:        Unit test framework for CLI
+%if 0%{?el6}
+License:        MIT
+%else
 License:        MIT with advertising
+%endif
 Group:          Development/Libraries
 Url:            http://www.nunit.org/
 Source0:        https://github.com/nunit/nunitv2/archive/%{version}.tar.gz
@@ -84,8 +95,8 @@ xbuild /property:Configuration=Debug ./src/GuiRunner/nunit-gui-exe/nunit-gui.exe
 %{__mkdir_p} %{buildroot}%{_datadir}/applications
 %{__mkdir_p} %{buildroot}%{_datadir}/icons/NUnit
 %{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
-%{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE2}`26
-%{__install} -m0755 %{SOURCE3} %{buildroot}%{_bindir}/`basename -s .sh %{SOURCE3}`26
+%{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/nunit-gui26
+%{__install} -m0755 %{SOURCE3} %{buildroot}%{_bindir}/nunit-console26
 %{__install} -m0644 src/ConsoleRunner/nunit-console-exe/App.config %{buildroot}%{_monodir}/nunit/nunit-console.exe.config
 %{__install} -m0644 src/GuiRunner/nunit-gui-exe/App.config %{buildroot}%{_monodir}/nunit/nunit.exe.config
 find %{_builddir}/%{?buildsubdir}/bin -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_monodir}/nunit/" \;
@@ -97,7 +108,9 @@ desktop-file-install --dir=%{buildroot}/%{_datadir}/applications %{SOURCE4}
 cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nunit.ico
 
 %files
+%if ! 0%{?el6}
 %license license.txt
+%endif
 %{_bindir}/nunit-console*
 %{_monodir}/nunit/nunit-console.exe*
 %{_monogacdir}/nunit*
@@ -110,7 +123,9 @@ cp src/GuiRunner/nunit-gui-exe/App.ico %{buildroot}/%{_datadir}/icons/NUnit/nuni
 %{_datadir}/icons/NUnit
 
 %files doc
+%if ! 0%{?el6}
 %license doc/license.html
+%endif
 %doc doc/*
 
 %files devel
