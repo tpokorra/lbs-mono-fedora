@@ -1,3 +1,10 @@
+%if 0%{?el6}
+# see https://fedorahosted.org/fpc/ticket/395, it was added to el7
+%global mono_arches %{ix86} x86_64 sparc sparcv9 ia64 %{arm} alpha s390x ppc ppc64 ppc64le
+%global _monodir %{_prefix}/lib/mono
+%global _monogacdir %{_monodir}/gac
+%endif
+
 Name:			xsp
 Version:	4.2
 Release:	1%{?dist}
