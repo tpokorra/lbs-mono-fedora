@@ -1,0 +1,13 @@
+--- a/src/NUnitEngine/nunit.engine/Services/RuntimeFrameworkService.cs	2016-07-26 17:52:12.300588657 +0200
++++ b/src/NUnitEngine/nunit.engine/Services/RuntimeFrameworkService.cs	2016-07-26 17:54:05.027506051 +0200
+@@ -197,8 +197,9 @@
+                     log.Debug("Assembly {0} will be run x86", packageName);
+                 }
+ 
+-                targetVersion = new Version(module.RuntimeVersion.Substring(1));
++                // with Mono.Cecil 0.9.5 from Mono 4.4: Type `Mono.Cecil.ModuleDefinition' does not contain a definition for `RuntimeVersion' 
++                targetVersion = new Version("4.5");
+                 log.Debug("Assembly {0} uses version {1}", packageName, targetVersion);
+ 
+                 foreach (var attr in assemblyDef.CustomAttributes)
+                 {

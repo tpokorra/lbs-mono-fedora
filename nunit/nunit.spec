@@ -8,8 +8,8 @@
 %endif
 
 Name:           nunit
-Version:        2.6.4
-Release:        11%{?dist}
+Version:        3.4.1
+Release:        1%{?dist}
 Summary:        Unit test framework for CLI
 %if 0%{?el6}
 License:        MIT
@@ -18,7 +18,7 @@ License:        MIT with advertising
 %endif
 Group:          Development/Libraries
 Url:            http://www.nunit.org/
-Source0:        https://github.com/nunit/nunitv2/archive/%{version}.tar.gz
+Source0:        https://github.com/nunit/nunit/archive/%{version}.tar.gz
 Source1:        nunit.pc
 Source2:        nunit-gui.sh
 Source3:        nunit-console.sh
