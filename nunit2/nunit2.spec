@@ -25,9 +25,6 @@ Source3:        nunit2-console.sh
 Source4:        nunit2.desktop
 BuildRequires:  mono-devel libgdiplus-devel desktop-file-utils
 ExclusiveArch:  %{mono_arches}
-Provides:       mono-nunit = 4.0.2-5
-Obsoletes:      mono-nunit < 4.0.2-6
-Obsoletes:      nunit-runner
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -58,8 +55,6 @@ Summary:        Development files for NUnit
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       pkgconfig
-Provides:       mono-nunit-devel = 4.0.2-5
-Obsoletes:      mono-nunit-devel < 4.0.2-6
 
 %description devel
 Development files for %{name}.
@@ -148,6 +143,7 @@ fi
 %changelog
 * Tue Jul 26 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.6.4-12
 - rename package to nunit2
+- drop references to mono-nunit
 
 * Tue Nov 10 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.6.4-11
 - Replace nunit-runner with nunit-gui with only desktop frontend
