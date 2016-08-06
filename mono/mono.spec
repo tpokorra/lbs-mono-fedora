@@ -43,9 +43,7 @@ BuildRequires:  libgdiplus-devel >= 2.10
 BuildRequires:  pkgconfig
 BuildRequires:  valgrind-devel
 BuildRequires:  zlib-devel
-%if 0%{?fedora}
 BuildRequires:  mono-cecil
-%endif
 
 # Yes, mono actually depends on itself, because
 # we deleted the bootstrapping binaries. If you
@@ -294,7 +292,6 @@ find . -name "*.exe" -not -path "./mcs/class/lib/monolite/*" -print -delete
 rm -rf mcs/class/lib/monolite/*
 %endif
 
-%if 0%{?fedora}
 # Remove Cecil, use mono-cecil package instead
 rm -rf data/cecil.pc*
 sed -i "s#data/cecil.pc##g" configure.ac
@@ -315,7 +312,6 @@ sed -i "s#-r:Mono.Cecil.dll#-r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tool
 sed -i "s#/r:Mono.Cecil.dll#-r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/pdb2mdb/Makefile
 sed -i "s#/r:Mono.Cecil.dll#-r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/mdoc/Makefile
 sed -i "s#/r:Mono.Cecil.dll#-r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/mono-symbolicate/Makefile
-%endif
 
 %build
 export CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing"
@@ -431,9 +427,6 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %gac_dll Commons.Xml.Relaxng
 %gac_dll ICSharpCode.SharpZipLib
 %gac_dll Mono.Debugger.Soft
-%if 0%{?rhel}%{?el6}%{?el7}
-%{_monogacdir}/Mono.Cecil
-%endif
 %gac_dll cscompmgd
 %gac_dll Microsoft.VisualC
 %gac_dll Mono.Cairo
@@ -611,9 +604,6 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %{_libdir}/pkgconfig/mono.pc
 %{_libdir}/pkgconfig/mono-2.pc
 %{_libdir}/pkgconfig/monosgen-2.pc
-%if 0%{?rhel}%{?el6}%{?el7}
-%{_libdir}/pkgconfig/cecil.pc
-%endif
 %{_libdir}/pkgconfig/dotnet35.pc
 %{_libdir}/pkgconfig/mono-lineeditor.pc
 %{_libdir}/pkgconfig/mono-options.pc
