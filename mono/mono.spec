@@ -16,7 +16,7 @@
 
 Name:           mono
 Version:        4.4.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -43,6 +43,7 @@ BuildRequires:  libgdiplus-devel >= 2.10
 BuildRequires:  pkgconfig
 BuildRequires:  valgrind-devel
 BuildRequires:  zlib-devel
+BuildRequires:  mono-cecil
 
 # Yes, mono actually depends on itself, because
 # we deleted the bootstrapping binaries. If you
@@ -291,6 +292,27 @@ find . -name "*.exe" -not -path "./mcs/class/lib/monolite/*" -print -delete
 rm -rf mcs/class/lib/monolite/*
 %endif
 
+# Remove Cecil, use mono-cecil package instead
+rm -rf data/cecil.pc*
+sed -i "s#data/cecil.pc##g" configure.ac
+sed -i "s#data/cecil.pc ##g" configure
+sed -i "s#cecil.pc.in ##g;s#cecil.pc ##g" data/Makefile.in
+rm -rf external/cecil
+rm -rf mcs/class/Mono.Cecil
+rm -rf mcs/class/Mono.Cecil.Mdb
+sed -i "s/Mono\.Cecil\.Mdb//g;s/Mono\.Cecil//g" mcs/class/Makefile
+#avoid error: Metadata file `Mono.Cecil' could not be found; it seems we need an absolute path
+sed -i "s#LIB_REFS = System Mono.Cecil System.Core#LIB_REFS = System System.Core#g;s#LIB_MCS_FLAGS =#LIB_MCS_FLAGS = -r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/class/Mono.Debugger.Soft/Makefile
+sed -i "s#LIB_REFS = System System.Core Mono.Cecil Mono.Cecil.Mdb#LIB_REFS = System System.Core#g;s#LIB_MCS_FLAGS =#LIB_MCS_FLAGS = -r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll -r:%{_monodir}/Mono.Cecil/Mono.Cecil.Mdb.dll#g" mcs/class/Mono.CodeContracts/Makefile
+sed -i "s#\$(topdir)/class/lib/\$(PROFILE)/Mono.Cecil.dll#%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/linker/Makefile
+sed -i "s#\$(topdir)/class/lib/\$(PROFILE)/Mono.Cecil.dll#%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/tuner/Makefile
+sed -i "s#\$(topdir)/class/lib/\$(PROFILE)/Mono.Cecil.dll#%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/mdoc/Makefile
+sed -i "s#-r:Mono.Cecil.dll#-r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/corcompare/Makefile
+sed -i "s#-r:Mono.Cecil.dll#-r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/security/Makefile
+sed -i "s#/r:Mono.Cecil.dll#-r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/pdb2mdb/Makefile
+sed -i "s#/r:Mono.Cecil.dll#-r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/mdoc/Makefile
+sed -i "s#/r:Mono.Cecil.dll#-r:%{_monodir}/Mono.Cecil/Mono.Cecil.dll#g" mcs/tools/mono-symbolicate/Makefile
+
 %build
 export CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing"
 
@@ -405,7 +427,6 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %gac_dll Commons.Xml.Relaxng
 %gac_dll ICSharpCode.SharpZipLib
 %gac_dll Mono.Debugger.Soft
-%{_monogacdir}/Mono.Cecil
 %gac_dll cscompmgd
 %gac_dll Microsoft.VisualC
 %gac_dll Mono.Cairo
@@ -583,7 +604,6 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %{_libdir}/pkgconfig/mono.pc
 %{_libdir}/pkgconfig/mono-2.pc
 %{_libdir}/pkgconfig/monosgen-2.pc
-%{_libdir}/pkgconfig/cecil.pc
 %{_libdir}/pkgconfig/dotnet35.pc
 %{_libdir}/pkgconfig/mono-lineeditor.pc
 %{_libdir}/pkgconfig/mono-options.pc
@@ -761,6 +781,9 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
+* Fri Aug 05 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.4.2-2
+- remove Mono.Cecil from mono-core, since there is a separate package for it (#1360620)
+
 * Tue Aug 02 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.4.2-1
 - update to 4.4.2.11 Cycle 7 Service Release 1
 
