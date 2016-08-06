@@ -1,12 +1,12 @@
 %global debug_package %{nil}
 
-%define version 5.10.0
-%define tarballpath 5.10
-%define fileversion 5.10.0.871
+%define version 6.0.1
+%define tarballpath 6.0
+%define fileversion 6.0.1.8
 
 Name:           monodevelop
 Version:        %{version}
-Release:        6%{?dist}
+Release:        1%{?dist}
 Summary:        A full-featured IDE for Mono and Gtk#
 
 Group:          Development/Tools
@@ -15,11 +15,10 @@ URL:            http://monodevelop.com/
 Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{fileversion}.tar.bz2
 Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
-Patch2:         monodevelop-nuget-unbundle.patch
-Patch3:         monodevelop-no-nuget-packages.patch
+Patch2:         monodevelop-no-nuget-packages.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
-BuildRequires:  nunit-devel >= 2.6.3
+BuildRequires:  nunit-devel >= 3.0.0
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
@@ -63,12 +62,15 @@ Development files for %{name}.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
-for f in tests/TestRunner/TestRunner.csproj tests/UserInterfaceTests/UserInterfaceTests.csproj src/addins/NUnit/NUnitRunner/NUnitRunner.csproj src/addins/NUnit/MonoDevelop.NUnit.csproj external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
+sed -i 's#HintPath>.*nuget-binary.*</HintPath>#Package>nuget-core</Package>\n<Private>True</Private>#g' src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.csproj
+sed -i 's#if test "x$FSHARPC" = "x" ;#if test "x$FSHARPC" = "xDONTCHECK" ;#g' configure
+
+for f in tests/TestRunner/TestRunner.csproj tests/UserInterfaceTests/UserInterfaceTests.csproj src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/NUnit3Runner.csproj
 do 
   echo $f
   sed -i "s#<HintPath>.*nunit\..*</HintPath>##g" $f
+  sed -i "s#<HintPath>.*NUnit\..*</HintPath>##g" $f
 done
 
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" tests/UserInterfaceTests/UserInterfaceTests.csproj
@@ -86,8 +88,12 @@ find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="
 %build
 %configure --enable-git --disable-update-mimedb --disable-update-desktopdb
 
+cd ./external/libgit2sharp/Lib/CustomBuildTasks
+xbuild CustomBuildTasks.csproj
+mv bin/Debug/* .
+cd ../../../../
 #Custom Task for build libgit2sharp
-xbuild /property:OutputPath=. external/libgit2sharp/Lib/CustomBuildTasks/CustomBuildTasks.csproj
+#xbuild /property:OutputPath=. external/libgit2sharp/Lib/CustomBuildTasks/CustomBuildTasks.csproj
 
 make %{?_smp_mflags}
 
@@ -180,6 +186,12 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Wed Jul 20 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.0.1-1
+- Update to 6.0.1.8 Cycle 7 Service Release 0
+
+* Tue Jun 14 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.0.0-1
+- Update to 6.0.0.5174 Cycle 7 Final
+
 * Thu Nov 26 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.10.0-6
 - Update to 5.10.0.871 Cycle 6
 

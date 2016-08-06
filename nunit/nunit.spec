@@ -22,7 +22,7 @@ Source0:        https://github.com/nunit/nunit/archive/%{version}.tar.gz
 Source1:        nunit.pc
 Source2:        nunit-console.sh
 BuildRequires:  mono-devel
-BuildRequires:  mono-cecil >= 0.9.6
+BuildRequires:  mono-cecil-devel >= 0.9.6
 ExclusiveArch:  %{mono_arches}
 Provides:       mono-nunit = 4.0.2-5
 Obsoletes:      mono-nunit < 4.0.2-6
