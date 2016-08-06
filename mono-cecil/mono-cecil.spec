@@ -7,13 +7,17 @@
 %define _monogacdir %{_monodir}/gac
 %endif
 
+# see https://bugzilla.redhat.com/show_bug.cgi?id=1224565
+%global debug_package %{nil}
+
 Name:           mono-cecil
 Version:        0.9.6
-Release:        1%{?dist}
+Release:        3%{?dist}
 Summary:        Library to generate and inspect programs and libraries in the ECMA CIL form
 License:        MIT
 URL:            http://www.mono-project.com/Cecil
 Source0:        https://github.com/jbevain/cecil/archive/%{version}/cecil-%{version}.tar.gz
+Source1:        %{name}.pc
 Patch0:         %{name}-nobuild-tests.patch
 # JIT only available on these:
 ExclusiveArch:  %mono_arches
@@ -34,6 +38,16 @@ modified assembly.
 Today it is used by the Mono Debugger, the bug-finding and compliance checking
 tool Gendarme, MoMA, DB4O, as well as many other tools.
 
+%package devel
+Summary:        pkgconfig file for Mono.Cecil
+Group:          Development/Languages
+Requires:       mono-cecil = %{version}-%{release}
+Requires:       pkgconfig
+
+%description devel
+This package contains the cecil.pc file
+which is required by other packages that reference Mono.Cecil.dll
+
 %prep
 %setup -qn cecil-%{version}
 
@@ -51,13 +65,24 @@ gacutil -i Mono.Cecil.Mdb.dll -f -package Mono.Cecil -root %{buildroot}/usr/lib
 gacutil -i Mono.Cecil.Pdb.dll -f -package Mono.Cecil -root %{buildroot}/usr/lib
 gacutil -i Mono.Cecil.Rocks.dll -f -package Mono.Cecil -root %{buildroot}/usr/lib
 cd -
+mkdir -p %{buildroot}/%{_libdir}/pkgconfig/
+%{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/cecil.pc
 
 %files
 %doc
 %{_monogacdir}/Mono.Cecil*
 %{_monodir}/Mono.Cecil*
 
+%files devel
+%{_libdir}/pkgconfig/cecil.pc
+
 %changelog
+* Sat Aug 06 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 0.9.6-3
+- add cecil.pc
+
+* Tue May 26 2015 Miro Hrončok <mhroncok@redhat.com> - 0.9.6-2
+- Disabling debuginfo (#1224565)
+
 * Mon May 11 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> 0.9.6-1
 - Build for Mono 4
 - Use mono macros
