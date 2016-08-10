@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 
-%define version 6.0.1
+%define version 6.0.2
 %define tarballpath 6.0
-%define fileversion 6.0.1.8
+%define fileversion 6.0.2.73
 
 Name:           monodevelop
 Version:        %{version}
@@ -26,11 +26,10 @@ BuildRequires:  nuget-devel
 BuildRequires:  libssh2-devel
 BuildRequires:  newtonsoft-json
 BuildRequires:  cmake git
+BuildRequires:  mono-immutablecollections-devel
 Requires:       mono-core >= 3.0.4
 Requires:       mono-addins >= 0.6
-# Using system nunit, but dependency not automatically picked up by RPM
-Requires:       mono(nunit.core)
-Requires:       mono(nunit.framework)
+Requires:       nunit >= 3.0
 Requires:       mono-locale-extras
 Requires:       gnome-desktop-sharp
 Requires:       subversion monodoc
@@ -67,16 +66,33 @@ sed -i 's#HintPath>.*nuget-binary.*</HintPath>#Package>nuget-core</Package>\n<Pr
 sed -i 's#if test "x$FSHARPC" = "x" ;#if test "x$FSHARPC" = "xDONTCHECK" ;#g' configure
 
 for f in tests/TestRunner/TestRunner.csproj tests/UserInterfaceTests/UserInterfaceTests.csproj src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/NUnit3Runner.csproj
-do 
+do
   echo $f
   sed -i "s#<HintPath>.*nunit\..*</HintPath>##g" $f
   sed -i "s#<HintPath>.*NUnit\..*</HintPath>##g" $f
 done
 
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" tests/UserInterfaceTests/UserInterfaceTests.csproj
+sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+# somehow the pkg-config file mono-immutablecollections.pc is not picked up?
+#sed -i "s#<HintPath>.*System\.Collections\.Immutable.dll</HintPath>#<Package>System.Collections.Immutable</Package><Private>True</Private>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+sed -i "s#<HintPath>.*System\.Collections\.Immutable.dll</HintPath>#<HintPath>/usr/lib/mono/System.Collections.Immutable/System.Collections.Immutable.dll</HintPath>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+
 
 # Delete shipped *.dll files
 find -name '*.dll' -exec rm -f {} \;
+
+# drop support for RefactoringEssentials, since they depend on .NET Portable reference assemblies
+# avoiding error: /usr/lib/mono/4.5/Microsoft.Common.targets: error : PCL Reference Assemblies not installed.
+sed -i 's#.*C465A5DC-AD28-49A2-89C0-F81838814A7E.*##g' Main.sln # RefactoringEssentials
+
+# drop support for FSharp. We do not have fsharp packaged for Fedora (yet)
+sed -i 's#.*4804F98F-A891-463C-893D-7134D66C234F.*##g' Main.sln # FSharpBinding
+sed -i 's#.*4C10F8F9-3816-4647-BA6E-85F5DE39883A.*##g' Main.sln # MonoDevelop.FSharp
+sed -i 's#.*AF5FEAD5-B50E-4F07-A274-32F23D5C504D.*##g' Main.sln # MonoDevelop.FSharp.Shared
+sed -i 's#.*FD0D1033-9145-48E5-8ED8-E2365252878C.*##g' Main.sln # MonoDevelop.FSharp.Gui
+sed -i 's#.*20D6EC2C-B62E-49D1-B685-90D8967A5B5D.*##g' Main.sln # MonoDevelop.FSharpInteractive.Service
+sed -i 's#.*A1A45375-7FB8-4F2A-850F-FBCC67739927.*##g' Main.sln # MonoDevelop.FSharp.Tests
 
 #Fixes for Mono 4
 sed -i "s#gmcs#mcs#g" configure
@@ -186,11 +202,8 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
-* Wed Jul 20 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.0.1-1
-- Update to 6.0.1.8 Cycle 7 Service Release 0
-
-* Tue Jun 14 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.0.0-1
-- Update to 6.0.0.5174 Cycle 7 Final
+* Wed Aug 10 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.0.2-1
+- Update to 6.0.2.73 Cycle 7 Service Release 1
 
 * Thu Nov 26 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.10.0-6
 - Update to 5.10.0.871 Cycle 6
