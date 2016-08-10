@@ -16,6 +16,8 @@ Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop
 Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-no-nuget-packages.patch
+# do not depend on Microsoft.CodeAnalysis for the moment (would need to package Roslyn)
+Patch3:         monodevelop-6.0.2-no_codeanalyis.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 3.0.0
@@ -61,6 +63,7 @@ Development files for %{name}.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 sed -i 's#HintPath>.*nuget-binary.*</HintPath>#Package>nuget-core</Package>\n<Private>True</Private>#g' src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.csproj
 sed -i 's#if test "x$FSHARPC" = "x" ;#if test "x$FSHARPC" = "xDONTCHECK" ;#g' configure

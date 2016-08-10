@@ -1,0 +1,55 @@
+--- a/src/core/MonoDevelop.Core/MonoDevelop.Projects/HelpService.cs.orig	2016-08-10 12:46:52.956979585 +0200
++++ b/src/core/MonoDevelop.Core/MonoDevelop.Projects/HelpService.cs	2016-08-10 12:47:48.036499180 +0200
+@@ -128,6 +128,7 @@
+ 			get { return sources; }
+ 		}
+ 		
++/*	
+ 		//note: this method is very careful to check that the generated URLs exist in MonoDoc
+ 		//because if we send nonexistent URLS to MonoDoc, it shows empty pages
+ 		public static string GetMonoDocHelpUrl (Microsoft.CodeAnalysis.ISymbol result)
+@@ -136,6 +137,7 @@
+ 				return null;
+ 			return result.GetDocumentationCommentId ();
+ 		}
++*/
+ 	}
+ }
+ 
+--- a/src/core/MonoDevelop.Core/MonoDevelop.Projects/DotNetCompilerParameters.cs.orig	2016-08-10 12:49:06.722098828 +0200
++++ b/src/core/MonoDevelop.Core/MonoDevelop.Projects/DotNetCompilerParameters.cs	2016-08-10 12:49:18.721122846 +0200
+@@ -75,6 +75,7 @@
+ 
+ 		public virtual bool NoStdLib { get; set; }
+ 
++/*
+ 		public virtual Microsoft.CodeAnalysis.CompilationOptions CreateCompilationOptions ()
+ 		{
+ 			return null;
+@@ -84,5 +85,6 @@
+ 		{
+ 			return null;
+ 		}
++*/
+ 	}
+ }
+--- a/src/core/MonoDevelop.Core/MonoDevelop.Projects.Text/DocGenerator.cs.orig	2016-08-10 12:50:07.045192311 +0200
++++ b/src/core/MonoDevelop.Core/MonoDevelop.Projects.Text/DocGenerator.cs	2016-08-10 12:50:27.259548173 +0200
+@@ -26,7 +26,7 @@
+ using System;
+ using MonoDevelop.Core;
+ using Mono.Addins;
+-using Microsoft.CodeAnalysis;
++//using Microsoft.CodeAnalysis;
+ 
+ namespace MonoDevelop.Projects.Text
+ {
+@@ -37,7 +37,7 @@
+ 			private set;
+ 		}
+ 		
+-		public abstract string GenerateDocumentation (ISymbol member, string linePrefix);
++		//public abstract string GenerateDocumentation (ISymbol member, string linePrefix);
+ 		
+ 		static DocGenerator ()
+ 		{
