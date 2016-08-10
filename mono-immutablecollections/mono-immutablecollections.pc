@@ -1,0 +1,7 @@
+assemblies_dir=/usr/lib/mono
+Libraries=${assemblies_dir}/System.Collections.ImmutableCollections/System.Collections.ImmutableCollections.dll
+
+Name: System.Collections.ImmutableCollections
+Description: This is a MIT-X11 implementation which tries to implement the interfaces from the nuget package: https://nuget.org/packages/Microsoft.Bcl.Immutable
+Version: 1.0
+Libs: -r:${assemblies_dir}/System.Collections.ImmutableCollections/System.Collections.ImmutableCollections.dll
