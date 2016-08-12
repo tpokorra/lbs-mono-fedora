@@ -28,7 +28,7 @@ BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
 BuildRequires:  nuget-devel
 BuildRequires:  libssh2-devel
-BuildRequires:  newtonsoft-json
+BuildRequires:  newtonsoft-json-devel
 BuildRequires:  cmake git
 %if 0%{use_external_binaries}
 %else
@@ -69,21 +69,29 @@ Development files for %{name}.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%if 0%{use_external_binaries}
+%else
 %patch3 -p1
+%endif
 
+%if 0%{use_external_binaries}
+%else
 sed -i 's#HintPath>.*nuget-binary.*</HintPath>#Package>nuget-core</Package>\n<Private>True</Private>#g' src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.csproj
+%endif
 sed -i 's#if test "x$FSHARPC" = "x" ;#if test "x$FSHARPC" = "xDONTCHECK" ;#g' configure
 
-for f in tests/TestRunner/TestRunner.csproj tests/UserInterfaceTests/UserInterfaceTests.csproj src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/NUnit3Runner.csproj
+for f in tests/TestRunner/TestRunner.csproj src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/NUnit3Runner.csproj
 do
   echo $f
   sed -i "s#<HintPath>.*nunit\..*</HintPath>##g" $f
   sed -i "s#<HintPath>.*NUnit\..*</HintPath>##g" $f
 done
 sed -i "s#<HintPath>.*nunit\.#<HintPath>/usr/lib/mono/nunit2/nunit.#g" src/addins/MonoDevelop.UnitTesting.NUnit/NUnitRunner/NUnitRunner.csproj
+sed -i "s#<HintPath>.*nunit\.#<HintPath>/usr/lib/mono/nunit2/nunit.#g" tests/UserInterfaceTests/UserInterfaceTests.csproj
 sed -i "s#<HintPath>.*CecilHintPath.*</HintPath>#<HintPath>/usr/lib/mono/nunit2/nunit.framework.dll</HintPath>#g" external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
 
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" tests/UserInterfaceTests/UserInterfaceTests.csproj
+sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.Tests/MonoDevelop.PackageManagement.Tests.csproj
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
 %if 0%{use_external_binaries}
 %else
@@ -91,6 +99,15 @@ sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json<
 #sed -i "s#<HintPath>.*System\.Collections\.Immutable.dll</HintPath>#<Package>System.Collections.Immutable</Package><Private>True</Private>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
 sed -i "s#<HintPath>.*System\.Collections\.Immutable.dll</HintPath>#<HintPath>/usr/lib/mono/System.Collections.Immutable/System.Collections.Immutable.dll</HintPath>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
 %endif
+
+# do not depend on .NET Portable reference assemblies
+RefactoringEssentials=external/RefactoringEssentials/RefactoringEssentials/RefactoringEssentials.csproj
+sed -i "s#<NoStdLib>true</NoStdLib>#<NoStdLib>false</NoStdLib>#g" $RefactoringEssentials
+sed -i "s#<TargetFrameworkProfile>Profile7</TargetFrameworkProfile>##g" $RefactoringEssentials
+sed -i "s#.*Microsoft\.VsSDK\.targets.*##g" $RefactoringEssentials
+sed -i "s#.*Microsoft\.Portable\.CSharp\.targets.*##g" $RefactoringEssentials
+sed -i 's#</Project>#<Import Project="\$\(MSBuildBinPath\)\\Microsoft.CSharp.Targets" />\n</Project>#g' $RefactoringEssentials
+sed -i 's#</Project>#<ItemGroup>\n<Reference Include="System.Xml"/>\n<Reference Include="System"/>\n<Reference Include="System.Xml.Linq"/>\n</ItemGroup></Project>#g' $RefactoringEssentials
 
 %if 0%{use_external_binaries}
 %else
@@ -100,7 +117,7 @@ find -name '*.dll' -exec rm -f {} \;
 
 # drop support for RefactoringEssentials, since they depend on .NET Portable reference assemblies
 # avoiding error: /usr/lib/mono/4.5/Microsoft.Common.targets: error : PCL Reference Assemblies not installed.
-sed -i 's#.*C465A5DC-AD28-49A2-89C0-F81838814A7E.*##g' Main.sln # RefactoringEssentials
+#sed -i 's#.*C465A5DC-AD28-49A2-89C0-F81838814A7E.*##g' Main.sln # RefactoringEssentials
 
 # drop support for FSharp. We do not have fsharp packaged for Fedora (yet)
 sed -i 's#.*4804F98F-A891-463C-893D-7134D66C234F.*##g' Main.sln # FSharpBinding
