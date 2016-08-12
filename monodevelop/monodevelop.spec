@@ -3,6 +3,7 @@
 %define version 6.0.2
 %define tarballpath 6.0
 %define fileversion 6.0.2.73
+%define use_external_binaries 1
 
 Name:           monodevelop
 Version:        %{version}
@@ -21,6 +22,7 @@ Patch3:         monodevelop-6.0.2-no_codeanalyis.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 3.0.0
+BuildRequires:  nunit2-devel
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
@@ -28,10 +30,14 @@ BuildRequires:  nuget-devel
 BuildRequires:  libssh2-devel
 BuildRequires:  newtonsoft-json
 BuildRequires:  cmake git
+%if 0%{use_external_binaries}
+%else
 BuildRequires:  mono-immutablecollections-devel
+%endif
 Requires:       mono-core >= 3.0.4
 Requires:       mono-addins >= 0.6
 Requires:       nunit >= 3.0
+Requires:       nunit2
 Requires:       mono-locale-extras
 Requires:       gnome-desktop-sharp
 Requires:       subversion monodoc
@@ -74,16 +80,23 @@ do
   sed -i "s#<HintPath>.*nunit\..*</HintPath>##g" $f
   sed -i "s#<HintPath>.*NUnit\..*</HintPath>##g" $f
 done
+sed -i "s#<HintPath>.*nunit\.#<HintPath>/usr/lib/mono/nunit2/nunit.#g" src/addins/MonoDevelop.UnitTesting.NUnit/NUnitRunner/NUnitRunner.csproj
+sed -i "s#<HintPath>.*CecilHintPath.*</HintPath>#<HintPath>/usr/lib/mono/nunit2/nunit.framework.dll</HintPath>#g" external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
 
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" tests/UserInterfaceTests/UserInterfaceTests.csproj
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+%if 0%{use_external_binaries}
+%else
 # somehow the pkg-config file mono-immutablecollections.pc is not picked up?
 #sed -i "s#<HintPath>.*System\.Collections\.Immutable.dll</HintPath>#<Package>System.Collections.Immutable</Package><Private>True</Private>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
 sed -i "s#<HintPath>.*System\.Collections\.Immutable.dll</HintPath>#<HintPath>/usr/lib/mono/System.Collections.Immutable/System.Collections.Immutable.dll</HintPath>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+%endif
 
-
+%if 0%{use_external_binaries}
+%else
 # Delete shipped *.dll files
 find -name '*.dll' -exec rm -f {} \;
+%endif
 
 # drop support for RefactoringEssentials, since they depend on .NET Portable reference assemblies
 # avoiding error: /usr/lib/mono/4.5/Microsoft.Common.targets: error : PCL Reference Assemblies not installed.
