@@ -91,7 +91,11 @@ sed -i "s#<HintPath>.*nunit\.#<HintPath>/usr/lib/mono/nunit2/nunit.#g" tests/Use
 sed -i "s#<HintPath>.*CecilHintPath.*</HintPath>#<HintPath>/usr/lib/mono/nunit2/nunit.framework.dll</HintPath>#g" external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
 
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" tests/UserInterfaceTests/UserInterfaceTests.csproj
+%if 0%{use_external_binaries}
+# we cannot use the Fedora newtonsoft-json package, because MonoDevelop.PackageManagement.Tests uses a nuget dll which is compiled against version 6.0 of Newtonsoft.Json
+%else
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.Tests/MonoDevelop.PackageManagement.Tests.csproj
+%endif
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
 %if 0%{use_external_binaries}
 %else
@@ -222,7 +226,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 %files -f %{name}.lang
-%doc AUTHORS ChangeLog COPYING README
+%doc AUTHORS COPYING README
 %{_bindir}/m*
 %{_prefix}/lib/monodevelop
 %{_mandir}/man1/m*
