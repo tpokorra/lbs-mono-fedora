@@ -1,0 +1,3 @@
+lbs:
+  source:
+    download: ["https://github.com/dotnet/corefx/archive/v1.0.0.tar.gz"]
