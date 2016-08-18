@@ -8,6 +8,8 @@ Group:          Development/Languages
 License:        MIT
 URL:            https://dotnet.github.io/
 Source0:        https://github.com/dotnet/coreclr/archive/v%{version}.tar.gz
+# otherwise that file is missing semicolons
+Source1:        dotnet-coreclr-GeneratedAssemblyInfo.cs
 Patch0:         dotnet-coreclr-build.patch
 Patch1:         dotnet-coreclr-corelib.patch
 Patch2:         dotnet-coreclr-ref.patch
@@ -42,6 +44,10 @@ You can create .NET Core apps that run on multiple OSes and CPUs.
 %patch2 -p1
 %patch3 -p1
 %patch10 -p1
+
+# workaround for a problem that the semicolons for the using lines are missing
+mkdir -p bin/obj/Windows_NT.x64.Release
+cp %{SOURCE1} bin/obj/Windows_NT.x64.Release/GeneratedAssemblyInfo.cs
 
 %build
 

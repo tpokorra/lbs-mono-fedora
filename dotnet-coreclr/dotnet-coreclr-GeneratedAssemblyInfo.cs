@@ -1,0 +1,16 @@
+using System;
+using System.Reflection;
+[assembly: System.Resources.SatelliteContractVersion("4.0.0.0")]
+[assembly: System.Security.AllowPartiallyTrustedCallers]
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: System.Resources.NeutralResourcesLanguage("en-US")]
+[assembly:AssemblyTitle("System.Private.CoreLib")]
+[assembly:AssemblyDescription("System.Private.CoreLib")]
+[assembly:AssemblyDefaultAlias("System.Private.CoreLib")]
+[assembly:AssemblyCompany("Microsoft Corporation")]
+[assembly:AssemblyProduct("Microsoft/x00ae .NET Framework")]
+[assembly:AssemblyCopyright("/x00a9 Microsoft Corporation.  All rights reserved.")]
+[assembly:AssemblyVersion("4.0.0.0")]
+[assembly:AssemblyFileVersion("4.6.00001.0")]
+[assembly:AssemblyInformationalVersion(@"4.6.00001.0")]
+[assembly:CLSCompliant(true)]
