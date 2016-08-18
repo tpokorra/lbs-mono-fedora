@@ -1,3 +1,4 @@
+%global bootstrap 1
 %global deliverydir bin/Product/Linux.x64.Release
 Name:           dotnet-corefx
 Version:        1.0.0
@@ -15,6 +16,12 @@ BuildRequires:  krb5-devel
 BuildRequires:  openssl-devel
 BuildRequires:  cmake
 
+%if 0%{bootstrap}
+BuildRequires:  msbuild-bin
+%else
+BuildRequires:  msbuild
+%endif
+
 %description
 
 The corefx repo contains the library implementation (called "CoreFX") for .NET Core. It includes System.Collections, System.IO, System.Xml, and many other components.
@@ -25,6 +32,9 @@ The corefx repo contains the library implementation (called "CoreFX") for .NET C
 %build
 
 sed -i "s#__generateversionsource=true#__generateversionsource=false#g" build.sh
+sed -i "s#\\\$__scriptpath/Tools/corerun#/usr/bin/corerun --clr-path /usr/lib64#g" build.sh
+sed -i "s#\\\$__scriptpath/Tools/MSBuild\.exe#/usr/lib64/MSBuild.exe#g" build.sh
+sed -i 's#.*__scriptpath/init-tools.sh#echo "not calling init-tools.sh"#g' build.sh
 ./build.sh x64 Release clean
 
 %install

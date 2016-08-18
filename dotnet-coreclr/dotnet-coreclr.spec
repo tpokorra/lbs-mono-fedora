@@ -64,6 +64,7 @@ mkdir -p %{buildroot}%{_libdir}
 cp %{deliverydir}/*.so %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_includedir}
 cp %{deliverydir}/inc/*.h %{buildroot}%{_includedir}
+cp %{deliverydir}/*.dll %{buildroot}%{_libdir}
 
 %post -p /sbin/ldconfig
 
@@ -73,6 +74,7 @@ cp %{deliverydir}/inc/*.h %{buildroot}%{_includedir}
 # TODO license or copyright
 %{_bindir}/*
 %{_libdir}/*.so
+%{_libdir}/*.dll
 %{_includedir}/*.h
 
 %changelog
