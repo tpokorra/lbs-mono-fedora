@@ -1,5 +1,8 @@
+# This is master branch. Crossplatform is not supported
+#%global tarballversion 14.0.25420.1-ish
 # from the branch https://github.com/Microsoft/msbuild/tree/xplat
 %global tarballversion 204cfd215fdc1c92322b0b22165cc8c4c3259e02
+%global bootstrap 1
 Name:           msbuild
 Version:        14.0.25420
 Release:        1%{?dist}
@@ -9,7 +12,12 @@ License:        MIT
 URL:            https://github.com/Microsoft/msbuild
 Source0:        https://github.com/Microsoft/msbuild/archive/%{tarballversion}.tar.gz
 
-BuildRequires:  mono-devel >= 4.4
+BuildRequires:  dotnet-coreclr
+%if 0%{bootstrap}
+BuildRequires:  msbuild-bin
+%else
+BuildRequires:  msbuild
+%endif
 
 %description
 The Microsoft Build Engine, which is also known as MSBuild, provides an XML schema for a project file that controls how the build platform processes and builds software. Visual Studio uses MSBuild, but MSBuild does not depend on Visual Studio. By invoking msbuild.exe on your project or solution file, you can orchestrate and build products in environments where Visual Studio isn't installed.
@@ -19,13 +27,15 @@ The Microsoft Build Engine, which is also known as MSBuild, provides an XML sche
 
 %build
 
-sed -i "s#CLR2\\\#clr2\\\#g" src/XMakeCommandLine/MSBuildTaskHost/MSBuildTaskHost.csproj
-sed -i "s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>#<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g" dir.props
-sed -i "s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>#<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g;s#System\.XML#System.Xml#g;s#<SpecificVersion>true</SpecificVersion>#<SpecificVersion>false</SpecificVersion>#g" src/XMakeCommandLine/MSBuildTaskHost/MSBuildTaskHost.csproj
-#sed -i "s#<RestoreRuntimePackagesCommand>.*</RestoreRuntimePackagesCommand>##g" targets/DeployDependencies.proj
-#sed -i "s#<Exec Command=.*RestoreRuntimePackagesCommand.*/>##g" targets/DeployDependencies.proj
-sed -i 's#DependsOnTargets="CopyBuildTools;CopyPackageContent;CopyCompilerTools;DeployRuntime;FixupFilenames"#DependsOnTargets="CopyBuildTools;CopyPackageContent;CopyCompilerTools;FixupFilenames"#g' targets/DeployDependencies.proj
-xbuild /property:Configuration=Release src/MSBuild.sln
+#sed -i "s#CLR2\\\#clr2\\\#g" src/XMakeCommandLine/MSBuildTaskHost/MSBuildTaskHost.csproj
+#sed -i "s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>#<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g" dir.props
+#sed -i "s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>#<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g;s#System\.XML#System.Xml#g" src/XMakeCommandLine/MSBuildTaskHost/MSBuildTaskHost.csproj
+
+sed -i 's#eval.*init-tools.*#echo "not running init-tools.sh"#g' cibuild.sh
+sed -i 's#RUNTIME_HOST=.*#RUNTIME_HOST="/usr/bin/corerun"#g' cibuild.sh
+sed -i 's#MSBUILD_EXE=.*#MSBUILD_EXE="/usr/lib64/tools/MSBuild.exe"#g' cibuild.sh
+
+./cibuild.sh --host CoreCLR --target CoreCLR || exit -1
 
 %install
 
