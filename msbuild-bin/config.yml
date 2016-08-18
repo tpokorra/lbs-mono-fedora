@@ -1,0 +1,3 @@
+lbs:
+  source:
+    download: ["https://dotnet.myget.org/F/dotnet-buildtools/api/v2/package/Microsoft.Build.Mono.Debug/14.1.0.0-prerelease"]
