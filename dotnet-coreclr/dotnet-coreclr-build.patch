@@ -1,6 +1,6 @@
 --- a/build.sh	2016-08-18 12:20:14.942964688 +0200
 +++ b/build.sh	2016-08-18 12:22:01.562266075 +0200
-@@ -291,13 +291,14 @@
+@@ -291,13 +291,17 @@
  
      # Restore buildTools
  
@@ -13,10 +13,10 @@
 -    $__ProjectRoot/Tools/corerun "$__MSBuildPath" /nologo "$__ProjectRoot/build.proj" /verbosity:minimal "/fileloggerparameters:Verbosity=normal;LogFile=$__LogsDir/System.Private.CoreLib_$__BuildOS__$__BuildArch__$__BuildType.log" /t:Build /p:__BuildOS=$__BuildOS /p:__BuildArch=$__BuildArch /p:__BuildType=$__BuildType /p:__IntermediatesDir=$__IntermediatesDir /p:__RootBinDir=$__RootBinDir /p:BuildNugetPackage=false /p:UseSharedCompilation=false ${__SignTypeReal}
 +    #$__ProjectRoot/Tools/corerun "$__MSBuildPath" /nologo "$__ProjectRoot/build.proj" /verbosity:minimal "/fileloggerparameters:Verbosity=normal;LogFile=$__LogsDir/System.Private.CoreLib_$__BuildOS__$__BuildArch__$__BuildType.log" /t:Build /p:__BuildOS=$__BuildOS /p:__BuildArch=$__BuildArch /p:__BuildType=$__BuildType /p:__IntermediatesDir=$__IntermediatesDir /p:__RootBinDir=$__RootBinDir /p:BuildNugetPackage=false /p:UseSharedCompilation=false ${__SignTypeReal}
 +    cd src/mscorlib
-+    xbuild System.Private.CoreLib.csproj
-+    xbuild facade/mscorlib.csproj
-+    xbuild ref/mscorlib.csproj
-
++    xbuild /property:Configuration=$__BuildType System.Private.CoreLib.csproj || exit -1
++    xbuild /property:Configuration=$__BuildType facade/mscorlib.csproj || exit -1
++    xbuild /property:Configuration=$__BuildType ref/mscorlib.csproj || exit -1
+ 
      if [ $? -ne 0 ]; then
          echo "Failed to build managed components."
          exit 1

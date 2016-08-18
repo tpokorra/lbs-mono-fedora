@@ -1,4 +1,4 @@
-%global deliverydir bin/Product/Linux.x64.Debug
+%global deliverydir bin/Product/Linux.x64.Release
 Name:           dotnet-coreclr
 Version:        1.0.4
 Release:        1%{?dist}
@@ -8,6 +8,12 @@ Group:          Development/Languages
 License:        MIT
 URL:            https://dotnet.github.io/
 Source0:        https://github.com/dotnet/coreclr/archive/v%{version}.tar.gz
+Patch0:         dotnet-coreclr-build.patch
+Patch1:         dotnet-coreclr-corelib.patch
+Patch2:         dotnet-coreclr-ref.patch
+Patch3:         dotnet-coreclr-facade.patch
+# backported patches
+Patch10:        dotnet-coreclr-minmaxmacros.patch
 
 BuildRequires:  which
 BuildRequires:  make
@@ -31,12 +37,18 @@ You can create .NET Core apps that run on multiple OSes and CPUs.
 
 %prep
 %setup -q -n coreclr-%{version}
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch10 -p1
 
 %build
 
+sed -i "s#__isMSBuildOnNETCoreSupported=0#__isMSBuildOnNETCoreSupported=1#g" build.sh
 # for skipgenerateversion, see https://github.com/dotnet/coreclr/issues/4558
 # other option: skipmscorlib
-./build.sh skipgenerateversion x64 Release clean
+./build.sh skipgenerateversion skipnuget x64 Release clean
 
 %install
 

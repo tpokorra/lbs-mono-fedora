@@ -1,0 +1,35 @@
+--- a/src/mscorlib/ref/mscorlib.csproj	2016-08-18 14:50:18.174790456 +0200
++++ b/src/mscorlib/ref/mscorlib.csproj	2016-08-18 14:57:46.094362461 +0200
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+-
++<!--  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
++-->
+   <!-- Include common build properties -->
+   <Import Project="..\..\..\dir.props" />
+ 
+@@ -65,7 +65,7 @@
+     </Compile>
+   </ItemGroup>
+ 
+-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.Targets" />
++  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+ 
+   <PropertyGroup>
+     <StrongNameSig>Silverlight</StrongNameSig>
+@@ -78,9 +78,12 @@
+   <PropertyGroup>
+     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\Tools\Signing\mscorlib.snk</AssemblyOriginatorKeyFile>
+   </PropertyGroup>
+-
++<!--
+   <Import Project="$(MSBuildThisFileDirectory)..\Tools\Versioning\GenerateVersionInfo.targets"/>
++-->
+   <!-- Override versioning targets -->
++<!--
+   <Import Condition="Exists('$(ToolsDir)versioning.targets')" Project="$(ToolsDir)versioning.targets" />
+   <Import Project="..\GenerateCompilerResponseFile.targets"/>
++-->
+ </Project>

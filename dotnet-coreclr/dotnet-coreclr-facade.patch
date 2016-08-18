@@ -1,0 +1,15 @@
+--- a/src/mscorlib/facade/mscorlib.csproj	2016-08-18 14:46:18.806240148 +0200
++++ b/src/mscorlib/facade/mscorlib.csproj	2016-08-18 14:48:32.827350175 +0200
+@@ -78,9 +78,10 @@
+   <PropertyGroup>
+     <StrongNameSig>Silverlight</StrongNameSig>
+   </PropertyGroup>
+-
++<!--
+   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+-
++-->
++  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+   <PropertyGroup>
+     <!-- Overwrite the key that we are going to use for signing -->
+     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\Tools\Signing\mscorlib.snk</AssemblyOriginatorKeyFile>
