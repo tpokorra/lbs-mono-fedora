@@ -1,14 +1,13 @@
-%global gitrevision 03bb9a00a68efac5f1637f53ea0099a2dea47117
 %global deliverydir bin/Product/Linux.x64.Debug
-Name:           dotnet
-Version:        1.0.0
+Name:           dotnet-coreclr
+Version:        1.0.4
 Release:        1%{?dist}
 Summary:        .NET Core is a general purpose managed framework
 
 Group:          Development/Languages
 License:        MIT
 URL:            https://dotnet.github.io/
-Source0:        https://github.com/dotnet/coreclr/archive/%{gitrevision}.tar.gz
+Source0:        https://github.com/dotnet/coreclr/archive/v%{version}.tar.gz
 
 BuildRequires:  which
 BuildRequires:  make
@@ -24,18 +23,20 @@ BuildRequires:  libunwind-devel
 BuildRequires:  lttng-ust-devel
 BuildRequires:  libuuid-devel
 BuildRequires:  uuid-devel
-BuildRequires:  mono-devel
+BuildRequires:  mono-devel >= 4.4
 
 %description
 .NET Core is a set of runtime, library and compiler components.
 You can create .NET Core apps that run on multiple OSes and CPUs.
 
 %prep
-%setup -q -n coreclr-%{gitrevision}
+%setup -q -n coreclr-%{version}
 
 %build
 
-./build.sh skipmscorlib
+# for skipgenerateversion, see https://github.com/dotnet/coreclr/issues/4558
+# other option: skipmscorlib
+./build.sh skipgenerateversion x64 Release clean
 
 %install
 
@@ -57,5 +58,8 @@ cp %{deliverydir}/inc/*.h %{buildroot}%{_includedir}
 %{_includedir}/*.h
 
 %changelog
+* Thu Aug 18 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 1.0.4-1
+- upgrade to 1.0.4
+
 * Wed Jan 06 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 1.0.0-1
 - initial package for .NET Core (from git master)

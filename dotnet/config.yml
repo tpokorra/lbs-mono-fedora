@@ -1,4 +1,0 @@
-lbs:
-  source:
-    #download: ["https://github.com/dotnet/coreclr/archive/v1.0.0-rc1.tar.gz"]
-    download: ["https://github.com/dotnet/coreclr/archive/03bb9a00a68efac5f1637f53ea0099a2dea47117.tar.gz"]
