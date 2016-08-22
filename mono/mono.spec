@@ -16,7 +16,7 @@
 
 Name:           mono
 Version:        4.4.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -781,6 +781,9 @@ mkdir -p %{buildroot}%{_datadir}/gdb/auto-load%{_bindir}
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
+* Tue Aug 09 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.4.2-3
+- drop cecil.pc, to avoid conflict with mono-cecil-devel
+
 * Fri Aug 05 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.4.2-2
 - remove Mono.Cecil from mono-core, since there is a separate package for it (#1360620)
 
