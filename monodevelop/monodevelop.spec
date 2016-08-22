@@ -113,6 +113,13 @@ sed -i "s#.*Microsoft\.Portable\.CSharp\.targets.*##g" $RefactoringEssentials
 sed -i 's#</Project>#<Import Project="\$\(MSBuildBinPath\)\\Microsoft.CSharp.Targets" />\n</Project>#g' $RefactoringEssentials
 sed -i 's#</Project>#<ItemGroup>\n<Reference Include="System.Xml"/>\n<Reference Include="System"/>\n<Reference Include="System.Xml.Linq"/>\n</ItemGroup></Project>#g' $RefactoringEssentials
 
+# deliverables should not depend on mono(System.Web.Mvc) = 5.2.3.0
+rm -f packages/Microsoft.AspNet.Mvc.5.2.3/lib/net45/System.Web.Mvc.dll
+# deliverables should not depend on mono(System.Web.Razor) = 3.0.0.0
+rm -f packages/Microsoft.AspNet.Razor.3.2.3/lib/net45/System.Web.Razor.dll
+# deliverables should not depend on mono(System.Web.WebPages.Razor) = 3.0.0.0
+rm -f packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Razor.dll
+
 %if 0%{use_external_binaries}
 %else
 # Delete shipped *.dll files
