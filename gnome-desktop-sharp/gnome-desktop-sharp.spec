@@ -1,6 +1,6 @@
 Name:           gnome-desktop-sharp
 Version:        2.26.0
-Release:        25%{?dist}
+Release:        28%{?dist}
 Summary:        .NET language binding for mono
 
 Group:          System Environment/Libraries
@@ -8,19 +8,12 @@ License:        LGPLv2
 URL:            http://www.mono-project.com/GtkSharp
 Source0:        http://ftp.gnome.org/pub/gnome/sources/%{name}/2.26/%{name}-%{version}.tar.bz2
 Patch1:         %{name}-lib-target.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  mono-devel, gtk2-devel
 BuildRequires:  librsvg2-devel, vte-devel
-# gnome-panel bindings temporary disabled
-# BuildRequires: gnome-panel-devel
-BuildRequires:  libwnck-devel, gtksourceview2-devel, libgnomeprintui22-devel
+BuildRequires:  libwnck-devel, gtksourceview2-devel
 BuildRequires:  gnome-sharp-devel
-%if 0%{?rhel7}%{?el7}
-BuildRequires:  gnome-desktop3-devel
-%else
 BuildRequires:  gnome-desktop-devel
-%endif
 BuildRequires:  gtk-sharp2-gapi >= 2.12.0
 BuildRequires:  gtk-sharp2-devel >= 2.12.0
 
@@ -28,7 +21,7 @@ Provides:       gtksourceview2-sharp = 2:%{version}-%{release}
 Obsoletes:      gtksourceview2-sharp < 2:2.20.1-2
 
 # Mono only available on these:
-ExclusiveArch: %ix86 x86_64 ppc %{power64} ia64 %{arm} sparcv9 alpha s390x
+ExclusiveArch: %mono_arches
 
 
 %description
@@ -54,31 +47,20 @@ Package %{name}-devel provides development files for writing
 %patch1 -p1 -b .target
 sed -i -e 's!@libdir@!${exec_prefix}/lib/!g' gtksourceview/gtksourceview2-sharp.pc.in
 
-%if 0%{?rhel7}%{?el7}
-# for Epel7, we only have gnome-desktop3 available
-sed -i -e 's!gnome-desktop-2.0!gnome-desktop-3.0!g' configure
-%endif
-
 # Fix permission
 chmod 0644 HACKING
 
 %build
 %configure
-find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
-find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 make %{?_smp_mflags}
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
 # Remove libttol archive
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 find $RPM_BUILD_ROOT -name '*.a' -exec rm -f {} ';'
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 
 %post -p /sbin/ldconfig
@@ -87,42 +69,43 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files
-%defattr(-,root,root,-)
 %doc COPYING ChangeLog AUTHORS README
 %{_libdir}/*.so
 %{_prefix}/lib/mono/gac/gnomedesktop-sharp
-#%{_prefix}/lib/mono/gac/gnome-panel-sharp
-%{_prefix}/lib/mono/gac/gnome-print-sharp
 %{_prefix}/lib/mono/gac/gtksourceview2-sharp
 %{_prefix}/lib/mono/gac/rsvg2-sharp
 %{_prefix}/lib/mono/gac/vte-sharp
 %{_prefix}/lib/mono/gac/wnck-sharp
 %{_prefix}/lib/mono/gnomedesktop-sharp-2.20
-#%{_prefix}/lib/mono/gnome-panel-sharp-2.24
-%{_prefix}/lib/mono/gnome-print-sharp-2.18
 %{_prefix}/lib/mono/gtksourceview2-sharp-2.0
 %{_prefix}/lib/mono/rsvg2-sharp-2.0
 %{_prefix}/lib/mono/vte-sharp-0.16
 %{_prefix}/lib/mono/wnck-sharp-2.20
 %{_datadir}/gnomedesktop-sharp
-#%{_datadir}/gnome-panel-sharp
-%{_datadir}/gnome-print-sharp
 %{_datadir}/gtksourceview2-sharp
 %{_datadir}/rsvg2-sharp
 %{_datadir}/vte-sharp
 %{_datadir}/wnck-sharp
 
 %files           devel
-%defattr(-,root,root,-)
 %doc HACKING
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
-* Fri Apr 24 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.26.0-25
-- Fix for Epel7, we only have gnome-desktop3-devel available
+* Wed Feb 03 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.26.0-28
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
-* Wed Apr 15 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.26.0-24
-- Build for Mono 4
+* Sat Oct 24 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.26.0-27
+- Drop gnomeprintui
+
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.26.0-26
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
+* Mon May 18 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.26.0-25
+- Rebuild (mono4)
+
+* Tue Mar 24 2015 Than Ngo <than@redhat.com> - 2.26.0-24
+- use %%mono_arches
 
 * Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.26.0-23
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
