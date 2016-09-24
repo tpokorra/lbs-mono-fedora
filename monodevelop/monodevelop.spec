@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 
-%define version 6.0.2
-%define tarballpath 6.0
-%define fileversion 6.0.2.73
+%define version 6.1.0
+%define tarballpath 6.1
+%define fileversion 6.1.0.5441
 %define use_external_binaries 1
 
 Name:           monodevelop
@@ -246,6 +246,9 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Sat Sep 24 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.1.0-1
+- Update to 6.1.0.5441 Cycle 8 Stable
+
 * Wed Aug 10 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.0.2-1
 - Update to 6.0.2.73 Cycle 7 Service Release 1
 
