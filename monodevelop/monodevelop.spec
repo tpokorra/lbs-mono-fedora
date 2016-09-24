@@ -1,7 +1,9 @@
 %global debug_package %{nil}
-%global version 6.0.0
-%global tarballpath 6.0
-%global fileversion 6.0.0.4520
+
+%define version 6.0.2
+%define tarballpath 6.0
+%define fileversion 6.0.2.73
+%define use_external_binaries 1
 
 Name:           monodevelop
 Version:        %{version}
@@ -14,25 +16,28 @@ URL:            http://monodevelop.com/
 Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{fileversion}.tar.bz2
 Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
-Patch2:         monodevelop-nuget-unbundle.patch
-Patch3:         monodevelop-no-nuget-packages.patch
-Patch4:         monodevelop-6.0.0-drop-somepackages.patch
+Patch2:         monodevelop-no-nuget-packages.patch
+# do not depend on Microsoft.CodeAnalysis for the moment (would need to package Roslyn)
+Patch3:         monodevelop-6.0.2-no_codeanalyis.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
-BuildRequires:  nunit-devel >= 2.6.3
-#BuildRequires:  nunit3-devel >= 3.0.0
+BuildRequires:  nunit-devel >= 3.0.0
+BuildRequires:  nunit2-devel
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
 BuildRequires:  desktop-file-utils intltool
 BuildRequires:  nuget-devel
 BuildRequires:  libssh2-devel
-BuildRequires:  newtonsoft-json
+BuildRequires:  newtonsoft-json-devel
 BuildRequires:  cmake git
+%if 0%{use_external_binaries}
+%else
+BuildRequires:  mono-immutablecollections-devel
+%endif
 Requires:       mono-core >= 3.0.4
 Requires:       mono-addins >= 0.6
-# Using system nunit, but dependency not automatically picked up by RPM
-Requires:       mono(nunit.core)
-Requires:       mono(nunit.framework)
+Requires:       nunit >= 3.0
+Requires:       nunit2
 Requires:       mono-locale-extras
 Requires:       gnome-desktop-sharp
 Requires:       subversion monodoc
@@ -64,53 +69,91 @@ Development files for %{name}.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%if 0%{use_external_binaries}
+%else
 %patch3 -p1
-%patch4 -p1
+%endif
 
-for f in tests/TestRunner/TestRunner.csproj tests/UserInterfaceTests/UserInterfaceTests.csproj src/addins/MonoDevelop.UnitTesting.NUnit/NUnitRunner/NUnitRunner.csproj src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/NUnit3Runner.csproj external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
+%if 0%{use_external_binaries}
+%else
+sed -i 's#HintPath>.*nuget-binary.*</HintPath>#Package>nuget-core</Package>\n<Private>True</Private>#g' src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.csproj
+%endif
+sed -i 's#if test "x$FSHARPC" = "x" ;#if test "x$FSHARPC" = "xDONTCHECK" ;#g' configure
+
+for f in tests/TestRunner/TestRunner.csproj src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/NUnit3Runner.csproj
 do
   echo $f
   sed -i "s#<HintPath>.*nunit\..*</HintPath>##g" $f
+  sed -i "s#<HintPath>.*NUnit\..*</HintPath>##g" $f
 done
+sed -i "s#<HintPath>.*nunit\.#<HintPath>/usr/lib/mono/nunit2/nunit.#g" src/addins/MonoDevelop.UnitTesting.NUnit/NUnitRunner/NUnitRunner.csproj
+sed -i "s#<HintPath>.*nunit\.#<HintPath>/usr/lib/mono/nunit2/nunit.#g" tests/UserInterfaceTests/UserInterfaceTests.csproj
+sed -i "s#<HintPath>.*CecilHintPath.*</HintPath>#<HintPath>/usr/lib/mono/nunit2/nunit.framework.dll</HintPath>#g" external/nrefactory/ICSharpCode.NRefactory.Tests/ICSharpCode.NRefactory.Tests.csproj
 
 sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" tests/UserInterfaceTests/UserInterfaceTests.csproj
+%if 0%{use_external_binaries}
+# we cannot use the Fedora newtonsoft-json package, because MonoDevelop.PackageManagement.Tests uses a nuget dll which is compiled against version 6.0 of Newtonsoft.Json
+%else
+sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" src/addins/MonoDevelop.PackageManagement/MonoDevelop.PackageManagement.Tests/MonoDevelop.PackageManagement.Tests.csproj
+%endif
+sed -i "s#<HintPath>.*Newtonsoft\.Json\.dll</HintPath>#<Package>newtonsoft-json</Package><Private>True</Private>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+%if 0%{use_external_binaries}
+%else
+# somehow the pkg-config file mono-immutablecollections.pc is not picked up?
+#sed -i "s#<HintPath>.*System\.Collections\.Immutable.dll</HintPath>#<Package>System.Collections.Immutable</Package><Private>True</Private>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+sed -i "s#<HintPath>.*System\.Collections\.Immutable.dll</HintPath>#<HintPath>/usr/lib/mono/System.Collections.Immutable/System.Collections.Immutable.dll</HintPath>#g" src/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+%endif
 
+# do not depend on .NET Portable reference assemblies
+RefactoringEssentials=external/RefactoringEssentials/RefactoringEssentials/RefactoringEssentials.csproj
+sed -i "s#<NoStdLib>true</NoStdLib>#<NoStdLib>false</NoStdLib>#g" $RefactoringEssentials
+sed -i "s#<TargetFrameworkProfile>Profile7</TargetFrameworkProfile>##g" $RefactoringEssentials
+sed -i "s#.*Microsoft\.VsSDK\.targets.*##g" $RefactoringEssentials
+sed -i "s#.*Microsoft\.Portable\.CSharp\.targets.*##g" $RefactoringEssentials
+sed -i 's#</Project>#<Import Project="\$\(MSBuildBinPath\)\\Microsoft.CSharp.Targets" />\n</Project>#g' $RefactoringEssentials
+sed -i 's#</Project>#<ItemGroup>\n<Reference Include="System.Xml"/>\n<Reference Include="System"/>\n<Reference Include="System.Xml.Linq"/>\n</ItemGroup></Project>#g' $RefactoringEssentials
+
+# deliverables should not depend on mono(System.Web.Mvc) = 5.2.3.0
+rm -f packages/Microsoft.AspNet.Mvc.5.2.3/lib/net45/System.Web.Mvc.dll
+# deliverables should not depend on mono(System.Web.Razor) = 3.0.0.0
+rm -f packages/Microsoft.AspNet.Razor.3.2.3/lib/net45/System.Web.Razor.dll
+# deliverables should not depend on mono(System.Web.WebPages.Razor) = 3.0.0.0
+rm -f packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Razor.dll
+
+%if 0%{use_external_binaries}
+%else
 # Delete shipped *.dll files
 find -name '*.dll' -exec rm -f {} \;
+%endif
 
-# TODO: problem: missing System.Collections.Immutable. It comes in external/roslyn/Binaries/Release/System.Collections.Immutable.dll but we delete that...
+# drop support for RefactoringEssentials, since they depend on .NET Portable reference assemblies
+# avoiding error: /usr/lib/mono/4.5/Microsoft.Common.targets: error : PCL Reference Assemblies not installed.
+#sed -i 's#.*C465A5DC-AD28-49A2-89C0-F81838814A7E.*##g' Main.sln # RefactoringEssentials
+
+# drop support for FSharp. We do not have fsharp packaged for Fedora (yet)
+sed -i 's#.*4804F98F-A891-463C-893D-7134D66C234F.*##g' Main.sln # FSharpBinding
+sed -i 's#.*4C10F8F9-3816-4647-BA6E-85F5DE39883A.*##g' Main.sln # MonoDevelop.FSharp
+sed -i 's#.*AF5FEAD5-B50E-4F07-A274-32F23D5C504D.*##g' Main.sln # MonoDevelop.FSharp.Shared
+sed -i 's#.*FD0D1033-9145-48E5-8ED8-E2365252878C.*##g' Main.sln # MonoDevelop.FSharp.Gui
+sed -i 's#.*20D6EC2C-B62E-49D1-B685-90D8967A5B5D.*##g' Main.sln # MonoDevelop.FSharpInteractive.Service
+sed -i 's#.*A1A45375-7FB8-4F2A-850F-FBCC67739927.*##g' Main.sln # MonoDevelop.FSharp.Tests
 
 #Fixes for Mono 4
-sed -i "s#gmcs#mcs#g; s#dmcs#mcs#g" configure
-sed -i "s#gmcs#mcs#g; s#dmcs#mcs#g" configure.in
+sed -i "s#gmcs#mcs#g" configure
+sed -i "s#gmcs#mcs#g" configure.in
 sed -i "s#mono-nunit#nunit#g" configure.in
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 
-# Makefile missing in 6.0.0 tarball
-sed -i "s|NUnitRunner \.|NUnitRunner NUnit3Runner .|g" src/addins/MonoDevelop.UnitTesting.NUnit/Makefile.am
-cp src/addins/MonoDevelop.UnitTesting.NUnit/NUnitRunner/Makefile.in src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/
-sed -i "s|NUnitRunner|NUnit3Runner|g" src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/Makefile.in
-echo "include \$(top_srcdir)/xbuild.include" > src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/Makefile.am
-
-# since I don't have NUnit3 package yet... drop support for NUnit3 for the moment...
-sed -i "s|NUnitRunner NUnit3Runner|NUnitRunner|g" src/addins/MonoDevelop.UnitTesting.NUnit/Makefile.am
-rm -Rf src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner
-sed -i "s|src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/Makefile|#NUnit3Runner|g" configure.in
-sed -i "s|src/addins/MonoDevelop.UnitTesting.NUnit/NUnit3Runner/Makefile||g" configure
-
-#problem with RefactoringEssentials: missing Microsoft.Portable.CSharp.targets, and other issues
-#see also http://stackoverflow.com/questions/35245840/build-monodevelop-on-debian-jessie-using-mono-4-3-3 which suggests to install the PCL reference assemblies
-rm -Rf external/RefactoringEssentials
-
 %build
-
 %configure --enable-git --disable-update-mimedb --disable-update-desktopdb
 
 cd ./external/libgit2sharp/Lib/CustomBuildTasks
 xbuild CustomBuildTasks.csproj
 mv bin/Debug/* .
 cd ../../../../
+#Custom Task for build libgit2sharp
+#xbuild /property:OutputPath=. external/libgit2sharp/Lib/CustomBuildTasks/CustomBuildTasks.csproj
 
 make %{?_smp_mflags}
 
@@ -190,7 +233,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 
 %files -f %{name}.lang
-%doc AUTHORS ChangeLog COPYING README
+%doc AUTHORS COPYING README
 %{_bindir}/m*
 %{_prefix}/lib/monodevelop
 %{_mandir}/man1/m*
@@ -203,17 +246,11 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
-* Tue Mar 01 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.0.0.4520
-- Update to 6.0.0.4520 Cycle 7 Alpha
+* Wed Aug 10 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.0.2-1
+- Update to 6.0.2.73 Cycle 7 Service Release 1
 
-* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 5.10.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
-
-* Mon Jan 04 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.10.0-2
-- do not use dmcs but mcs only to build MonoDevelop (related to #1294967)
-
-* Sat Jan 02 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.10.0-1
-- Update to 5.10.0.871
+* Thu Nov 26 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 5.10.0-6
+- Update to 5.10.0.871 Cycle 6
 
 * Thu Nov 12 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 5.9.7-1
 - Update to 5.9.7.9
