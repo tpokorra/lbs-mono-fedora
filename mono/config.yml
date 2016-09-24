@@ -1,3 +1,3 @@
 lbs:
   source:
-    download: ["http://download.mono-project.com/sources/mono/mono-4.4.2.11.tar.bz2"]
+    download: ["http://download.mono-project.com/sources/mono/mono-4.6.0.245.tar.bz2"]
