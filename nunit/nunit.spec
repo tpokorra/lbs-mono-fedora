@@ -8,7 +8,7 @@
 %endif
 
 Name:           nunit
-Version:        3.4.1
+Version:        3.5
 Release:        1%{?dist}
 Summary:        Unit test framework for CLI
 %if 0%{?el6}
@@ -20,13 +20,12 @@ Group:          Development/Libraries
 Url:            http://www.nunit.org/
 Source0:        https://github.com/nunit/nunit/archive/%{version}.tar.gz
 Source1:        nunit.pc
-Source2:        nunit-console.sh
+Source2:        nunitlite-runner.sh
 BuildRequires:  mono-devel
-BuildRequires:  mono-cecil-devel >= 0.9.6
 ExclusiveArch:  %{mono_arches}
 Provides:       mono-nunit = 4.0.2-5
 Obsoletes:      mono-nunit < 4.0.2-6
-Obsoletes:      nunit-runner
+Obsoletes:      nunit-runner <= 2.6.4-10
 
 %description
 NUnit is a unit testing framework for all .NET languages. It serves the
@@ -56,21 +55,18 @@ Development files for %{name}.
 # Remove prebuilt binaries
 find . -name "*.dll" -print -delete
 
-# fix compile with Mono4
-find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
-find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
-sed -i 's#<HintPath>.*Mono\.Cecil\.dll</HintPath>##g' src/NUnitEngine/nunit.engine/nunit.engine.csproj
-
 %{?exp_env}
 %{?env_options}
+
 xbuild /property:Configuration=Release src/NUnitFramework/framework/nunit.framework-4.5.csproj
+xbuild /property:Configuration=Release src/NUnitFramework/nunitlite/nunitlite-4.5.csproj
+xbuild /property:Configuration=Release src/NUnitFramework/nunitlite-runner/nunitlite-runner-4.5.csproj
 xbuild /property:Configuration=Release src/NUnitFramework/mock-assembly/mock-assembly-4.5.csproj
+
+xbuild /property:Configuration=Release src/NUnitFramework/slow-tests/slow-nunit-tests-4.5.csproj
 xbuild /property:Configuration=Release src/NUnitFramework/testdata/nunit.testdata-4.5.csproj
 xbuild /property:Configuration=Release src/NUnitFramework/tests/nunit.framework.tests-4.5.csproj
-xbuild /property:Configuration=Release src/NUnitEngine/nunit.engine/nunit.engine.csproj
-xbuild /property:Configuration=Release src/NUnitConsole/nunit3-console/nunit3-console.csproj
-xbuild /property:Configuration=Release src/NUnitEngine/nunit-agent/nunit-agent-x86.csproj
-xbuild /property:Configuration=Release src/NUnitEngine/nunit-agent/nunit-agent.csproj
+xbuild /property:Configuration=Release src/NUnitFramework/nunitlite.tests/nunitlite.tests-4.5.csproj
 
 %install
 %{?env_options}
@@ -80,11 +76,11 @@ xbuild /property:Configuration=Release src/NUnitEngine/nunit-agent/nunit-agent.c
 %{__mkdir_p} %{buildroot}%{_datadir}/applications
 %{__mkdir_p} %{buildroot}%{_datadir}/icons/NUnit
 %{__install} -m0644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/
-%{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/nunit3-console
-%{__install} -m0644 src/NUnitConsole/nunit3-console/app.config %{buildroot}%{_monodir}/nunit/nunit3-console.exe.config
+%{__install} -m0755 %{SOURCE2} %{buildroot}%{_bindir}/nunitlite-runner
+%{__install} -m0644 src/NUnitFramework/nunitlite-runner/App.config %{buildroot}%{_monodir}/nunit/nunitlite-runner.exe.config
 find %{_builddir}/%{?buildsubdir}/bin -name \*.dll -exec %{__install} \-m0755 "{}" "%{buildroot}%{_monodir}/nunit/" \;
 find %{_builddir}/%{?buildsubdir}/bin -name \*.exe -exec %{__install} \-m0755 "{}" "%{buildroot}%{_monodir}/nunit/" \;
-for i in nunit.framework.dll nunit.framework.tests.dll nunit.testdata.dll; do
+for i in nunit.framework.dll nunit.framework.tests.dll nunitlite.dll nunit.testdata.dll; do
     gacutil -i %{buildroot}%{_monodir}/nunit/$i -package nunit -root %{buildroot}%{_monodir}/../
 done
 
@@ -92,19 +88,26 @@ done
 %if ! 0%{?el6}
 %license LICENSE.txt
 %endif
-%{_bindir}/nunit3-console
-%{_monodir}/nunit/nunit3-console.exe*
-%{_monodir}/nunit/nunit-agent*.exe*
-%{_monodir}/nunit/mock-assembly.exe*
+%{_bindir}/nunitlite-runner
 %{_monogacdir}/nunit*
-%{_monodir}/nunit/*.dll
+%{_monodir}/nunit/*
 
 %files devel
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Wed Oct 05 2016 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 3.5-1
+- Update to 3.5
+- Move from nunit3-console to nunitlite-runner
+
+* Fri Sep 02 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.4.1-2
+- fix obsoletes nunit-runner
+
 * Wed Jul 20 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.4.1-1
-- upgrade to 3.4.1. nunit-gui will be in separate package
+- upgrade to 3.4.1. nunit-gui will be in separate package (#1360389)
+
+* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.4-12
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
 * Tue Nov 10 2015 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 2.6.4-11
 - Replace nunit-runner with nunit-gui with only desktop frontend

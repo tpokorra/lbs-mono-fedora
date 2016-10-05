@@ -4,5 +4,5 @@ libdir=${exec_prefix}/lib
 
 Name: NUnit
 Description: Testing framework for CLI
-Version: 3.4.1
-Libs: -r:${libdir}/mono/nunit/nunit.engine.api.dll -r:${libdir}/mono/nunit/nunit.engine.dll -r:${libdir}/mono/nunit/nunit.framework.dll -r:${libdir}/mono/nunit/nunit.framework.tests.dll -r:${libdir}/mono/nunit/nunit.testdata.dll -r:${libdir}/mono/nunit/nunitlite.dll
+Version: 3.5.0.0
+Libs: -r:${libdir}/mono/nunit/nunit.framework.dll -r:${libdir}/mono/nunit/nunit.framework.tests.dll -r:${libdir}/mono/nunit/nunit.testdata.dll -r:${libdir}/mono/nunit/nunitlite.dll
