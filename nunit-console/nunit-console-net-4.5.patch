@@ -1,0 +1,52 @@
+--- a/src/NUnitEngine/mock-assembly/mock-assembly.csproj	2016-10-08 22:06:06.770664295 +0200
++++ b/src/NUnitEngine/mock-assembly/mock-assembly.csproj	2016-10-08 22:06:30.454880831 +0200
+@@ -65,13 +65,8 @@
+     <StartupObject />
+   </PropertyGroup>
+   <ItemGroup>
+-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+-      <HintPath>..\..\..\packages\NUnit.3.4.1\lib\net20\nunit.framework.dll</HintPath>
+-      <Private>True</Private>
+-    </Reference>
+-    <Reference Include="NUnit.System.Linq, Version=0.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+-      <HintPath>..\..\..\packages\NUnit.3.4.1\lib\net20\NUnit.System.Linq.dll</HintPath>
+-      <Private>True</Private>
++    <Reference Include="nunit.framework">
++      <HintPath>/usr/lib/mono/nunit/nunit.framework.dll</HintPath>
+     </Reference>
+     <Reference Include="System">
+       <Name>System</Name>
+--- a/src/NUnitConsole/nunit3-console.tests/nunit3-console.tests.csproj	2016-10-08 22:58:39.503080381 +0200
++++ b/src/NUnitConsole/nunit3-console.tests/nunit3-console.tests.csproj	2016-10-08 22:59:12.279376128 +0200
+@@ -41,12 +41,9 @@
+     <Reference Include="System" />
+     <Reference Include="System.Data" />
+     <Reference Include="System.Xml" />
+-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
+-      <HintPath>..\..\..\packages\NUnit.3.4.1\lib\net20\nunit.framework.dll</HintPath>
++    <Reference Include="nunit.framework">
++      <HintPath>/usr/lib/mono/nunit/nunit.framework.dll</HintPath>
+     </Reference>
+-    <Reference Include="NUnit.System.Linq, Version=0.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
+-      <HintPath>..\..\..\packages\NUnit.3.4.1\lib\net20\NUnit.System.Linq.dll</HintPath>
+-    </Reference>
+   </ItemGroup>
+   <ItemGroup>
+     <Compile Include="..\..\CommonAssemblyInfo.cs">
+--- a/src/NUnitEngine/nunit.engine.tests/nunit.engine.tests.csproj	2016-10-08 23:01:31.132629315 +0200
++++ b/src/NUnitEngine/nunit.engine.tests/nunit.engine.tests.csproj	2016-10-08 23:01:57.152864205 +0200
+@@ -38,12 +38,8 @@
+     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+   </PropertyGroup>
+   <ItemGroup>
+-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+-      <HintPath>..\..\..\packages\NUnit.3.4.1\lib\net20\nunit.framework.dll</HintPath>
+-      <Private>True</Private>
+-    </Reference>
+-    <Reference Include="NUnit.System.Linq, Version=0.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+-      <HintPath>..\..\..\packages\NUnit.3.4.1\lib\net20\NUnit.System.Linq.dll</HintPath>
++    <Reference Include="nunit.framework">
++      <HintPath>/usr/lib/mono/nunit/nunit.framework.dll</HintPath>
+       <Private>True</Private>
+     </Reference>
+     <Reference Include="System" />
