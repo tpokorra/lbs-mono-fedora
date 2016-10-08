@@ -9,9 +9,11 @@ License:        MIT with advertising
 Group:          Development/Libraries
 Url:            http://www.nunit.org/
 Source0:        https://github.com/nunit/nunit-console/archive/%{gittag}.tar.gz
+# TODO: add script to /usr/bin to start nunit3-console
 Patch0:         nunit-console-net-4.5.patch
 BuildRequires:  mono-devel
 BuildRequires:  nunit-devel >= 3.5
+BuildRequires:  mono-cecil-devel
 ExclusiveArch:  %{mono_arches}
 
 %description
@@ -22,6 +24,8 @@ text or XML.
 
 NUnit targets the CLI (Common Language Infrastructure) and supports Mono and
 the Microsoft .NET Framework.
+
+# TODO: add a pc file to devel subpackage?
 
 %prep
 %setup -qn nunit-console-%{gittag}
