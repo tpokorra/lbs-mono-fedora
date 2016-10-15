@@ -32,7 +32,7 @@ The Microsoft Build Engine, which is also known as MSBuild, provides an XML sche
 #sed -i "s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>#<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g;s#System\.XML#System.Xml#g" src/XMakeCommandLine/MSBuildTaskHost/MSBuildTaskHost.csproj
 
 sed -i 's#eval.*init-tools.*#echo "not running init-tools.sh"#g' cibuild.sh
-sed -i 's#RUNTIME_HOST=.*#RUNTIME_HOST="/usr/bin/corerun --clr-path /usr/lib64"#g' cibuild.sh
+sed -i 's#RUNTIME_HOST=.*#RUNTIME_HOST="/usr/bin/dotnet/corerun --clr-path /usr/lib64"#g' cibuild.sh
 sed -i 's#MSBUILD_EXE=.*#MSBUILD_EXE="/usr/lib64/MSBuild.exe"#g' cibuild.sh
 
 ./cibuild.sh --host CoreCLR --target CoreCLR || exit -1

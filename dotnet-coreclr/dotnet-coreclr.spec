@@ -58,8 +58,9 @@ sed -i "s#__isMSBuildOnNETCoreSupported=0#__isMSBuildOnNETCoreSupported=1#g" bui
 
 %install
 
-mkdir -p %{buildroot}%{_bindir}
-for f in corerun coreconsole crossgen ilasm ildasm; do cp %{deliverydir}/$f %{buildroot}%{_bindir}; done
+# putting the binaries in bin/dotnet, to avoid conflict with mono-devel, ilasm
+mkdir -p %{buildroot}%{_bindir}/dotnet
+for f in corerun coreconsole crossgen ilasm ildasm; do cp %{deliverydir}/$f %{buildroot}%{_bindir}/dotnet; done
 mkdir -p %{buildroot}%{_libdir}
 cp %{deliverydir}/*.so %{buildroot}%{_libdir}
 mkdir -p %{buildroot}%{_includedir}
@@ -72,7 +73,7 @@ cp %{deliverydir}/*.dll %{buildroot}%{_libdir}
 
 %files
 # TODO license or copyright
-%{_bindir}/*
+%{_bindir}/dotnet/*
 %{_libdir}/*.so
 %{_libdir}/*.dll
 %{_includedir}/*.h
