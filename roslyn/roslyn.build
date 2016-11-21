@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<project name="FedoraMono" default="generateProjectFiles">
+
+<target name="generateProjectFiles">
+  <property name="generateProjectFiles" value="${Mono::generateProjectFiles()}"/>
+  <!--
+  <loadtasks assembly="${Ict.Tools.NAntTasks.DLL}" unless="${task::exists('GenerateProjectFiles')}"/>
+  <GenerateProjectFiles 
+    CodeRootDir="${dir.csharp}"
+    DependencyMapFilename="${projectDependenciesFile}"
+    GUIDMapFilename="${uuidFile}"
+    TemplateDir="${dir.incdir.template}"
+    DevEnvironments="${devenv-msbuild},${projectfiles.templates-list}"
+    DirBin="${dir.bin}"
+    DirProjectFiles="${dir.projectfiles}"
+    NetFrameworkVersion="${NETframework-version}"
+    ProjectVersion="${ReleaseID}"
+    DebugParameters="PetraClient,-C:${ClientConfigFile},PetraServerConsole,-C:${ServerConfigFile}"
+    />
+  -->
+</target>
+
+<script language="C#" prefix="Mono" >
+  <imports>
+    <import namespace="NAnt.Core.Tasks" />
+    <import namespace="System.Reflection" />
+    <import namespace="System.IO" />
+  </imports>
+  <code>
+    <![CDATA[
+    [Function("generateProjectFiles")]
+    public static bool generateProjectFiles( ) {
+        string[] fileArray = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.csproj", SearchOption.AllDirectories);
+        foreach (string projfile in fileArray)
+        {
+            generateProjectFile(projfile);
+        }
+
+        fileArray = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.vbproj", SearchOption.AllDirectories);
+        foreach (string projfile in fileArray)
+        {
+            generateProjectFile(projfile);
+        }
+
+        return true;
+    }
+
+    [Function("generateProjectFile")]
+    private static bool generateProjectFile(string projfile ) {
+        // read Guid from existing csproj file
+        string guid = string.Empty;
+        bool nooutput = false;
+        bool noreferences = false;
+        bool outputadded = false;
+        StreamReader sr = new StreamReader(projfile);
+        StreamWriter sw = new StreamWriter(projfile + ".xbuild");
+
+        while (!sr.EndOfStream)
+        {
+            string line = sr.ReadLine();
+            if (line.Contains("<ProjectGuid>")) {
+                guid = line.Trim().Substring("<ProjectGuid>".Length, line.Trim().IndexOf("<", 2) - "<ProjectGuid>".Length);
+            }
+            if (line.Contains("ProducesNoOutput")) {
+                nooutput = true;
+            }
+            if (line.Contains("<Reference ")) {
+                noreferences = true;
+            }
+            if (line.Contains("PropertyGroup") && !outputadded) {
+                sw.WriteLine("  <PropertyGroup>");
+                sw.WriteLine("    <OutputPath>Binaries/Release</OutputPath>");
+                outputadded=true;
+                continue;
+            }
+            if (line.Contains("<OutputPath>Binaries/Release</OutputPath>")) {
+                continue;
+            }
+            if (line.Contains("Microsoft.Common.props")
+                || line.Contains("Microsoft.CSharp.Targets")) {
+                continue;
+            }
+            if (Path.GetExtension(projfile) == ".csproj") {
+                if (line.Contains("VSL.Imports.targets")
+                || line.Contains("VSL.Settings.targets")) {
+                    continue;
+                }
+            }
+            if (line.Contains("AutoGenerateBindingRedirects")) {
+                continue;
+            }
+            if (line.Contains("NuGetTargetMoniker")) {
+                continue;
+            }
+            if (line.Contains("NoStdLib")) {
+                continue;
+            }
+            if (line.Contains("TargetFrameworkProfile")) {
+                continue;
+            }
+            if (line.Contains("TargetFrameworkIdentifier")) {
+                continue;
+            }
+            if (line.Contains("TargetFrameworkVersion")) {
+                sw.WriteLine("    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>");
+                continue;
+            }
+            if (line.Contains("</Project>")) {
+                continue;
+            }
+            sw.WriteLine(line);
+        }
+        if (!noreferences) {
+            sw.WriteLine("  <ItemGroup>");
+            sw.WriteLine("    <Reference Include='System' />");
+            sw.WriteLine("    <Reference Include='System.Xml' />");
+            sw.WriteLine("    <Reference Include='System.Diagnostics.Debug'/>");
+            sw.WriteLine("  </ItemGroup>");
+        }
+        if (!nooutput) {
+            sw.WriteLine("  <Import Project='$(MSBuildBinPath)/Microsoft.CSharp.targets'/>");
+        }
+        sw.WriteLine("</Project>");
+        sw.Close();
+        sr.Close();
+        if (!File.Exists(projfile + ".orig"))
+        {
+            File.Move(projfile, projfile + ".orig");
+        }
+        else
+        {
+            File.Delete(projfile);
+        }
+        File.Move(projfile + ".xbuild", projfile);
+        Console.WriteLine(projfile + " " + guid);
+        // TODO: collect the cs files
+        string[] csFiles = Directory.GetFiles(Path.GetDirectoryName(projfile), "*.cs");
+        foreach (string csfile in csFiles)
+        {
+        //    Console.WriteLine("   " + csfile);
+        }
+        // TODO: use templates for project files
+
+        return true;
+    }
+]]>
+    </code>
+</script>
+
+</project>
