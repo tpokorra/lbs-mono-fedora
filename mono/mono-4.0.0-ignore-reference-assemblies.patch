@@ -1,6 +1,6 @@
---- a/mcs/class/reference-assemblies/Makefile	2016-02-26 08:41:51.406635084 +0100
-+++ b/mcs/class/reference-assemblies/Makefile	2016-02-26 08:42:52.890632211 +0100
-@@ -7,22 +7,25 @@
+--- a/mcs/class/reference-assemblies/Makefile	2016-06-10 12:08:09.878246486 +0200
++++ b/mcs/class/reference-assemblies/Makefile	2016-06-10 12:08:45.105854097 +0200
+@@ -7,23 +7,26 @@
  PROFILE_DIR=$(DESTDIR)$(mono_libdir)/mono
  
  install-local:
@@ -28,13 +28,15 @@
 +	ln -sf 4.5 $(PROFILE_DIR)/4.5-api
 +	ln -sf 4.5 $(PROFILE_DIR)/4.0-api
  
- 	# Unfortunately, a few programs (most notably NUnit) have hardcoded checks for <prefix>/lib/mono/4.0/mscorlib.dll,
+ 	# Unfortunately, a few programs (most notably NUnit and FSharp) have hardcoded checks for <prefix>/lib/mono/4.0/mscorlib.dll or Mono.Posix.dll,
  	# so we need to place something there or those tools break. We decided to symlink to the reference assembly for now.
- 	# See https://bugzilla.xamarin.com/show_bug.cgi?id=38331
+ 	# See https://bugzilla.xamarin.com/show_bug.cgi?id=38331 and https://bugzilla.xamarin.com/show_bug.cgi?id=41052
 -	$(MKINSTALLDIRS) $(PROFILE_DIR)/4.0
 -	ln -sf ../4.0-api/mscorlib.dll $(PROFILE_DIR)/4.0/mscorlib.dll
+-	ln -sf ../4.0-api/Mono.Posix.dll $(PROFILE_DIR)/4.0/Mono.Posix.dll
 +	#$(MKINSTALLDIRS) $(PROFILE_DIR)/4.0
 +	#ln -sf ../4.0-api/mscorlib.dll $(PROFILE_DIR)/4.0/mscorlib.dll
++	#ln -sf ../4.0-api/Mono.Posix.dll $(PROFILE_DIR)/4.0/Mono.Posix.dll
  
  DISTFILES = $(wildcard ../../../external/binary-reference-assemblies/v4.5/Facades/*.dll) $(wildcard ../../../external/binary-reference-assemblies/v4.5/*.dll) $(wildcard ../../../external/binary-reference-assemblies/v4.0/*.dll) $(wildcard ../../../external/binary-reference-assemblies/v3.5/*.dll) $(wildcard ../../../external/binary-reference-assemblies/v2.0/*.dll) Makefile
  

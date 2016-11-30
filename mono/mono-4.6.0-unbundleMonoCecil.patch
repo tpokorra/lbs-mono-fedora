@@ -1,0 +1,11 @@
+--- a/mcs/build/library.make	2016-08-24 11:14:43.002363609 +0200
++++ b/mcs/build/library.make	2016-08-24 11:13:14.377535024 +0200
+@@ -17,6 +17,8 @@
+ # All dependent libs become dependent dirs for parallel builds
+ # Have to rename to handle differences between assembly/directory names
+ DEP_LIBS=$(patsubst System.Xml,System.XML,$(LIB_REFS))
++DEP_LIBS=$(patsubst Mono.Cecil.Mdb,,$(DEP_LIBS))
++DEP_LIBS=$(patsubst Mono.Cecil,,$(DEP_LIBS))
+ 
+ _FILTER_OUT = $(foreach x,$(2),$(if $(findstring $(1),$(x)),,$(x)))
+

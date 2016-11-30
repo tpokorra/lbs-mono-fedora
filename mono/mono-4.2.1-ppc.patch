@@ -1,13 +1,11 @@
-diff -up mono-4.2.1/mcs/build/library.make.than mono-4.2.1/mcs/build/library.make
-diff -up mono-4.2.1/mcs/class/corlib/System/TimeZoneInfo.cs.than mono-4.2.1/mcs/class/corlib/System/TimeZoneInfo.cs
---- mono-4.2.1/mcs/class/corlib/System/TimeZoneInfo.cs.than	2015-11-12 04:00:29.000000000 -0500
-+++ mono-4.2.1/mcs/class/corlib/System/TimeZoneInfo.cs	2016-01-18 10:28:29.532781004 -0500
-@@ -1150,7 +1150,7 @@ namespace System
- 			try {
- 				return ParseTZBuffer (id, buffer, length);
+--- a/mcs/class/corlib/System/TimeZoneInfo.cs	2016-08-23 16:24:24.658169558 +0200
++++ b/mcs/class/corlib/System/TimeZoneInfo.cs	2016-08-23 16:25:22.925434487 +0200
+@@ -1224,7 +1224,7 @@
+ 			} catch (InvalidTimeZoneException) {
+ 				throw;
  			} catch (Exception e) {
--				throw new InvalidTimeZoneException (e.Message);
-+				return Utc; //throw new InvalidTimeZoneException (e.Message);
+-				throw new InvalidTimeZoneException ("Time zone information file contains invalid data", e);
++				return Utc; // throw new InvalidTimeZoneException ("Time zone information file contains invalid data", e);
  			}
  		}
  
