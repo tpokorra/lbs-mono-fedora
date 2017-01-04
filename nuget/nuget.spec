@@ -1,15 +1,15 @@
 %global debug_package %{nil}
 
 Name:           nuget
-Version:        2.8.7
+Version:        3.4.4
 Release:        0%{?dist}
 Summary:        Package manager for .Net/Mono development platform
 License:        ASL 2.0
 Group:          Development/Libraries
 Url:            http://nuget.org/
 
-%global tarballversion %{version}+md510+dhx1.orig
-Source0:        http://download.mono-project.com/sources/%{name}/%{name}_%{tarballversion}.tar.bz2
+%global tarballpath NuGet.Client-%{version}-rtm
+Source0:        https://github.com/NuGet/NuGet.Client/archive/%{version}-rtm.tar.gz
 Source1:        nuget-core.pc
 Source2:        nuget.sh
 Patch0:         nuget-fix_xdt_hintpath
@@ -32,21 +32,22 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 Development package for %{name}
 
 %prep
-%setup -qn nuget-git
-sed -i "s/\r//g" src/Core/Core.csproj
-%patch0 -p1
+%setup -qn %{tarballpath}
+#sed -i "s/\r//g" src/Core/Core.csproj
+#%patch0 -p1
 
 # fix compile with Mono4
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
-find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
+find . \( -name "*.csproj" -o -name "*.xproj" \) -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g; s#.*Microsoft\.DNX\.Props.*##g; s#.*Microsoft\.DNX\.targets#<Import Project="\$\(MSBuildBinPath\)\\Microsoft.CSharp.Targets" />#g; s#Build\\Common\.xproj\.props#build\\common.xproj.props#g' {} \;
 
 %build
 %{?exp_env}
 %{?env_options}
 
-xbuild xdt/XmlTransform/Microsoft.Web.XmlTransform.csproj
-xbuild src/Core/Core.csproj /p:Configuration="Mono Release"
-xbuild src/CommandLine/CommandLine.csproj /p:Configuration="Mono Release"
+xbuild NuGet.Core.sln /p:Configuration="Release"
+#xbuild xdt/XmlTransform/Microsoft.Web.XmlTransform.csproj
+#xbuild src/Core/Core.csproj /p:Configuration="Mono Release"
+#xbuild src/CommandLine/CommandLine.csproj /p:Configuration="Mono Release"
 
 %install
 %{?env_options}
@@ -69,6 +70,9 @@ sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
 %{_libdir}/pkgconfig/nuget-core.pc
 
 %changelog
+* Sat Aug 13 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.4.4-0
+- upgrade to 3.4.4 for MonoDevelop 6
+
 * Thu Nov 26 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.8.7-0
 - upgrade to 2.8.7 for MonoDevelop 5.10
 
