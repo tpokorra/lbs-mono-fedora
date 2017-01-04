@@ -778,7 +778,7 @@ rm -f %{buildroot}%{_libdir}/pkgconfig/cecil.pc
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
-* Tue Jan 04 2017 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.6.2-3
+* Wed Jan 04 2017 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.6.2-3
 - update to 4.6.2.16 Cycle 8 Service Release 2
 
 * Tue Nov 29 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.6.2-2
