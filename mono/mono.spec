@@ -380,11 +380,6 @@ rm -f %{buildroot}%{_libdir}/pkgconfig/cecil.pc
 %{_libdir}/mono/lldb/mono.py*
 %mono_bin csharp
 %mono_bin cert-sync
-%{_bindir}/btls-cert-sync
-%ifnarch aarch64 armv7hl
-# there is no btls for ARM
-%{_monodir}/4.5/btls-cert-sync.exe*
-%endif
 %mono_bin chktrust
 %mono_bin gacutil
 %mono_bin ikdasm
