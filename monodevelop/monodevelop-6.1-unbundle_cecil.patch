@@ -1,0 +1,126 @@
+diff -uNr src/addins/CSharpBinding/CSharpBinding.csproj src.new/addins/CSharpBinding/CSharpBinding.csproj
+--- src/addins/CSharpBinding/CSharpBinding.csproj	2016-11-19 23:26:42.462939560 +0100
++++ src.new/addins/CSharpBinding/CSharpBinding.csproj	2016-11-19 23:40:22.302625171 +0100
+@@ -72,11 +72,7 @@
+       <Name>ICSharpCode.Decompiler</Name>
+       <Private>False</Private>
+     </ProjectReference>
+-    <ProjectReference Include="..\..\..\external\cecil\Mono.Cecil.csproj">
+-      <Project>{D68133BD-1E63-496E-9EDE-4FBDBF77B486}</Project>
+-      <Name>Mono.Cecil</Name>
+-      <Private>False</Private>
+-    </ProjectReference>
++    <Reference Include="Mono.Cecil"/>
+     <ProjectReference Include="..\..\..\external\nrefactory\ICSharpCode.NRefactory\ICSharpCode.NRefactory.csproj">
+       <Project>{3B2A5653-EC97-4001-BB9B-D90F1AF2C371}</Project>
+       <Name>ICSharpCode.NRefactory</Name>
+diff -uNr src/addins/MonoDevelop.AssemblyBrowser/MonoDevelop.AssemblyBrowser.csproj src.new/addins/MonoDevelop.AssemblyBrowser/MonoDevelop.AssemblyBrowser.csproj
+--- src/addins/MonoDevelop.AssemblyBrowser/MonoDevelop.AssemblyBrowser.csproj	2016-11-19 23:26:42.426939924 +0100
++++ src.new/addins/MonoDevelop.AssemblyBrowser/MonoDevelop.AssemblyBrowser.csproj	2016-11-19 23:39:54.742909647 +0100
+@@ -104,11 +104,7 @@
+       <Name>ICSharpCode.Decompiler</Name>
+       <Private>False</Private>
+     </ProjectReference>
+-    <ProjectReference Include="..\..\..\external\cecil\Mono.Cecil.csproj">
+-      <Project>{D68133BD-1E63-496E-9EDE-4FBDBF77B486}</Project>
+-      <Name>Mono.Cecil</Name>
+-      <Private>False</Private>
+-    </ProjectReference>
++    <Reference Include="Mono.Cecil"/>
+     <ProjectReference Include="..\..\..\external\nrefactory\ICSharpCode.NRefactory\ICSharpCode.NRefactory.csproj">
+       <Project>{3B2A5653-EC97-4001-BB9B-D90F1AF2C371}</Project>
+       <Name>ICSharpCode.NRefactory</Name>
+diff -uNr src/addins/MonoDevelop.Debugger.Soft/MonoDevelop.Debugger.Soft/MonoDevelop.Debugger.Soft.csproj src.new/addins/MonoDevelop.Debugger.Soft/MonoDevelop.Debugger.Soft/MonoDevelop.Debugger.Soft.csproj
+--- src/addins/MonoDevelop.Debugger.Soft/MonoDevelop.Debugger.Soft/MonoDevelop.Debugger.Soft.csproj	2016-11-19 23:26:42.566938511 +0100
++++ src.new/addins/MonoDevelop.Debugger.Soft/MonoDevelop.Debugger.Soft/MonoDevelop.Debugger.Soft.csproj	2016-11-19 23:41:17.278057852 +0100
+@@ -76,11 +76,7 @@
+       <Name>MonoDevelop.Core</Name>
+       <Private>False</Private>
+     </ProjectReference>
+-    <ProjectReference Include="..\..\..\..\external\cecil\Mono.Cecil.csproj">
+-      <Project>{D68133BD-1E63-496E-9EDE-4FBDBF77B486}</Project>
+-      <Name>Mono.Cecil</Name>
+-      <Private>False</Private>
+-    </ProjectReference>
++    <Reference Include="Mono.Cecil"/>
+     <ProjectReference Include="..\..\..\..\external\debugger-libs\Mono.Debugging\Mono.Debugging.csproj">
+       <Project>{90C99ADB-7D4B-4EB4-98C2-40BD1B14C7D2}</Project>
+       <Name>Mono.Debugging</Name>
+diff -uNr src/addins/MonoDevelop.DesignerSupport/MonoDevelop.DesignerSupport.csproj src.new/addins/MonoDevelop.DesignerSupport/MonoDevelop.DesignerSupport.csproj
+--- src/addins/MonoDevelop.DesignerSupport/MonoDevelop.DesignerSupport.csproj	2016-11-19 23:26:42.594938228 +0100
++++ src.new/addins/MonoDevelop.DesignerSupport/MonoDevelop.DesignerSupport.csproj	2016-11-19 23:41:45.429767416 +0100
+@@ -87,11 +87,7 @@
+       <Name>MonoDevelop.Ide</Name>
+       <Private>False</Private>
+     </ProjectReference>
+-    <ProjectReference Include="..\..\..\external\cecil\Mono.Cecil.csproj">
+-      <Project>{D68133BD-1E63-496E-9EDE-4FBDBF77B486}</Project>
+-      <Name>Mono.Cecil</Name>
+-      <Private>False</Private>
+-    </ProjectReference>
++    <Reference Include="Mono.Cecil"/>
+     <ProjectReference Include="..\..\..\external\mono-addins\Mono.Addins\Mono.Addins.csproj">
+       <Project>{91DD5A2D-9FE3-4C3C-9253-876141874DAD}</Project>
+       <Name>Mono.Addins</Name>
+diff -uNr src/addins/MonoDevelop.GtkCore/libsteticui/libsteticui.csproj src.new/addins/MonoDevelop.GtkCore/libsteticui/libsteticui.csproj
+--- src/addins/MonoDevelop.GtkCore/libsteticui/libsteticui.csproj	2016-11-19 23:26:42.414940045 +0100
++++ src.new/addins/MonoDevelop.GtkCore/libsteticui/libsteticui.csproj	2016-11-19 23:39:25.043216268 +0100
+@@ -71,11 +71,7 @@
+       <Name>libstetic</Name>
+       <Private>False</Private>
+     </ProjectReference>
+-    <ProjectReference Include="..\..\..\..\external\cecil\Mono.Cecil.csproj">
+-      <Project>{D68133BD-1E63-496E-9EDE-4FBDBF77B486}</Project>
+-      <Name>Mono.Cecil</Name>
+-      <Private>False</Private>
+-    </ProjectReference>
++    <Reference Include="Mono.Cecil"/>
+   </ItemGroup>
+   <ItemGroup>
+     <Compile Include="ActionComponent.cs" />
+diff -uNr src/addins/MonoDevelop.GtkCore/MonoDevelop.GtkCore.csproj src.new/addins/MonoDevelop.GtkCore/MonoDevelop.GtkCore.csproj
+--- src/addins/MonoDevelop.GtkCore/MonoDevelop.GtkCore.csproj	2016-11-19 23:26:42.410940085 +0100
++++ src.new/addins/MonoDevelop.GtkCore/MonoDevelop.GtkCore.csproj	2016-11-19 23:38:50.691570987 +0100
+@@ -146,11 +146,7 @@
+       <Name>MonoDevelop.Refactoring</Name>
+       <Private>False</Private>
+     </ProjectReference>
+-    <ProjectReference Include="..\..\..\external\cecil\Mono.Cecil.csproj">
+-      <Project>{D68133BD-1E63-496E-9EDE-4FBDBF77B486}</Project>
+-      <Name>Mono.Cecil</Name>
+-      <Private>False</Private>
+-    </ProjectReference>
++    <Reference Include="Mono.Cecil"/>
+     <ProjectReference Include="..\..\..\external\mono-addins\Mono.Addins\Mono.Addins.csproj">
+       <Project>{91DD5A2D-9FE3-4C3C-9253-876141874DAD}</Project>
+       <Name>Mono.Addins</Name>
+diff -uNr src/core/MonoDevelop.Core/MonoDevelop.Core.csproj src.new/core/MonoDevelop.Core/MonoDevelop.Core.csproj
+--- src/core/MonoDevelop.Core/MonoDevelop.Core.csproj	2016-11-19 23:26:42.742936734 +0100
++++ src.new/core/MonoDevelop.Core/MonoDevelop.Core.csproj	2016-11-19 23:42:32.649280373 +0100
+@@ -648,10 +648,7 @@
+       <Name>MonoDevelop.Projects.Formats.MSBuild</Name>
+       <Private>False</Private>
+     </ProjectReference>
+-    <ProjectReference Include="..\..\..\external\cecil\Mono.Cecil.csproj">
+-      <Project>{D68133BD-1E63-496E-9EDE-4FBDBF77B486}</Project>
+-      <Name>Mono.Cecil</Name>
+-    </ProjectReference>
++    <Reference Include="Mono.Cecil"/>
+     <ProjectReference Include="..\..\..\external\cecil\symbols\mdb\Mono.Cecil.Mdb.csproj">
+       <Project>{8559DD7F-A16F-46D0-A05A-9139FAEBA8FD}</Project>
+       <Name>Mono.Cecil.Mdb</Name>
+diff -uNr src/core/MonoDevelop.Ide/MonoDevelop.Ide.csproj src.new/core/MonoDevelop.Ide/MonoDevelop.Ide.csproj
+--- src/core/MonoDevelop.Ide/MonoDevelop.Ide.csproj	2016-11-19 23:26:42.626937905 +0100
++++ src.new/core/MonoDevelop.Ide/MonoDevelop.Ide.csproj	2016-11-19 23:42:12.265490603 +0100
+@@ -203,10 +203,7 @@
+       <Name>Mono.Addins.Gui</Name>
+       <Private>False</Private>
+     </ProjectReference>
+-    <ProjectReference Include="..\..\..\external\cecil\Mono.Cecil.csproj">
+-      <Project>{D68133BD-1E63-496E-9EDE-4FBDBF77B486}</Project>
+-      <Name>Mono.Cecil</Name>
+-    </ProjectReference>
++    <Reference Include="Mono.Cecil"/>
+     <ProjectReference Include="..\..\..\external\debugger-libs\Mono.Debugging\Mono.Debugging.csproj">
+       <Project>{90C99ADB-7D4B-4EB4-98C2-40BD1B14C7D2}</Project>
+       <Name>Mono.Debugging</Name>

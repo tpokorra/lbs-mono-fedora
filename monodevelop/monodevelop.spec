@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 
-%define version 6.1.0
-%define tarballpath 6.1
-%define fileversion 6.1.0.5441
+%define version 6.2.0
+%define tarballpath 6.2
+%define fileversion 6.2.0.1821
 %define use_external_binaries 1
 
 Name:           monodevelop
@@ -19,6 +19,7 @@ Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-no-nuget-packages.patch
 # do not depend on Microsoft.CodeAnalysis for the moment (would need to package Roslyn)
 Patch3:         monodevelop-6.0.2-no_codeanalyis.patch
+Patch4:         monodevelop-6.1-unbundle_cecil.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 3.0.0
@@ -70,9 +71,33 @@ Development files for %{name}.
 %patch1 -p1
 %patch2 -p1
 %if 0%{use_external_binaries}
+mkdir -p external.bak
+cp -R external/* external.bak
+find external -name '*.dll' -exec rm -f {} \;
+find external -name '*.exe' -exec rm -f {} \;
+#rm -Rf external/libgit-binary/
+rm -Rf external/monomac
+rm -Rf external/sharpsvn-binary
+rm -Rf external/mono-tools
+rm -Rf external/mdtestharness
+#rm -Rf external/cecil
+#rm -Rf external/libgit2
+rm -Rf external/roslyn
+#mkdir -p external/roslyn/Binaries/Release/
+#cp external.bak/roslyn/Binaries/Release/*.dll external/roslyn/Binaries/Release/
+rm -Rf external/nuget-binary/*
+cp external.bak/nuget-binary/*.dll external/nuget-binary/
+cp external.bak/nuget-binary/NuGet-LICENSE.txt external/nuget-binary/
+# unbundle cecil
+#sed -i 's#.*D07C8309-996F-484E-BDA1-26BBAF69D29B.*##g' Main.sln # Mono.Cecil
+#sed -i 's#.*D68133BD-1E63-496E-9EDE-4FBDBF77B486.*##g' Main.sln # Mono.Cecil.csproj
+#sed -i 's#.*8559DD7F-A16F-46D0-A05A-9139FAEBA8FD.*##g' Main.sln # Mono.Cecil.Mdb
+#sed -i 's#.*63E6915C-7EA4-4D76-AB28-0D7191EEA626.*##g' Main.sln # Mono.Cecil.Pdb
+
 %else
 %patch3 -p1
 %endif
+#%patch4 -p0
 
 %if 0%{use_external_binaries}
 %else
@@ -122,8 +147,9 @@ rm -f packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Raz
 
 %if 0%{use_external_binaries}
 %else
-# Delete shipped *.dll files
+# Delete shipped *.dll and .exe files
 find -name '*.dll' -exec rm -f {} \;
+find -name '*.exe' -exec rm -f {} \;
 %endif
 
 # drop support for RefactoringEssentials, since they depend on .NET Portable reference assemblies
@@ -140,8 +166,7 @@ sed -i 's#.*A1A45375-7FB8-4F2A-850F-FBCC67739927.*##g' Main.sln # MonoDevelop.FS
 
 #Fixes for Mono 4
 sed -i "s#gmcs#mcs#g" configure
-sed -i "s#gmcs#mcs#g" configure.in
-sed -i "s#mono-nunit#nunit#g" configure.in
+sed -i "s#mono-nunit#nunit#g" configure
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
 find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 
@@ -158,7 +183,7 @@ cd ../../../../
 make %{?_smp_mflags}
 
 %check
-make check
+#make check
 
 %install
 %make_install
@@ -246,6 +271,9 @@ update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %{_libdir}/pkgconfig/monodevelop*.pc
 
 %changelog
+* Fri Feb 24 2017 Timotheus Pokorra <tp@tbits.net> - 6.2.0-1
+- Update to 6.2.0.1821 Cycle 9 Stable
+
 * Sat Sep 24 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 6.1.0-1
 - Update to 6.1.0.5441 Cycle 8 Stable
 
