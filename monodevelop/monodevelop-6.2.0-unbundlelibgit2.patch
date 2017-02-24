@@ -1,0 +1,16 @@
+--- a/src/addins/VersionControl/MonoDevelop.VersionControl.Git/MonoDevelop.VersionControl.Git.csproj	2017-02-24 09:40:39.459322838 +0100
++++ b/src/addins/VersionControl/MonoDevelop.VersionControl.Git/MonoDevelop.VersionControl.Git.csproj	2017-02-24 09:43:18.550324472 +0100
+@@ -240,13 +240,4 @@
+       </ItemGroup>
+     </When>
+   </Choose>
+-  <Target Name="BeforeBuild">
+-    <Exec Command="bash build_libgit2.sh" Condition=" '$(Configuration)' == 'DebugGnome' OR '$(Configuration)' == 'ReleaseGnome' " />
+-  </Target>
+-  <Target Name="AfterBuild">
+-     <ItemGroup Condition=" '$(Configuration)' == 'DebugGnome' OR '$(Configuration)' == 'ReleaseGnome' ">
+-       <NativeBinaries Include="..\..\..\..\external\libgit2\build\*.so*" />
+-     </ItemGroup>
+-     <Copy SourceFiles="@(NativeBinaries)" DestinationFolder="$(OutputPath)\" SkipUnchangedFiles="true" />
+-  </Target>
+ </Project>

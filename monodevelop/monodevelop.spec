@@ -20,6 +20,7 @@ Patch2:         monodevelop-no-nuget-packages.patch
 # do not depend on Microsoft.CodeAnalysis for the moment (would need to package Roslyn)
 Patch3:         monodevelop-6.0.2-no_codeanalyis.patch
 Patch4:         monodevelop-6.1-unbundle_cecil.patch
+Patch5:         monodevelop-6.2.0-unbundlelibgit2.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 3.0.0
@@ -31,6 +32,7 @@ BuildRequires:  nuget-devel
 BuildRequires:  libssh2-devel
 BuildRequires:  newtonsoft-json-devel
 BuildRequires:  cmake git
+BuildRequires:  libgit2-devel
 %if 0%{use_external_binaries}
 %else
 BuildRequires:  mono-immutablecollections-devel
@@ -81,7 +83,7 @@ rm -Rf external/sharpsvn-binary
 rm -Rf external/mono-tools
 rm -Rf external/mdtestharness
 #rm -Rf external/cecil
-#rm -Rf external/libgit2
+rm -Rf external/libgit2
 rm -Rf external/roslyn
 #mkdir -p external/roslyn/Binaries/Release/
 #cp external.bak/roslyn/Binaries/Release/*.dll external/roslyn/Binaries/Release/
@@ -98,6 +100,7 @@ cp external.bak/nuget-binary/NuGet-LICENSE.txt external/nuget-binary/
 %patch3 -p1
 %endif
 #%patch4 -p0
+%patch5 -p1
 
 %if 0%{use_external_binaries}
 %else
