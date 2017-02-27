@@ -6,14 +6,14 @@
 %endif
 
 Name:			xsp
-Version:	4.2
+Version:	4.4
 Release:	1%{?dist}
 License:	MIT
 URL:			http://www.mono-project.com/Main_Page
 Summary:	A small web server that hosts ASP.NET
 Group:		System Environment/Daemons
 
-Source0:	http://download.mono-project.com/sources/%{name}/%{name}-%{version}.tar.gz
+Source0:	https://github.com/mono/xsp/archive/%{version}.tar.gz
 BuildRequires:	mono-web-devel, mono-data, mono-devel, mono-data-sqlite, nunit-devel
 BuildRequires:	mono-data-oracle monodoc-devel
 BuildRequires:	autoconf automake libtool
@@ -48,9 +48,10 @@ Files for testing the xsp server
 %prep
 %setup -q
 
-sed -i "s#dmcs#mcs#g" configure
-
 %build
+sed -i "s~run ./configure~#run ./configure~g" autogen.sh
+./autogen.sh
+sed -i "s#dmcs#mcs#g" configure
 %configure --libdir=%{_prefix}/lib
 make
 
@@ -101,6 +102,9 @@ find %{buildroot} -type f -name "*.a" -delete
 %{_prefix}/lib/xsp/test
 
 %changelog
+* Mon Feb 27 2017 Timotheus Pokorra <tp@tbits.net> - 4.4-1
+- Updated to 4.4
+
 * Fri Jan 29 2016 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 4.2-1
 - Updated to 4.2
 - Use mono macros
