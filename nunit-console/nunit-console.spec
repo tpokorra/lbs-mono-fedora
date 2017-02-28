@@ -1,18 +1,24 @@
 %global debug_package %{nil}
-%global gittag bb29539d178a601253ad7e8720d854bb1fe50ea7
+
+%if 0%{?el6}
+# see https://fedorahosted.org/fpc/ticket/395, it was added to el7
+%global mono_arches %{ix86} x86_64 sparc sparcv9 ia64 %{arm} alpha s390x ppc ppc64 ppc64le
+%global _monodir %{_prefix}/lib/mono
+%global _monogacdir %{_monodir}/gac
+%endif
 
 Name:           nunit-console
-Version:        3.5
+Version:        3.6
 Release:        1%{?dist}
 Summary:        NUnit Console runner and test engine
-License:        MIT with advertising
+License:        MIT
 Group:          Development/Libraries
 Url:            http://www.nunit.org/
-Source0:        https://github.com/nunit/nunit-console/archive/%{gittag}.tar.gz
+Source0:        https://github.com/nunit/nunit-console/archive/%{version}.tar.gz
 # TODO: add script to /usr/bin to start nunit3-console
 Patch0:         nunit-console-net-4.5.patch
 BuildRequires:  mono-devel
-BuildRequires:  nunit-devel >= 3.5
+BuildRequires:  nunit-devel >= 3.6
 BuildRequires:  mono-cecil-devel
 ExclusiveArch:  %{mono_arches}
 
@@ -28,9 +34,9 @@ the Microsoft .NET Framework.
 # TODO: add a pc file to devel subpackage?
 
 %prep
-%setup -qn nunit-console-%{gittag}
+%setup -qn %{name}-%{version}
 
-%patch0 -p1
+#%patch0 -p1
 find . -name "*.csproj" -print -exec sed -i 's#<TargetFrameworkVersion>.*</TargetFrameworkVersion>#<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g; s#NET_2_0#NET_4_5#g; s#net-2.0#net-4.5#g' {} \;
 
 sed -i 's#namespace System.Runtime.CompilerServices#namespace System.Runtime.CompilerServicesOff#g' src/NUnitEngine/nunit.engine/XmlHelper.cs
@@ -66,5 +72,7 @@ done
 %{_monodir}/nunit/*
 
 %changelog
+* Mon Feb 27 2017 Timotheus Pokorra <tp@tbits.net> - 3.6-1
+- initial package
 * Sat Oct 08 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.5-1
 - initial package

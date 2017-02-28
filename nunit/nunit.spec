@@ -8,8 +8,8 @@
 %endif
 
 Name:           nunit
-Version:        3.5
-Release:        1%{?dist}
+Version:        3.6
+Release:        2%{?dist}
 Summary:        Unit test framework for CLI
 %if 0%{?el6}
 License:        MIT
@@ -96,6 +96,18 @@ done
 %{_libdir}/pkgconfig/nunit.pc
 
 %changelog
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.6-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Fri Jan 13 2017 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 3.6-1
+- Update to 3.6
+
+* Thu Oct 13 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.5-3
+- mono rebuild for aarch64 support
+
+* Thu Oct 13 2016 Peter Robinson <pbrobinson@fedoraproject.org> - 3.5-2
+- aarch64 bootstrap
+
 * Wed Oct 05 2016 Claudio Rodrigo Pereyra Diaz <elsupergomez@fedoraproject.org> - 3.5-1
 - Update to 3.5
 - Move from nunit3-console to nunitlite-runner

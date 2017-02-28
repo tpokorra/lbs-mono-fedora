@@ -1,15 +1,26 @@
 %global debug_package %{nil}
 
+%if 0%{?el6}
+# see https://fedorahosted.org/fpc/ticket/395, it was added to el7
+%global mono_arches %{ix86} x86_64 sparc sparcv9 ia64 %{arm} alpha s390x ppc ppc64 ppc64le
+%global _monodir %{_prefix}/lib/mono
+%global _monogacdir %{_monodir}/gac
+%endif
+
 Name:           nuget
-Version:        3.4.4
-Release:        0%{?dist}
+Version:        2.8.7
+Release:        3%{?dist}
 Summary:        Package manager for .Net/Mono development platform
+%if 0%{?el6}
+License:        ASL
+%else
 License:        ASL 2.0
+%endif
 Group:          Development/Libraries
 Url:            http://nuget.org/
 
-%global tarballpath NuGet.Client-%{version}-rtm
-Source0:        https://github.com/NuGet/NuGet.Client/archive/%{version}-rtm.tar.gz
+%global tarballversion %{version}+md510+dhx1.orig
+Source0:        http://download.mono-project.com/sources/%{name}/%{name}_%{tarballversion}.tar.bz2
 Source1:        nuget-core.pc
 Source2:        nuget.sh
 Patch0:         nuget-fix_xdt_hintpath
@@ -32,22 +43,21 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 Development package for %{name}
 
 %prep
-%setup -qn %{tarballpath}
-#sed -i "s/\r//g" src/Core/Core.csproj
-#%patch0 -p1
+%setup -qn nuget-git
+sed -i "s/\r//g" src/Core/Core.csproj
+%patch0 -p1
 
 # fix compile with Mono4
 find . -name "*.sln" -print -exec sed -i 's/Format Version 10.00/Format Version 11.00/g' {} \;
-find . \( -name "*.csproj" -o -name "*.xproj" \) -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g; s#.*Microsoft\.DNX\.Props.*##g; s#.*Microsoft\.DNX\.targets#<Import Project="\$\(MSBuildBinPath\)\\Microsoft.CSharp.Targets" />#g; s#Build\\Common\.xproj\.props#build\\common.xproj.props#g' {} \;
+find . -name "*.csproj" -print -exec sed -i 's#ToolsVersion="3.5"#ToolsVersion="4.0"#g; s#<TargetFrameworkVersion>.*</TargetFrameworkVersion>##g; s#<PropertyGroup>#<PropertyGroup><TargetFrameworkVersion>v4.5</TargetFrameworkVersion>#g' {} \;
 
 %build
 %{?exp_env}
 %{?env_options}
 
-xbuild NuGet.Core.sln /p:Configuration="Release"
-#xbuild xdt/XmlTransform/Microsoft.Web.XmlTransform.csproj
-#xbuild src/Core/Core.csproj /p:Configuration="Mono Release"
-#xbuild src/CommandLine/CommandLine.csproj /p:Configuration="Mono Release"
+xbuild xdt/XmlTransform/Microsoft.Web.XmlTransform.csproj
+xbuild src/Core/Core.csproj /p:Configuration="Mono Release"
+xbuild src/CommandLine/CommandLine.csproj /p:Configuration="Mono Release"
 
 %install
 %{?env_options}
@@ -62,7 +72,9 @@ sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
 %{__install} -m0755 src/CommandLine/bin/Release/NuGet.exe %{buildroot}%{_monodir}/nuget/
 
 %files
+%if ! 0%{?el6}
 %{license} LICENSE.txt
+%endif
 %{_monodir}/nuget
 %{_bindir}/*
 
@@ -70,8 +82,14 @@ sed -i -e 's/cli/mono/' %{buildroot}%{_bindir}/*
 %{_libdir}/pkgconfig/nuget-core.pc
 
 %changelog
-* Sat Aug 13 2016 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 3.4.4-0
-- upgrade to 3.4.4 for MonoDevelop 6
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.7-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Thu Oct 13 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.7-2
+- mono rebuild for aarch64 support
+
+* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.7-1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
 * Thu Nov 26 2015 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 2.8.7-0
 - upgrade to 2.8.7 for MonoDevelop 5.10
