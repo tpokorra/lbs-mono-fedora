@@ -14,6 +14,11 @@ Group:          Development/Tools
 License:        GPLv2+
 URL:            http://monodevelop.com/
 Source0:        http://download.mono-project.com/sources/monodevelop/monodevelop-%{fileversion}.tar.bz2
+Source1:        nuget-binary.tar.gz
+Source2:        System.Collections.Immutable.1.1.37.tar.gz
+Source3:        Microsoft.CodeAnalysis.1.3.2.tar.gz
+Source4:        Microsoft.Composition.1.0.27.tar.gz
+Source5:        Newtonsoft.Json.8.0.3.tar.gz
 Patch0:         monodevelop-avoidgiterrors.patch
 Patch1:         monodevelop-downgrade_to_mvc3.patch
 Patch2:         monodevelop-no-nuget-packages.patch
@@ -24,6 +29,7 @@ Patch5:         monodevelop-6.2.0-unbundlelibgit2.patch
 BuildRequires:  mono-devel >= 3.0.4
 BuildRequires:  mono-addins-devel >= 0.6
 BuildRequires:  nunit-devel >= 3.0.0
+BuildRequires:  nunit-console
 BuildRequires:  nunit2-devel
 BuildRequires:  monodoc-devel
 BuildRequires:  gnome-desktop-sharp-devel
@@ -73,28 +79,24 @@ Development files for %{name}.
 %patch1 -p1
 %patch2 -p1
 %if 0%{use_external_binaries}
-mkdir -p external.bak
-cp -R external/* external.bak
 find external -name '*.dll' -exec rm -f {} \;
 find external -name '*.exe' -exec rm -f {} \;
-#rm -Rf external/libgit-binary/
-rm -Rf external/monomac
-rm -Rf external/sharpsvn-binary
-rm -Rf external/mono-tools
-rm -Rf external/mdtestharness
-#rm -Rf external/cecil
-rm -Rf external/libgit2
-rm -Rf external/roslyn
-#mkdir -p external/roslyn/Binaries/Release/
-#cp external.bak/roslyn/Binaries/Release/*.dll external/roslyn/Binaries/Release/
-rm -Rf external/nuget-binary/*
-cp external.bak/nuget-binary/*.dll external/nuget-binary/
-cp external.bak/nuget-binary/NuGet-LICENSE.txt external/nuget-binary/
 # unbundle cecil
 #sed -i 's#.*D07C8309-996F-484E-BDA1-26BBAF69D29B.*##g' Main.sln # Mono.Cecil
 #sed -i 's#.*D68133BD-1E63-496E-9EDE-4FBDBF77B486.*##g' Main.sln # Mono.Cecil.csproj
 #sed -i 's#.*8559DD7F-A16F-46D0-A05A-9139FAEBA8FD.*##g' Main.sln # Mono.Cecil.Mdb
 #sed -i 's#.*63E6915C-7EA4-4D76-AB28-0D7191EEA626.*##g' Main.sln # Mono.Cecil.Pdb
+
+# nuget binaries
+tar xzf %{SOURCE1}
+# System.Collections.Immutable
+tar xzf %{SOURCE2}
+# Microsoft.CodeAnalysis
+tar xzf %{SOURCE3}
+# Microsoft.Composition
+tar xzf %{SOURCE4}
+# Newtonsoft.Json
+tar xzf %{SOURCE5}
 
 %else
 %patch3 -p1
