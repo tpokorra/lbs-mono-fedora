@@ -30,10 +30,9 @@ Source0:        http://download.mono-project.com/sources/mono/mono-%{version}.49
 Source1:        mono.snk
 Patch0:         mono-4.0.0-ignore-reference-assemblies.patch
 Patch1:         mono-4.2.1-ppc.patch
-Patch2:         mono-4.3.2-find-provides.patch
-Patch3:         mono-4.2-fix-winforms-trayicon.patch
-Patch4:         mono-4.6.0-patch_arm_fast_tls.patch
-Patch5:         mono-4.6.1-aarch64.patch
+Patch2:         mono-4.2-fix-winforms-trayicon.patch
+Patch3:         mono-4.6.0-patch_arm_fast_tls.patch
+Patch4:         mono-4.6.1-aarch64.patch
 
 BuildRequires:  bison
 BuildRequires:  cmake
@@ -275,7 +274,6 @@ Development file for monodoc
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 
 # Add undeclared Arg
 sed -i "61a #define ARG_MAX     _POSIX_ARG_MAX" mono/io-layer/wapi_glob.h
