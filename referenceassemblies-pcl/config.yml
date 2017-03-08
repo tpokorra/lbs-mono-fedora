@@ -1,0 +1,3 @@
+lbs:
+  source:
+    download: ["http://download.mono-project.com/repo/debian/pool/main/r/referenceassemblies-pcl/referenceassemblies-pcl_2014.04.14.orig.tar.bz2", "https://github.com/directhex/xamarin-referenceassemblies-pcl/raw/centos/EULA.rtf"]
