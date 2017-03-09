@@ -16,7 +16,7 @@
 
 Name:           mono
 Version:        4.8.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Cross-platform, Open Source, .NET development framework
 
 Group:          Development/Languages
@@ -72,6 +72,8 @@ metadata access libraries.
 Summary:        The Mono CIL runtime, suitable for running .NET code
 Group:          Development/Languages
 Requires:       libgdiplus
+Provides:       mono(mscorlib) = 4.0.0.0
+Provides:       mono(Mono.Configuration.Crypto) = 4.0.0.0
 
 %description core
 This package contains the core of the Mono runtime including its
@@ -786,6 +788,9 @@ rm -f %{buildroot}%{_libdir}/pkgconfig/cecil.pc
 %{_libdir}/pkgconfig/monodoc.pc
 
 %changelog
+* Wed Mar  8 2017 Timotheus Pokorra <tp@tbits.net> - 4.8.0-7
+- use the original mono-find-provides again
+
 * Thu Feb 23 2017 Timotheus Pokorra <timotheus.pokorra@solidcharity.com> - 4.8.0-6
 - update to 4.8.0.495 Cycle 9 Stable Release
 
